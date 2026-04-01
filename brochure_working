@@ -198,7 +198,7 @@ html,body{
   font-family:'Cormorant Garamond',serif;
   font-size:22px;font-weight:700;color:var(--gold);display:block;
 }
-.cta-web{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-top:3px;}
+.cta-web{font-size:14px;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-top:3px;}
 .cta-btn{
   display:inline-block;margin-top:10px;
   background:var(--gold);color:var(--navy);
@@ -213,7 +213,7 @@ html,body{
   padding:12px 52px;
   display:flex;justify-content:space-between;align-items:center;
 }
-.ftr-l{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.07em;}
+.ftr-l{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.07em;}
 .ftr-r{
   font-family:'Cormorant Garamond',serif;
   font-size:14px;font-style:italic;color:rgba(255,255,255,.25);
@@ -346,8 +346,8 @@ html,body{
       <div class="cta-sub">No obligation — a relaxed 45-minute conversation about what you'd love more of on Cape Cod.</div>
     </div>
     <div class="cta-right">
-      <span class="cta-phone">508-289-1062-</span>
-      <span class="cta-email">courtandcast@gmail.com-</span>
+      <span class="cta-phone">508-289-1062</span>
+      <span class="cta-email">courtandcast@gmail.com</span>
       <div class="cta-web">courtandcast.com</div>
       <span class="cta-btn">Call or Text Today</span>
     </div>
