@@ -194,6 +194,10 @@ html,body{
   font-family:'Cormorant Garamond',serif;
   font-size:22px;font-weight:700;color:var(--gold);display:block;
 }
+.cta-email{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:700;color:var(--gold);display:block;
+}
 .cta-web{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-top:3px;}
 .cta-btn{
   display:inline-block;margin-top:10px;
@@ -212,7 +216,7 @@ html,body{
 .ftr-l{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.07em;}
 .ftr-r{
   font-family:'Cormorant Garamond',serif;
-  font-size:11px;font-style:italic;color:rgba(255,255,255,.25);
+  font-size:14px;font-style:italic;color:rgba(255,255,255,.25);
 }
 
 @media print{
@@ -253,8 +257,8 @@ html,body{
   <!-- INTRO -->
   <div class="intro">
     <p class="intro-text">
-      One trusted person. A <strong>USCG licensed captain,</strong> an <strong>experienced tennis coach,</strong><br>
-      and a genuine companion — helping you live the Cape Cod life, <strong>fully.</strong>
+      One trusted person. A <strong>USCG licensed captain,</strong> an <strong>experienced tennis coach,</strong>
+      & a genuine companion — helping you live the Cape Cod life, <strong>fully.</strong>
     </p>
   </div>
 
