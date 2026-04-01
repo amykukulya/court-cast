@@ -213,10 +213,10 @@ html,body{
   padding:12px 52px;
   display:flex;justify-content:space-between;align-items:center;
 }
-.ftr-l{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.07em;}
+.ftr-l{font-size:14px;color:fff(255,255,255,.25);letter-spacing:.07em;}
 .ftr-r{
   font-family:'Cormorant Garamond',serif;
-  font-size:14px;font-style:italic;color:rgba(255,255,255,.25);
+  font-size:14px;font-style:italic;color:fff(255,255,255,.25);
 }
 
 @media print{
