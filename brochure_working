@@ -210,13 +210,13 @@ html,body{
 .ftr{
   position:relative;z-index:2;
   border-top:1px solid rgba(200,168,75,.18);
-  padding:12px 52px;
+  padding:10px 52px;
   display:flex;justify-content:space-between;align-items:center;
 }
-.ftr-l{font-size:14px;color:fff(255,255,255,.25);letter-spacing:.07em;}
+.ftr-l{font-size:14px;color:rgba(255,255,255,1);letter-spacing:.07em;}
 .ftr-r{
   font-family:'Cormorant Garamond',serif;
-  font-size:14px;font-style:italic;color:fff(255,255,255,.25);
+  font-size:12px;font-style:italic;color:rgba(255,255,255,1);
 }
 
 @media print{
