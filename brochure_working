@@ -219,16 +219,44 @@ html,body{
   font-size:10px;font-style:italic;color:rgba(255,255,255,.65);
 }
 
-@media print{
-  html,body{padding:0;background:none;}
-  .flyer{width:8.5in;min-height:11in;}
-  .flyer { 
-    width: 8.5in; 
-    min-height: 11in;
-    max-height: 11in;      /* hard cap at one page */
+@media print {
+  html, body {
+    padding: 0;
+    margin: 0;
+    background: none;
+  }
+  .flyer {
+    width: 8.5in;
+    height: 11in;
+    min-height: unset;
+    max-height: 11in;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .services {
+    gap: 8px;
+    padding: 18px 52px;
+  }
+  .svc {
+    padding: 12px 16px;
+  }
+  .svc-desc {
+    font-size: 10px;
+  }
+  .creds {
+    padding: 0 52px 16px;
+  }
+  .cred {
+    padding: 8px 10px;
+  }
+  .cta {
+    margin: 0 52px 20px;
+    padding: 18px 24px;
   }
   .ftr {
-    position: absolute;    /* pin it to the bottom */
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
