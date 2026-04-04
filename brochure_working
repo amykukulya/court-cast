@@ -210,13 +210,13 @@ html,body{
 .ftr{
   position:relative;z-index:2;
   border-top:1px solid rgba(200,168,75,.18);
-  padding:9px 52px;
+  padding:10px 52px;
   display:flex;justify-content:space-between;align-items:center;
 }
 .ftr-l{font-size:10px;color:rgba(255,255,255,.65);letter-spacing:.07em;}
 .ftr-r{
   font-family:'Cormorant Garamond',serif;
-  font-size:9px;font-style:italic;color:rgba(255,255,255,.65);
+  font-size:11px;font-style:italic;color:rgba(255,255,255,.65);
 }
 
 @media print{
@@ -349,7 +349,7 @@ html,body{
       <span class="cta-phone">508-289-1062</span>
       <span class="cta-email">courtandcast@gmail.com</span>
       <div class="cta-web">courtandcast.com</div>
-      <span class="cta-btn">Call or Text Today</span>
+      <span class="cta-btn">Call or Text Amy Today</span>
     </div>
   </div>
 
