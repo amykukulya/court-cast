@@ -251,10 +251,37 @@ html,body{
   .cred {
     padding: 8px 10px;
   }
-  .cta {
-    margin: 0 52px 20px;
-    padding: 18px 24px;
-  }
+ .cta {
+  margin: 0 52px 16px;
+  padding: 14px 20px;
+  gap: 16px;
+}
+.cta-logo {
+  width: 50px;
+  height: 50px;
+}
+.cta-head {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+.cta-sub {
+  font-size: 10px;
+  line-height: 1.4;
+}
+.cta-phone {
+  font-size: 17px;
+}
+.cta-email {
+  font-size: 17px;
+}
+.cta-web {
+  font-size: 12px;
+}
+.cta-btn {
+  font-size: 8px;
+  padding: 6px 14px;
+  margin-top: 6px;
+}
   .ftr {
     position: absolute;
     bottom: 0;
