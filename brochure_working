@@ -101,12 +101,12 @@ html,body{
 /* ── INTRO STATEMENT ── */
 .intro{
   position:relative;z-index:2;
-  padding:36px 52px 0;
+  padding:24px 52px 0;
 }
 .intro-text{
   font-family:'Cormorant Garamond',serif;
-  font-size:25px;font-weight:400;font-style:italic;
-  color:rgba(255,255,255,.75);line-height:1.45;
+  font-size:24px;font-weight:400;font-style:italic;
+  color:rgba(255,255,255,.75);line-height:1.35;
   border-left:3px solid var(--gold);
   padding-left:22px;
 }
@@ -238,7 +238,7 @@ html,body{
   .services {
   gap: 6px;
   padding: 14px 52px;
-  flex: unset;
+  flex: none;
 }
 .svc {
   padding: 10px 14px;
