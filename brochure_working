@@ -235,67 +235,98 @@ html,body{
     display: flex;
     flex-direction: column;
   }
+  .hdr {
+    padding: 28px 52px 20px;
+  }
+  .hdr-name {
+    font-size: 46px;
+  }
+  .hdr-logo {
+    width: 80px;
+    height: 80px;
+  }
+  .gold-band {
+    padding: 7px 52px;
+  }
+  .gold-item {
+    font-size: 9px;
+  }
+  .intro {
+    padding: 20px 52px 0;
+  }
+  .intro-text {
+    font-size: 21px;
+    line-height: 1.35;
+  }
   .services {
-  gap: 6px;
-  padding: 14px 52px;
-  flex: 0 2 auto;
-}
-.svc {
-  padding: 10px 14px;
-}
-.svc-em {
-  font-size: 20px;
-}
-.svc-name {
-  font-size: 14px;
-  margin-bottom: 2px;
-}
-.svc-desc {
-  font-size: 9.5px;
-  line-height: 1.4;
-}
-.svc-price {
-  font-size: 9px;
-  margin-top: 3px;
-}
+    flex: none;
+    gap: 6px;
+    padding: 14px 52px;
+  }
+  .svc {
+    padding: 10px 14px;
+  }
+  .svc-em {
+    font-size: 20px;
+  }
+  .svc-name {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .svc-desc {
+    font-size: 9.5px;
+    line-height: 1.4;
+  }
+  .svc-price {
+    font-size: 9px;
+    margin-top: 3px;
   }
   .creds {
-    padding: 0 52px 16px;
+    padding: 0 52px 14px;
   }
   .cred {
     padding: 8px 10px;
   }
- .cta {
-  margin: 0 52px 16px;
-  padding: 14px 20px;
-  gap: 16px;
-}
-.cta-logo {
-  width: 50px;
-  height: 50px;
-}
-.cta-head {
-  font-size: 18px;
-  margin-bottom: 2px;
-}
-.cta-sub {
-  font-size: 10px;
-  line-height: 1.4;
-}
-.cta-phone {
-  font-size: 17px;
-}
-.cta-email {
-  font-size: 17px;
-}
-.cta-web {
-  font-size: 12px;
-}
-.cta-btn {
-  font-size: 8px;
-  padding: 6px 14px;
-  margin-top: 6px;
-}
+  .cred-em {
+    font-size: 14px;
+  }
+  .cred-name {
+    font-size: 8px;
+  }
+  .cred-sub {
+    font-size: 8px;
+  }
+  .cta {
+    margin: 0 52px 16px;
+    padding: 14px 20px;
+    gap: 16px;
+  }
+  .cta-logo {
+    width: 50px;
+    height: 50px;
+  }
+  .cta-head {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .cta-sub {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .cta-phone {
+    font-size: 17px;
+  }
+  .cta-email {
+    font-size: 17px;
+  }
+  .cta-web {
+    font-size: 12px;
+  }
+  .cta-btn {
+    font-size: 8px;
+    padding: 6px 14px;
+    margin-top: 6px;
+  }
   .ftr {
     position: absolute;
     bottom: 0;
