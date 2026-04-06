@@ -236,14 +236,28 @@ html,body{
     flex-direction: column;
   }
   .services {
-    gap: 8px;
-    padding: 18px 52px;
-  }
-  .svc {
-    padding: 12px 16px;
-  }
-  .svc-desc {
-    font-size: 10px;
+  gap: 6px;
+  padding: 14px 52px;
+  flex: unset;
+}
+.svc {
+  padding: 10px 14px;
+}
+.svc-em {
+  font-size: 20px;
+}
+.svc-name {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.svc-desc {
+  font-size: 9.5px;
+  line-height: 1.4;
+}
+.svc-price {
+  font-size: 9px;
+  margin-top: 3px;
+}
   }
   .creds {
     padding: 0 52px 16px;
