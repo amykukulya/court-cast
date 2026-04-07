@@ -437,7 +437,7 @@
           <ul class="pkg-list">
             <li><span class="pkg-check">✓</span> Everything in Horizon</li>
             <li><span class="pkg-check">✓</span> 8 curated experiences across the season</li>
-            <li><span class="pkg-check">✓</span> One private half-day boat charter (up to 6 guests)</li>
+            <li><span class="pkg-check">✓</span> One private half-day boat charter (up to 4 guests)</li>
             <li><span class="pkg-check">✓</span> 2 sport coaching sessions (tennis or golf)</li>
             <li><span class="pkg-check">✓</span> Naushon Island or Washburn Island excursion</li>
             <li><span class="pkg-check">✓</span> Concierge pre-season planning call</li>
@@ -567,7 +567,7 @@
         <div class="form-title">Request a Gift Package</div>
         <p class="form-sub">Tell us which package and a little about the recipient. We&rsquo;ll handle everything from there.</p>
 
-        <form action="https://formspree.io/f/courtandcast" method="POST">
+        <form id="gift-form-el" novalidate>
           <!-- Package selector -->
           <div style="margin-bottom:1.4rem;">
             <label style="display:block;margin-bottom:.7rem;">Select Your Package</label>
@@ -658,6 +658,56 @@
   window.addEventListener('scroll', () => {
     document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 60);
   });
+  // ── Gift form: mailto handler ──────────────────────────────────────────────
+  const giftFormEl = document.getElementById('gift-form-el');
+  if (giftFormEl) {
+    giftFormEl.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Basic validation
+      const required = giftFormEl.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(el => {
+        if (!el.value.trim()) { el.style.borderColor = '#c0392b'; valid = false; }
+        else el.style.borderColor = '';
+      });
+      if (!valid) return;
+
+      const data = new FormData(giftFormEl);
+      const pkg         = data.get('package') || 'Not selected';
+      const giverName   = data.get('giver_name') || '';
+      const giverEmail  = data.get('giver_email') || '';
+      const giverPhone  = data.get('giver_phone') || '';
+      const recipient   = data.get('recipient_name') || '';
+      const occasion    = data.get('occasion') || '';
+      const msg         = data.get('message') || '';
+
+      const subject = encodeURIComponent('Gift Package Request: ' + pkg);
+      const body = encodeURIComponent(
+        'COURT & CAST — GIFT PACKAGE REQUEST\n' +
+        '─────────────────────────────────\n\n' +
+        'Package: ' + pkg + '\n\n' +
+        'YOUR INFORMATION\n' +
+        'Name:  ' + giverName + '\n' +
+        'Email: ' + giverEmail + '\n' +
+        'Phone: ' + giverPhone + '\n\n' +
+        'RECIPIENT\n' +
+        'Name:     ' + recipient + '\n' +
+        'Occasion: ' + occasion + '\n\n' +
+        'NOTES\n' + msg
+      );
+
+      window.location.href = 'mailto:amy.kukulya@gmail.com?subject=' + subject + '&body=' + body;
+
+      // Show confirmation
+      giftFormEl.innerHTML =
+        '<div style="text-align:center;padding:3rem 1rem;">' +
+        '<div style="font-size:3rem;margin-bottom:1.2rem;">✓</div>' +
+        '<div style="font-family:var(--serif);font-size:1.5rem;color:var(--navy);margin-bottom:.75rem;">Thank you, ' + giverName.split(' ')[0] + '!</div>' +
+        '<p style="color:var(--muted);font-size:.9rem;line-height:1.7;max-width:420px;margin:0 auto;">Your email client should open with your request details pre-filled. If it doesn't, email us directly at <a href="mailto:amy.kukulya@gmail.com" style="color:var(--teal);">amy.kukulya@gmail.com</a> — we respond within one business day.</p>' +
+        '</div>';
+    });
+  }
+
 </script>
 </body>
 </html>

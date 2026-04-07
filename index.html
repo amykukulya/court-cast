@@ -218,6 +218,25 @@
       transform:translateY(-3px);
       box-shadow:0 12px 40px rgba(200,168,75,.5);
     }
+    .hero-cta-wrap { display:flex; align-items:center; gap:2rem; flex-wrap:wrap; margin-top:0; }
+    .hero-gift-link {
+      display:inline-flex; align-items:center; gap:.5rem;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size:.75rem;
+      font-weight:500;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      text-decoration:none;
+      border-bottom:1px solid rgba(200,168,75,.4);
+      padding-bottom:2px;
+      transition:all .25s;
+      animation: rise .9s .68s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-gift-link:hover {
+      border-bottom-color:var(--gold);
+      color:var(--gold2);
+    }
 
     @keyframes rise {
       from { opacity:0; transform:translateY(32px); }
@@ -386,6 +405,7 @@
     }
 
     .tennis .display { font-size:clamp(2.2rem,4.5vw,3.5rem); }
+    .golf .display { font-size:clamp(2.2rem,4.5vw,3.5rem); }
     .tennis .lead { margin-top:1.4rem; }
 
     .tennis-quote {
@@ -703,14 +723,17 @@
     </h1>
     <p class="hero-sub">
       Tennis. Fishing. Shellfishing. Birding. Golf.<br>
-      One licensed captain. One experienced coach. One trusted person.
+      One licensed captain. One experienced coach. Adventure on your terms.
     </p>
     <div class="hero-pills">
       <span class="pill"><span class="pill-dot"></span>USCG Master 50-Ton Captain</span>
       <span class="pill"><span class="pill-dot"></span>Experienced Tennis Coach</span>
       <span class="pill"><span class="pill-dot"></span>Cape Cod, Massachusetts</span>
     </div>
-    <a href="#contact" class="hero-cta">Book a Free Consultation</a>
+    <div class="hero-cta-wrap">
+      <a href="#contact" class="hero-cta">Book a Free Consultation</a>
+      <a href="/gift" class="hero-gift-link">🎁 Gift Cape Cod</a>
+    </div>
   </div>
 </section>
 
@@ -730,7 +753,7 @@
         <span class="pillar-icon">🎣</span>
         <div class="pillar-name">Fishing Charters</div>
         <div class="pillar-desc">Half-day and full-day fishing trips led by a USCG-licensed captain. Striped bass, bluefish, flounder &amp; more. Tackle, bait, and fish cleaning always included.</div>
-        <div class="pillar-price">From $450 per trip</div>
+        <div class="pillar-price">Contact us for rates</div>
         <div class="pillar-bar"></div>
       </div>
 
@@ -739,7 +762,7 @@
         <span class="pillar-icon">🦀</span>
         <div class="pillar-name">Shellfishing &amp; Birding</div>
         <div class="pillar-desc">Quahogging, clamming, scalloping, and world-class birding on Cape Cod&rsquo;s barrier islands and tidal marshes. Gear and binoculars provided.</div>
-        <div class="pillar-price">From $300 per excursion</div>
+        <div class="pillar-price">Contact us for rates</div>
         <div class="pillar-bar"></div>
       </div>
 
@@ -748,7 +771,7 @@
         <span class="pillar-icon">🎾</span>
         <div class="pillar-name">Tennis Coaching</div>
         <div class="pillar-desc">Private lessons and social hit sessions from an experienced coach. All levels, all abilities. Sessions adapted to your body, your pace, and your goals.</div>
-        <div class="pillar-price">From $125 per session</div>
+        <div class="pillar-price">Contact us for rates</div>
         <div class="pillar-bar"></div>
       </div>
 
@@ -757,7 +780,7 @@
         <span class="pillar-icon">⛳</span>
         <div class="pillar-name">Golf Outings</div>
         <div class="pillar-desc">Perfect golf days on Cape Cod&rsquo;s finest courses. 9 holes, 18 holes, or the driving range. Your guide handles everything &mdash; you just play.</div>
-        <div class="pillar-price">From $150 per outing</div>
+        <div class="pillar-price">Contact us for rates</div>
         <div class="pillar-bar"></div>
       </div>
 
@@ -815,7 +838,7 @@
             <div class="exc-name">Half-Day Fishing Charter</div>
             <div class="exc-detail">3-4 hrs &middot; up to 4 guests &middot; tackle &amp; bait included</div>
           </div>
-          <span class="exc-price">$450–600</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🎣</span>
@@ -823,7 +846,7 @@
             <div class="exc-name">Full-Day Fishing Charter</div>
             <div class="exc-detail">4–6 hrs &middot; Rips, Shoals & Elizabeths &middot; lunch included</div>
           </div>
-          <span class="exc-price">$750–950</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🦀</span>
@@ -831,7 +854,7 @@
             <div class="exc-name">Shellfishing Excursion</div>
             <div class="exc-detail">2-3 hrs &middot; rakes &amp; bags provided &middot; quahogs &amp; clams</div>
           </div>
-          <span class="exc-price">$350–450</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🦪</span>
@@ -839,7 +862,7 @@
             <div class="exc-name">Shellfishing + Shoreside Relaxing</div>
             <div class="exc-detail">Catch &amp; clean &middot; all supplies included</div>
           </div>
-          <span class="exc-price">$350–450</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🦅</span>
@@ -847,7 +870,7 @@
             <div class="exc-name">Morning Birding Cruise</div>
             <div class="exc-detail">3 hrs &middot; barrier islands &amp; marshes &middot; binoculars provided</div>
           </div>
-          <span class="exc-price">$300–400</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🌅</span>
@@ -855,7 +878,7 @@
             <div class="exc-name">Sunset Cruise</div>
             <div class="exc-detail">2 hrs &middot; Snacks + Soft drinks provided &middot; up to 4 guests</div>
           </div>
-          <span class="exc-price">$300–400</span>
+          <span class="exc-price">Contact us</span>
         </div>
         <div class="exc">
           <span class="exc-icon">🏝️</span>
@@ -863,7 +886,7 @@
             <div class="exc-name">Island Adventure Charters &amp; Scenic Cruise</div>
             <div class="exc-detail">Naushon &amp; Washburn &middot; year-round</div>
           </div>
-          <span class="exc-price">$400–800</span>
+          <span class="exc-price">Contact us</span>
         </div>
       </div>
     </div>
@@ -884,29 +907,29 @@
           "The best time to pick up a racket again is right now."
         </blockquote>
         <p style="font-size:.88rem;color:var(--muted);margin-top:1.2rem;line-height:1.7">
-          Sessions adapt to all fitness levels and joint considerations. Loaner rackets available. Courts arranged throughout Cape Cod. Group sessions for couples or friends available from $75 per person.
+          Sessions adapt to all fitness levels and joint considerations. Loaner rackets available. Courts arranged throughout Cape Cod. Group sessions for couples or friends available — contact us for rates.
         </p>
       </div>
       <div class="sr d1">
         <div class="t-cards">
           <div class="t-card">
             <div class="t-card-label">Private Lesson</div>
-            <div class="t-card-price">$150–$175</div>
+            <div class="t-card-price">Contact us</div>
             <div class="t-card-note">1 hour &middot; all levels</div>
           </div>
           <div class="t-card">
             <div class="t-card-label">Extended Session</div>
-            <div class="t-card-price">$225–$250</div>
+            <div class="t-card-price">Contact us</div>
             <div class="t-card-note">90 min &middot; drills + strategy</div>
           </div>
           <div class="t-card">
             <div class="t-card-label">Social Hit</div>
-            <div class="t-card-price">$125–$150</div>
+            <div class="t-card-price">Contact us</div>
             <div class="t-card-note">1 hour &middot; relaxed rally</div>
           </div>
           <div class="t-card">
             <div class="t-card-label">6-Session Package</div>
-            <div class="t-card-price">$750–$850</div>
+            <div class="t-card-price">Contact us</div>
             <div class="t-card-note">Best value &middot; pre-paid block</div>
           </div>
         </div>
@@ -926,32 +949,32 @@
         <p class="lead">
           Cape Cod's Beautiful Course. No logistics, no hassle. Your guide sets it up, handles everything at the club, keeps score, and gets you what you need. You just enjoy the round.
         </p>
-        <p style="font-size:.88rem;color:var(--muted);margin-top:1.2rem;line-height:1.7">Greens fees, cart, and club rentals are separate and billed at cost. Members on Signature and Premier plans receive one golf outing per week within their package.</p>
+        <p style="font-size:.88rem;color:var(--muted);margin-top:1.2rem;line-height:1.7">Greens fees, cart, and club rentals are separate and billed at cost. Members on Captain and Legend plans receive one golf outing per week within their package.</p>
       </div>
       <div class="sr d1">
         <table class="golf-table">
           <thead>
             <tr>
               <th>Outing</th>
-              <th style="text-align:right">Flat Fee</th>
+              <th style="text-align:right">Rate</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Driving Range Session<br><small style="color:var(--muted);font-size:.78rem">1.5–2 hrs · bucket fees separate</small></td>
-              <td>$150–$250</td>
+              <td style="text-align:right">Contact us</td>
             </tr>
             <tr>
               <td>9 Holes<br><small style="color:var(--muted);font-size:.78rem">Door-to-door · post-round refreshments</small></td>
-              <td>$275–$350</td>
+              <td style="text-align:right">Contact us</td>
             </tr>
             <tr>
               <td>18 Holes<br><small style="color:var(--muted);font-size:.78rem">Full round · cart management · scorekeeping</small></td>
-              <td>$450–$500</td>
+              <td style="text-align:right">Contact us</td>
             </tr>
             <tr>
               <td>18 Holes + Clubhouse Lunch<br><small style="color:var(--muted);font-size:.78rem">A full Cape Cod golf day</small></td>
-              <td>$500–$600</td>
+              <td style="text-align:right">Contact us</td>
             </tr>
           </tbody>
         </table>
@@ -1021,7 +1044,7 @@
         <div class="tier-line"></div>
         <ul class="tier-list">
           <li><span class="tier-check">✓</span> Everything in Captain</li>
-          <li><span class="tier-check">✓</span> Unlimited priority access, all activities</li>
+          <li><span class="tier-check">✓</span> Up to 8 priority outings per month</li>
           <li><span class="tier-check">✓</span> Concierge Cape Cod activity calendar</li>
           <li><span class="tier-check">✓</span> 2 guest passes per month</li>
           <li><span class="tier-check">✓</span> First-access private charter windows</li>
