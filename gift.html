@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Cape Cod | Court & Cast</title>
+  <meta name="description" content="Give the gift of Cape Cod, lived like a local. Court & Cast gift packages from $2,500 — on-water excursions, tennis, golf, birding and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:   #0D1F33;
+      --navy:  #1B3A5C;
+      --teal:  #2A7F7F;
+      --teal2: #3AACAC;
+      --gold:  #C8A84B;
+      --gold2: #E5C96A;
+      --cream: #F6F1E9;
+      --fog:   #E8EFF2;
+      --sand:  #EDE5D8;
+      --white: #FDFAF6;
+      --muted: #7A8A96;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Jost', system-ui, sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body { font-family:var(--sans); background:var(--white); color:var(--ink); overflow-x:hidden; }
+
+    .container { max-width:1100px; margin:0 auto; padding:0 2.5rem; }
+    .eyebrow { font-family:var(--sans); font-size:.7rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:.9rem; }
+    .display { font-family:var(--serif); font-weight:300; line-height:1.07; color:var(--navy); }
+    .display em { font-style:italic; color:var(--teal); }
+    .lead { font-family:var(--serif); font-size:1.2rem; font-weight:300; line-height:1.85; color:var(--muted); }
+
+    /* ── NAV ── */
+    .nav {
+      position:fixed; inset:0 0 auto; z-index:200;
+      height:74px; display:flex; align-items:center; justify-content:space-between;
+      padding:0 3rem;
+      background:rgba(13,31,51,.92); backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(200,168,75,.18);
+    }
+    .nav-brand { display:flex; align-items:center; gap:13px; text-decoration:none; }
+    .nav-brand-name { font-family:var(--serif); font-size:1.25rem; font-weight:600; color:#fff; letter-spacing:.03em; }
+    .nav-brand-name span { color:var(--gold); }
+    .nav-links { display:flex; align-items:center; gap:2.2rem; list-style:none; }
+    .nav-links a { font-size:.72rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.65); text-decoration:none; transition:color .2s; }
+    .nav-links a:hover { color:var(--gold2); }
+    .nav-cta { background:var(--gold) !important; color:var(--ink) !important; padding:.55rem 1.4rem !important; border-radius:2px; font-weight:600 !important; }
+    .nav-active { color:var(--gold) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:80vh; background:var(--ink);
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; padding:100px 2rem 6rem;
+      position:relative; overflow:hidden;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 60% 55% at 20% 80%, rgba(42,127,127,.28) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 80% 20%, rgba(200,168,75,.12) 0%, transparent 50%),
+        linear-gradient(175deg, #0b1a2a 0%, #0D1F33 60%, #122840 100%);
+    }
+    .hero-bg::after {
+      content:''; position:absolute; inset:0;
+      background: repeating-linear-gradient(-55deg, transparent, transparent 80px, rgba(255,255,255,.012) 80px, rgba(255,255,255,.012) 81px);
+    }
+    .hero-fade { position:absolute; bottom:0; left:0; right:0; height:180px; background:linear-gradient(to top, var(--white) 0%, transparent 100%); z-index:3; }
+    .hero-content { position:relative; z-index:4; max-width:780px; padding-bottom:80px; }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:1rem;
+      background:rgba(200,168,75,.12); border:1px solid rgba(200,168,75,.35);
+      border-radius:100px; padding:.5rem 1.4rem;
+      font-size:.7rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:1.8rem;
+    }
+    .hero-badge::before { content:'🎁'; font-size:.95rem; }
+
+    .hero-headline {
+      font-family:var(--serif);
+      font-size:clamp(3rem, 7vw, 5.5rem);
+      font-weight:300; line-height:1.05; color:#fff;
+      margin-bottom:1.2rem;
+    }
+    .hero-headline em { font-style:italic; color:var(--teal2); }
+
+    .hero-sub {
+      font-family:var(--serif);
+      font-size:clamp(1.05rem, 2vw, 1.35rem);
+      font-weight:300; font-style:italic;
+      color:rgba(255,255,255,.62); line-height:1.75;
+      margin-bottom:2.8rem;
+    }
+
+    .hero-scroll-hint {
+      font-size:.72rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+      color:rgba(255,255,255,.35);
+      display:flex; align-items:center; justify-content:center; gap:.6rem;
+    }
+    .hero-scroll-hint::after { content:'↓'; }
+
+    /* ── PERSONA STRIP ── */
+    .persona-strip {
+      background:var(--cream);
+      padding:4rem 0;
+      border-bottom:1px solid rgba(27,58,92,.08);
+    }
+    .persona-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:2rem;
+    }
+    .persona-card {
+      background:#fff; border-radius:6px;
+      padding:2rem 1.8rem;
+      border-bottom:3px solid var(--teal);
+      box-shadow:0 4px 20px rgba(27,58,92,.06);
+    }
+    .persona-emoji { font-size:2.2rem; display:block; margin-bottom:1rem; }
+    .persona-title { font-family:var(--serif); font-size:1.25rem; font-weight:600; color:var(--navy); margin-bottom:.5rem; }
+    .persona-desc { font-size:.88rem; color:var(--muted); line-height:1.7; }
+
+    /* ── GIFT PACKAGES ── */
+    .packages { padding:8rem 0; background:var(--white); }
+    .packages-head { text-align:center; margin-bottom:5rem; }
+    .packages-head .display { font-size:clamp(2.4rem,5vw,3.8rem); }
+    .packages-head .lead { max-width:520px; margin:.8rem auto 0; text-align:center; }
+
+    .pkg-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+
+    .pkg {
+      border-radius:8px; overflow:hidden;
+      box-shadow:0 6px 40px rgba(27,58,92,.08);
+      transition:transform .3s, box-shadow .3s;
+      display:flex; flex-direction:column;
+    }
+    .pkg:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(27,58,92,.15); }
+
+    .pkg.featured {
+      box-shadow:0 12px 60px rgba(27,58,92,.18);
+      transform:translateY(-8px);
+    }
+    .pkg.featured:hover { transform:translateY(-14px); }
+
+    .pkg-header { padding:2.5rem 2rem 2rem; }
+    .pkg-header.h1 { background:var(--fog); }
+    .pkg-header.h2 { background:var(--navy); }
+    .pkg-header.h3 { background:var(--ink); }
+
+    .pkg-label {
+      font-size:.68rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+      color:var(--gold); display:block; margin-bottom:.8rem;
+    }
+    .pkg-name { font-family:var(--serif); font-size:2rem; font-weight:600; }
+    .pkg-header.h1 .pkg-name { color:var(--navy); }
+    .pkg-header.h2 .pkg-name, .pkg-header.h3 .pkg-name { color:#fff; }
+
+    .pkg-price { font-family:var(--serif); font-size:3.2rem; font-weight:300; line-height:1; margin-top:.6rem; }
+    .pkg-header.h1 .pkg-price { color:var(--teal); }
+    .pkg-header.h2 .pkg-price { color:var(--gold2); }
+    .pkg-header.h3 .pkg-price { color:var(--gold); }
+
+    .pkg-price-note { font-size:.8rem; color:rgba(255,255,255,.5); margin-top:.3rem; }
+    .pkg-header.h1 .pkg-price-note { color:var(--muted); }
+
+    .pkg-tagline {
+      font-family:var(--serif); font-style:italic;
+      font-size:1rem; margin-top:.8rem;
+    }
+    .pkg-header.h1 .pkg-tagline { color:var(--muted); }
+    .pkg-header.h2 .pkg-tagline, .pkg-header.h3 .pkg-tagline { color:rgba(255,255,255,.55); }
+
+    .pkg-body { padding:2rem; background:var(--cream); flex:1; display:flex; flex-direction:column; }
+    .pkg-body.dark { background:rgba(27,58,92,.04); }
+
+    .pkg-list { list-style:none; display:flex; flex-direction:column; gap:.75rem; flex:1; }
+    .pkg-list li { display:flex; gap:.75rem; align-items:flex-start; font-size:.88rem; color:var(--ink); line-height:1.55; }
+    .pkg-check { color:var(--teal); font-weight:700; flex-shrink:0; }
+
+    .pkg-perfect { font-size:.82rem; color:var(--muted); font-style:italic; margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid rgba(27,58,92,.08); line-height:1.6; }
+
+    .pkg-cta {
+      display:block; text-align:center; padding:1rem 1.5rem;
+      background:var(--teal); color:#fff;
+      font-size:.78rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+      text-decoration:none; border-radius:2px; margin-top:1.8rem;
+      transition:background .2s;
+    }
+    .pkg-cta:hover { background:var(--navy); }
+    .pkg-cta.gold { background:var(--gold); color:var(--ink); }
+    .pkg-cta.gold:hover { background:var(--gold2); }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding:8rem 0; background:var(--navy); }
+    .how-head { text-align:center; margin-bottom:5rem; }
+    .how-head .display { color:#fff; font-size:clamp(2.2rem,4.5vw,3.5rem); }
+    .how-head .lead { color:rgba(255,255,255,.55); max-width:480px; margin:.8rem auto 0; text-align:center; }
+
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+    .step { padding:3rem 2rem; position:relative; }
+    .step:not(:last-child)::after {
+      content:'→'; position:absolute; right:0; top:3.2rem;
+      font-size:1.4rem; color:rgba(200,168,75,.3);
+    }
+    .step-num {
+      font-family:var(--serif); font-size:4rem; font-weight:300;
+      color:rgba(200,168,75,.15); line-height:1; margin-bottom:.8rem;
+    }
+    .step-icon { font-size:1.8rem; display:block; margin-bottom:1rem; }
+    .step-title { font-family:var(--serif); font-size:1.3rem; font-weight:600; color:#fff; margin-bottom:.6rem; }
+    .step-desc { font-size:.88rem; color:rgba(255,255,255,.5); line-height:1.7; }
+
+    /* ── OCCASIONS ── */
+    .occasions { padding:7rem 0; background:var(--sand); }
+    .occasions-head { text-align:center; margin-bottom:4rem; }
+    .occasions-head .display { font-size:clamp(2rem,4vw,3.2rem); }
+
+    .occ-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+    .occ {
+      background:#fff; border-radius:6px; padding:1.8rem 1.6rem;
+      border-left:4px solid var(--gold);
+      box-shadow:0 3px 16px rgba(27,58,92,.06);
+    }
+    .occ-icon { font-size:1.6rem; display:block; margin-bottom:.8rem; }
+    .occ-name { font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--navy); margin-bottom:.35rem; }
+    .occ-desc { font-size:.85rem; color:var(--muted); line-height:1.6; }
+
+    /* ── GIFT FORM ── */
+    .gift-form-section { padding:8rem 0; background:var(--white); }
+    .gift-form-inner { display:grid; grid-template-columns:1fr 1.2fr; gap:6rem; align-items:start; }
+
+    .gift-form-section .display { font-size:clamp(2.2rem,4vw,3.2rem); }
+    .gift-form-section .lead { margin-top:1.2rem; }
+
+    .gift-promise { margin-top:2.5rem; display:flex; flex-direction:column; gap:1rem; }
+    .promise-item { display:flex; align-items:flex-start; gap:.9rem; }
+    .promise-icon { font-size:1.2rem; flex-shrink:0; margin-top:.1rem; }
+    .promise-text { font-size:.9rem; color:var(--ink); line-height:1.55; }
+    .promise-text strong { color:var(--navy); }
+
+    .form-card {
+      background:var(--cream); border-radius:8px;
+      padding:3rem 2.5rem;
+      box-shadow:0 16px 50px rgba(27,58,92,.09);
+    }
+    .form-title { font-family:var(--serif); font-size:1.6rem; font-weight:600; color:var(--navy); margin-bottom:.4rem; }
+    .form-sub { font-size:.85rem; color:var(--muted); margin-bottom:2rem; line-height:1.6; }
+
+    .f-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.2rem; }
+    .f-group { display:flex; flex-direction:column; gap:.4rem; }
+    .f-group.full { grid-column:1/-1; }
+    label { font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--navy); }
+    input, textarea, select {
+      border:1.5px solid rgba(27,58,92,.13); border-radius:2px;
+      padding:.8rem 1rem; font-size:.92rem;
+      font-family:var(--sans); color:var(--ink);
+      background:#fff; outline:none;
+      transition:border-color .2s; width:100%;
+    }
+    input:focus, textarea:focus, select:focus { border-color:var(--teal); }
+    textarea { height:90px; resize:vertical; }
+
+    .pkg-selector { display:grid; grid-template-columns:1fr; gap:.6rem; margin-bottom:1.2rem; }
+    .pkg-radio { display:none; }
+    .pkg-radio-label {
+      display:flex; align-items:center; justify-content:space-between;
+      border:1.5px solid rgba(27,58,92,.13); border-radius:2px;
+      padding:.85rem 1rem; cursor:pointer;
+      transition:all .2s; background:#fff;
+    }
+    .pkg-radio:checked + .pkg-radio-label {
+      border-color:var(--teal); background:rgba(42,127,127,.06);
+    }
+    .pkg-radio-name { font-size:.92rem; font-weight:500; color:var(--navy); }
+    .pkg-radio-price { font-family:var(--serif); font-size:1.1rem; font-weight:600; color:var(--teal); }
+
+    .f-submit {
+      width:100%; background:var(--navy); color:#fff;
+      border:none; padding:1.1rem; border-radius:2px;
+      font-size:.8rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      cursor:pointer; transition:background .25s;
+      font-family:var(--sans); margin-top:.6rem;
+    }
+    .f-submit:hover { background:var(--teal); }
+    .f-small { font-size:.75rem; color:var(--muted); text-align:center; margin-top:.8rem; line-height:1.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--ink); padding:3.5rem 2.5rem;
+      border-top:1px solid rgba(200,168,75,.15); width:100%;
+    }
+    .footer-inner {
+      max-width:1100px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem;
+    }
+    .footer-brand-name { font-family:var(--serif); color:#fff; font-size:.95rem; font-weight:600; }
+    .footer-brand-name span { color:var(--gold); }
+    .footer-tagline { font-family:var(--serif); font-style:italic; color:rgba(255,255,255,.35); font-size:.95rem; }
+    .footer-links { display:flex; gap:2rem; }
+    .footer-links a { font-size:.72rem; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.4); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--gold); }
+    .footer-copy { text-align:center; margin-top:2.5rem; font-size:.72rem; color:rgba(255,255,255,.2); }
+
+    /* ── SCROLL REVEAL ── */
+    .sr { opacity:0; transform:translateY(28px); transition:opacity .75s ease, transform .75s ease; }
+    .sr.in { opacity:1; transform:translateY(0); }
+    .d1 { transition-delay:.1s; } .d2 { transition-delay:.2s; } .d3 { transition-delay:.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:980px){
+      .persona-grid, .pkg-grid, .occ-grid { grid-template-columns:1fr 1fr; }
+      .steps { grid-template-columns:1fr 1fr; }
+      .step::after { display:none; }
+      .gift-form-inner { grid-template-columns:1fr; gap:4rem; }
+      .pkg.featured { transform:none; }
+      .nav-links { display:none; }
+    }
+    @media(max-width:600px){
+      .persona-grid, .pkg-grid, .occ-grid, .steps { grid-template-columns:1fr; }
+      .f-row { grid-template-columns:1fr; }
+      .container { padding:0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    <span class="nav-brand-name">Court <span>&</span> Cast</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#water">On the Water</a></li>
+    <li><a href="/#tennis">Tennis</a></li>
+    <li><a href="/#golf">Golf</a></li>
+    <li><a href="/#membership">Memberships</a></li>
+    <li><a href="/gift" class="nav-active">🎁 Gift Cape Cod</a></li>
+    <li><a href="/#contact" class="nav-cta">Book a Consultation</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <div class="hero-badge">The Perfect Cape Cod Gift</div>
+    <h1 class="hero-headline">
+      Give Cape Cod,<br><em>lived like a local.</em>
+    </h1>
+    <p class="hero-sub">
+      Not another thing they don&rsquo;t need.<br>
+      The experience of a lifetime, curated by someone who truly knows this place.
+    </p>
+    <div class="hero-scroll-hint">See gift packages below</div>
+  </div>
+</section>
+
+<!-- PERSONA STRIP -->
+<section class="persona-strip">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:3rem;" class="sr">
+      <span class="eyebrow">Who This Is For</span>
+      <h2 class="display" style="font-size:clamp(1.8rem,3.5vw,2.8rem);">The gift they&rsquo;ll actually remember.</h2>
+    </div>
+    <div class="persona-grid">
+      <div class="persona-card sr">
+        <span class="persona-emoji">🧑‍👧</span>
+        <div class="persona-title">For the parent who has everything</div>
+        <p class="persona-desc">They&rsquo;re retired, financially comfortable, and spend summers on Cape Cod. What they don&rsquo;t have is someone to show them everything it has to offer. Court &amp; Cast does exactly that.</p>
+      </div>
+      <div class="persona-card sr d1">
+        <span class="persona-emoji">🎂</span>
+        <div class="persona-title">The birthday or milestone gift</div>
+        <p class="persona-desc">A 65th birthday. A retirement party. An anniversary. When the occasion deserves more than a gift card — this is the experience they&rsquo;ll talk about for years.</p>
+      </div>
+      <div class="persona-card sr d2">
+        <span class="persona-emoji">⛵</span>
+        <div class="persona-title">For the active adventurer</div>
+        <p class="persona-desc">They love the outdoors, appreciate quality, and want to be active — just with someone who knows the best spots, tides, and trails that no guidebook mentions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GIFT PACKAGES -->
+<section class="packages" id="packages">
+  <div class="container">
+    <div class="packages-head sr">
+      <span class="eyebrow">Cape Cod Summer Gift Packages</span>
+      <h2 class="display">Three ways to<br><em>give the season.</em></h2>
+      <p class="lead">Every package is fulfilled personally — no voucher kiosks, no tour buses. Just one experienced USCG-licensed captain and coach who knows Cape Cod like a neighbor.</p>
+    </div>
+
+    <div class="pkg-grid">
+
+      <!-- HORIZON $2,500 -->
+      <div class="pkg sr">
+        <div class="pkg-header h1">
+          <span class="pkg-label">Horizon Gift</span>
+          <div class="pkg-name">Horizon</div>
+          <div class="pkg-price" style="color:var(--teal);">$2,500</div>
+          <div class="pkg-tagline" style="color:var(--muted);">An unforgettable introduction to Cape Cod living</div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-list">
+            <li><span class="pkg-check">✓</span> 3 hand-selected experiences (gift recipient chooses)</li>
+            <li><span class="pkg-check">✓</span> Choose from: harbor boat tour, guided shellfishing, estuary birding cruise, or fishing excursion</li>
+            <li><span class="pkg-check">✓</span> Private, small-group setting (up to 4 guests)</li>
+            <li><span class="pkg-check">✓</span> USCG-licensed captain &amp; certified guide throughout</li>
+            <li><span class="pkg-check">✓</span> Personalized welcome call to plan the calendar</li>
+            <li><span class="pkg-check">✓</span> Beautifully presented gift card &amp; activity menu</li>
+            <li><span class="pkg-check">✓</span> Valid May–October, one full season</li>
+          </ul>
+          <div class="pkg-perfect">
+            <strong>Perfect for:</strong> A parent&rsquo;s birthday, a "just because" gesture, or a first taste of the Court &amp; Cast experience.
+          </div>
+          <a href="#gift-form" class="pkg-cta">Select Horizon — $2,500</a>
+        </div>
+      </div>
+
+      <!-- VOYAGE $5,000 -->
+      <div class="pkg featured sr d1">
+        <div class="pkg-header h2" style="position:relative;">
+          <div style="position:absolute;top:0;right:0;background:var(--gold);color:var(--ink);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.45rem 1rem;border-radius:0 0 0 6px;">Most Popular Gift</div>
+          <span class="pkg-label">Voyage Gift</span>
+          <div class="pkg-name">Voyage</div>
+          <div class="pkg-price">$5,000</div>
+          <div class="pkg-tagline">A full Cape Cod summer sampler — water, sport &amp; nature</div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-list">
+            <li><span class="pkg-check">✓</span> Everything in Horizon</li>
+            <li><span class="pkg-check">✓</span> 8 curated experiences across the season</li>
+            <li><span class="pkg-check">✓</span> One private half-day boat charter (up to 6 guests)</li>
+            <li><span class="pkg-check">✓</span> 2 sport coaching sessions (tennis or golf)</li>
+            <li><span class="pkg-check">✓</span> Naushon Island or Washburn Island excursion</li>
+            <li><span class="pkg-check">✓</span> Concierge pre-season planning call</li>
+            <li><span class="pkg-check">✓</span> Activity calendar designed around their schedule</li>
+            <li><span class="pkg-check">✓</span> Gift packaging with handwritten card option</li>
+          </ul>
+          <div class="pkg-perfect">
+            <strong>Perfect for:</strong> Giving someone a genuine summer of memories — an anniversary, milestone birthday, or retirement gift that lasts all season.
+          </div>
+          <a href="#gift-form" class="pkg-cta gold">Select Voyage — $5,000</a>
+        </div>
+      </div>
+
+      <!-- FULL SEASON $10,000 -->
+      <div class="pkg sr d2">
+        <div class="pkg-header h3">
+          <span class="pkg-label">Full Season Gift</span>
+          <div class="pkg-name">Full Season</div>
+          <div class="pkg-price">$10,000</div>
+          <div class="pkg-tagline">The complete Explorer membership experience — gifted</div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-list">
+            <li><span class="pkg-check">✓</span> Everything in Voyage</li>
+            <li><span class="pkg-check">✓</span> Full Explorer membership for the season (May–Oct)</li>
+            <li><span class="pkg-check">✓</span> 2 curated outings per month, all season long</li>
+            <li><span class="pkg-check">✓</span> Unlimited shellfish, birding, and boat excursion access</li>
+            <li><span class="pkg-check">✓</span> Priority scheduling — always first on the calendar</li>
+            <li><span class="pkg-check">✓</span> Monthly family update — you&rsquo;ll know how they&rsquo;re enjoying it</li>
+            <li><span class="pkg-check">✓</span> One guest pass per outing</li>
+            <li><span class="pkg-check">✓</span> Premium gift presentation &amp; welcome kit</li>
+          </ul>
+          <div class="pkg-perfect">
+            <strong>Perfect for:</strong> The gift that keeps giving all summer. When you want to give your parents a season they&rsquo;ll never forget — and you want peace of mind they&rsquo;re active and thriving.
+          </div>
+          <a href="#gift-form" class="pkg-cta">Select Full Season — $10,000</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <div class="how-head sr">
+      <span class="eyebrow" style="color:var(--teal2);">Simple Process</span>
+      <h2 class="display">How gift giving works.</h2>
+      <p class="lead">Four easy steps from order to first adventure.</p>
+    </div>
+    <div class="steps">
+      <div class="step sr">
+        <div class="step-num">01</div>
+        <span class="step-icon">🎁</span>
+        <div class="step-title">Choose a package</div>
+        <p class="step-desc">Select the Horizon, Voyage, or Full Season gift below and fill out the short form.</p>
+      </div>
+      <div class="step sr d1">
+        <div class="step-num">02</div>
+        <span class="step-icon">📞</span>
+        <div class="step-title">We call you</div>
+        <p class="step-desc">We contact you within one business day to confirm details, arrange payment, and discuss the recipient&rsquo;s interests.</p>
+      </div>
+      <div class="step sr d2">
+        <div class="step-num">03</div>
+        <span class="step-icon">✉️</span>
+        <div class="step-title">Gift is delivered</div>
+        <p class="step-desc">You receive a beautiful printed gift card and personalized activity menu — perfect for presenting in person or mailing.</p>
+      </div>
+      <div class="step sr d3">
+        <div class="step-num">04</div>
+        <span class="step-icon">⚓</span>
+        <div class="step-title">The season begins</div>
+        <p class="step-desc">We call the recipient to plan their calendar. Their Cape Cod season — curated just for them — begins.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OCCASIONS -->
+<section class="occasions">
+  <div class="container">
+    <div class="occasions-head sr">
+      <span class="eyebrow">Perfect For Any Occasion</span>
+      <h2 class="display">Every reason to<br><em>give the Cape.</em></h2>
+    </div>
+    <div class="occ-grid">
+      <div class="occ sr"><span class="occ-icon">🎂</span><div class="occ-name">Milestone Birthday</div><p class="occ-desc">65th, 70th, 75th — an experience that honors how much life there is still to live.</p></div>
+      <div class="occ sr d1"><span class="occ-icon">🎓</span><div class="occ-name">Retirement</div><p class="occ-desc">They&rsquo;ve earned it. Give them a summer where every day on the Cape is worth savoring.</p></div>
+      <div class="occ sr d2"><span class="occ-icon">💑</span><div class="occ-name">Anniversary</div><p class="occ-desc">For the couple who summers together. A shared Cape Cod calendar of adventures.</p></div>
+      <div class="occ sr"><span class="occ-icon">👨‍👩‍👧</span><div class="occ-name">Mother&rsquo;s or Father&rsquo;s Day</div><p class="occ-desc">Skip the flowers. Give them the coast — with a real captain to show them around.</p></div>
+      <div class="occ sr d1"><span class="occ-icon">🏖️</span><div class="occ-name">Summer Welcome</div><p class="occ-desc">They just got to the Cape for the season. Welcome them with a full summer of plans.</p></div>
+      <div class="occ sr d2"><span class="occ-icon">❤️</span><div class="occ-name">Just Because</div><p class="occ-desc">No occasion needed. Sometimes the best gifts are the ones that arrive unexpectedly.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GIFT FORM -->
+<section class="gift-form-section" id="gift-form">
+  <div class="container">
+    <div class="gift-form-inner">
+      <div class="sr">
+        <span class="eyebrow">Start Your Gift</span>
+        <h2 class="display">Ready to give<br><em>Cape Cod?</em></h2>
+        <p class="lead">Fill out this short form and we&rsquo;ll reach out within one business day to confirm your package and walk you through next steps.</p>
+        <div class="gift-promise">
+          <div class="promise-item">
+            <span class="promise-icon">🔒</span>
+            <div class="promise-text"><strong>No payment taken online.</strong> We confirm everything by phone first — no surprises.</div>
+          </div>
+          <div class="promise-item">
+            <span class="promise-icon">🤝</span>
+            <div class="promise-text"><strong>Personal service, start to finish.</strong> You&rsquo;ll speak directly with the owner — not a call center.</div>
+          </div>
+          <div class="promise-item">
+            <span class="promise-icon">📬</span>
+            <div class="promise-text"><strong>Beautiful gift presentation.</strong> Printed gift card and welcome packet included with every package.</div>
+          </div>
+          <div class="promise-item">
+            <span class="promise-icon">📅</span>
+            <div class="promise-text"><strong>Flexible scheduling.</strong> Valid all season (May–October). We work around the recipient&rsquo;s calendar.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card sr d1">
+        <div class="form-title">Request a Gift Package</div>
+        <p class="form-sub">Tell us which package and a little about the recipient. We&rsquo;ll handle everything from there.</p>
+
+        <form action="https://formspree.io/f/courtandcast" method="POST">
+          <!-- Package selector -->
+          <div style="margin-bottom:1.4rem;">
+            <label style="display:block;margin-bottom:.7rem;">Select Your Package</label>
+            <div class="pkg-selector">
+              <div>
+                <input type="radio" name="package" id="pkg-horizon" value="Horizon — $2,500" class="pkg-radio">
+                <label for="pkg-horizon" class="pkg-radio-label">
+                  <span class="pkg-radio-name">Horizon — 3 experiences</span>
+                  <span class="pkg-radio-price">$2,500</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="package" id="pkg-voyage" value="Voyage — $5,000" class="pkg-radio" checked>
+                <label for="pkg-voyage" class="pkg-radio-label">
+                  <span class="pkg-radio-name">Voyage — 8 experiences + charter ★</span>
+                  <span class="pkg-radio-price">$5,000</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="package" id="pkg-season" value="Full Season — $10,000" class="pkg-radio">
+                <label for="pkg-season" class="pkg-radio-label">
+                  <span class="pkg-radio-name">Full Season — Explorer membership</span>
+                  <span class="pkg-radio-price">$10,000</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="f-row">
+            <div class="f-group"><label for="giver-name">Your Name</label><input type="text" id="giver-name" name="giver_name" placeholder="Jane Smith" required></div>
+            <div class="f-group"><label for="giver-email">Your Email</label><input type="email" id="giver-email" name="giver_email" placeholder="jane@email.com" required></div>
+          </div>
+          <div class="f-row">
+            <div class="f-group"><label for="giver-phone">Your Phone</label><input type="tel" id="giver-phone" name="giver_phone" placeholder="(617) 555-0100"></div>
+            <div class="f-group"><label for="recipient-name">Recipient's Name (optional)</label><input type="text" id="recipient-name" name="recipient_name" placeholder="Mom / Dad / Robert"></div>
+          </div>
+          <div class="f-group full" style="margin-bottom:1.2rem;">
+            <label for="occasion">Occasion</label>
+            <select id="occasion" name="occasion">
+              <option value="">Select an occasion…</option>
+              <option>Milestone Birthday</option>
+              <option>Retirement</option>
+              <option>Anniversary</option>
+              <option>Mother's Day / Father's Day</option>
+              <option>Holiday Gift</option>
+              <option>Just Because</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="f-group full" style="margin-bottom:1.2rem;">
+            <label for="message">Any notes for us? (recipient interests, timing, special requests)</label>
+            <textarea id="message" name="message" placeholder="e.g. Dad loves fishing and birding. Arriving on Cape in June. Would love the gift card presented at his retirement dinner..."></textarea>
+          </div>
+          <button type="submit" class="f-submit">Request This Gift Package</button>
+          <p class="f-small">We respond within one business day. Payment is arranged by phone — nothing is charged online.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">Court <span>&</span> Cast</div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.3);margin-top:.3rem;">Cape Cod, Massachusetts</div>
+    </div>
+    <div class="footer-tagline">"Live the Cape Cod life — fully."</div>
+    <nav class="footer-links">
+      <a href="/">Home</a>
+      <a href="/#membership">Memberships</a>
+      <a href="/gift">Gift Cape Cod</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+  <div class="footer-copy">© 2025 Court & Cast · courtandcast.com · USCG Licensed · Cape Cod, MA</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+</script>
+</body>
+</html>
