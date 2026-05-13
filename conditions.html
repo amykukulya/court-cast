@@ -41,7 +41,6 @@ pointer-events: none;
 
 .cc-wrap > * { position: relative; z-index: 1; }
 
-/* HEADER */
 .cc-head {
 display: flex;
 justify-content: space-between;
@@ -98,7 +97,21 @@ animation: pulse 2s ease-in-out infinite;
 50% { opacity: 0.4; }
 }
 
-/* MAIN LAYOUT — clock left, readouts right */
+/* Diagnostics banner */
+.cc-diag {
+background: rgba(217, 120, 66, 0.15);
+border: 1px solid rgba(217, 120, 66, 0.4);
+border-radius: 8px;
+padding: 10px 14px;
+margin-bottom: 20px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
+color: #ffb88a;
+display: none;
+}
+.cc-diag.show { display: block; }
+.cc-diag strong { color: #fff; }
+
 .cc-main {
 display: grid;
 grid-template-columns: 320px 1fr;
@@ -108,13 +121,9 @@ align-items: center;
 }
 
 @media (max-width: 760px) {
-.cc-main {
-grid-template-columns: 1fr;
-gap: 20px;
-}
+.cc-main { grid-template-columns: 1fr; gap: 20px; }
 }
 
-/* TIDE CLOCK */
 .tc-clock {
 width: 320px;
 height: 320px;
@@ -128,7 +137,6 @@ position: relative;
 
 .tc-svg { width: 100%; height: 100%; display: block; }
 
-/* TIDE READOUTS */
 .cc-tide-readouts {
 display: flex;
 flex-direction: column;
@@ -181,17 +189,6 @@ font-family: ‘JetBrains Mono’, monospace;
 font-size: 10px;
 color: #c9a961;
 margin-top: 6px;
-}
-
-/* CONDITIONS STRIP */
-.cc-conditions-label {
-font-family: ‘JetBrains Mono’, monospace;
-font-size: 10px;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: #c9a961;
-margin-bottom: 12px;
-text-align: center;
 }
 
 .cc-conditions {
@@ -255,7 +252,6 @@ margin-top: 2px;
 
 .cc-wind-icon { transition: transform 0.6s ease; }
 
-/* BITE REPORT */
 .cc-bite {
 margin-top: 20px;
 padding-top: 16px;
@@ -326,7 +322,6 @@ background: linear-gradient(90deg, #c9a961, #d97842);
 transition: width 1s ease-out;
 }
 
-/* FOOTER */
 .cc-foot {
 margin-top: 20px;
 padding-top: 14px;
@@ -357,19 +352,21 @@ color: #e0bd6e;
 <body>
 
 <div class="cc-wrap">
-  <!-- HEADER -->
   <div class="cc-head">
     <div>
       <div class="cc-brand">Court <span class="amp">&</span> Cast</div>
-      <div class="cc-location">Falmouth, MA · Woods Hole</div>
+      <div class="cc-location">Falmouth, MA · Woods Hole · Vineyard Sound</div>
     </div>
     <div class="cc-live"><span class="dot"></span><span id="lastUpdate">Loading…</span></div>
   </div>
 
-  <!-- MAIN: CLOCK + READOUTS -->
+  <!-- Diagnostics banner — shows if APIs fail -->
+
+  <div class="cc-diag" id="diagBanner">
+    <strong>Data load issue:</strong> <span id="diagMessage"></span>
+  </div>
 
   <div class="cc-main">
-    <!-- TIDE CLOCK -->
     <div class="tc-clock">
       <svg class="tc-svg" viewBox="0 0 200 200">
         <defs>
@@ -384,7 +381,6 @@ color: #e0bd6e;
     <circle cx="100" cy="100" r="98" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.4"/>
     <circle cx="100" cy="100" r="94" fill="url(#faceGrad)" stroke="#c9a961" stroke-width="0.5" opacity="0.8"/>
 
-    <!-- Labels: HIGH top, LOW bottom, FLOOD right, EBB left -->
     <text x="100" y="20" text-anchor="middle" fill="#c9a961"
           font-family="JetBrains Mono, monospace" font-size="7" font-weight="600"
           letter-spacing="1.5">HIGH</text>
@@ -403,11 +399,9 @@ color: #e0bd6e;
           font-family="JetBrains Mono, monospace" font-size="6"
           letter-spacing="1.2" font-style="italic">EBB</text>
 
-    <!-- Tick marks and hour labels (built by JS) -->
     <g id="tickMarks"></g>
     <g id="hourLabels"></g>
 
-    <!-- Wave decoration -->
     <g opacity="0.3">
       <path d="M 60 110 Q 70 105 80 110 T 100 110 T 120 110 T 140 110"
             fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
@@ -415,10 +409,8 @@ color: #e0bd6e;
             fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
     </g>
 
-    <!-- Hub -->
     <circle cx="100" cy="100" r="8" fill="#0a1a2e" stroke="#c9a961" stroke-width="1"/>
 
-    <!-- Rotating tide hand -->
     <g id="tideHand" style="transform-origin: 100px 100px; transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);">
       <line x1="100" y1="100" x2="100" y2="32" stroke="rgba(0,0,0,0.4)" stroke-width="3" stroke-linecap="round" transform="translate(1, 1)"/>
       <line x1="100" y1="100" x2="100" y2="32" stroke="#c9a961" stroke-width="2.5" stroke-linecap="round"/>
@@ -426,13 +418,11 @@ color: #e0bd6e;
       <line x1="100" y1="100" x2="100" y2="118" stroke="#c9a961" stroke-width="3" stroke-linecap="round"/>
     </g>
 
-    <!-- Center cap -->
     <circle cx="100" cy="100" r="4" fill="#c9a961"/>
     <circle cx="100" cy="100" r="1.5" fill="#0a1a2e"/>
   </svg>
 </div>
 
-<!-- READOUTS -->
 <div class="cc-tide-readouts">
   <div class="cc-status-now" id="statusNow">Reading the water…</div>
   <div class="cc-readout-cards">
@@ -451,8 +441,6 @@ color: #e0bd6e;
 ```
 
   </div>
-
-  <!-- CONDITIONS STRIP -->
 
   <div class="cc-conditions">
     <div class="cc-item">
@@ -501,7 +489,7 @@ color: #e0bd6e;
   </svg>
   <div class="cc-item-label">Water</div>
   <div class="cc-item-value"><span id="waterTemp">—</span>°F</div>
-  <div class="cc-item-sub" id="waterDesc">—</div>
+  <div class="cc-item-sub" id="waterDesc">Woods Hole</div>
 </div>
 
 <div class="cc-item">
@@ -531,8 +519,6 @@ color: #e0bd6e;
 
   </div>
 
-  <!-- BITE REPORT -->
-
   <div class="cc-bite">
     <div class="cc-bite-left">
       <svg class="cc-bite-icon" viewBox="0 0 24 24">
@@ -552,10 +538,8 @@ color: #e0bd6e;
     </div>
   </div>
 
-  <!-- FOOTER -->
-
   <div class="cc-foot">
-    <div>NOAA · Open-Meteo Marine</div>
+    <div>NOAA Woods Hole · Open-Meteo</div>
     <div class="tagline">Play hard. Fish harder.</div>
   </div>
 </div>
@@ -565,8 +549,20 @@ color: #e0bd6e;
   'use strict';
   const LAT = 41.5237, LON = -70.6717, TIDE_STATION = '8447930';
   const svgNS = 'http://www.w3.org/2000/svg';
+  const diagErrors = [];
 
-  // ---------- Build clock tick marks ----------
+  function showDiag(msg) {
+    diagErrors.push(msg);
+    const banner = document.getElementById('diagBanner');
+    document.getElementById('diagMessage').textContent = diagErrors.join(' · ');
+    banner.classList.add('show');
+  }
+
+  // Detect file:// protocol up front
+  if (window.location.protocol === 'file:') {
+    showDiag('Running as local file — browsers block API calls from file:// URLs. Host on Squarespace, GitHub Pages, or a local web server to load live data.');
+  }
+
   function buildClockFace() {
     const ticks = document.getElementById('tickMarks');
     const labels = document.getElementById('hourLabels');
@@ -618,7 +614,6 @@ color: #e0bd6e;
   }
   buildClockFace();
 
-  // ---------- Helpers ----------
   function fmtTime(d) {
     return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
   }
@@ -655,7 +650,7 @@ color: #e0bd6e;
   tickClock();
   setInterval(tickClock, 30000);
 
-  // ---------- NOAA Tides ----------
+  // ---------- NOAA Tide predictions ----------
   async function loadTides() {
     const now = new Date();
     const begin = new Date(now.getTime() - 12 * 3600 * 1000);
@@ -664,13 +659,39 @@ color: #e0bd6e;
     const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date=${fmt(begin)}&end_date=${fmt(end)}&datum=MLLW&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
     try {
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      return (data.predictions || []).map(p => ({
+      if (!data.predictions || !data.predictions.length) {
+        showDiag('NOAA returned no tide predictions');
+        return null;
+      }
+      return data.predictions.map(p => ({
         time: new Date(p.t.replace(' ', 'T')),
         type: p.type,
         height: parseFloat(p.v)
       }));
-    } catch (e) { return null; }
+    } catch (e) {
+      showDiag('Tide API failed: ' + e.message);
+      return null;
+    }
+  }
+
+  // ---------- NOAA Water temperature (real sensor at Woods Hole) ----------
+  async function loadWaterTemp() {
+    const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=CourtAndCast&date=latest&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&format=json`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.data && data.data.length) {
+        const reading = data.data[data.data.length - 1];
+        return { temp: parseFloat(reading.v), time: reading.t };
+      }
+      return null;
+    } catch (e) {
+      showDiag('Water temp sensor unavailable: ' + e.message);
+      return null;
+    }
   }
 
   function calculateHandAngle(now, lastEvent, nextEvent) {
@@ -678,11 +699,8 @@ color: #e0bd6e;
     const elapsed = now - lastEvent.time;
     const interval = nextEvent.time - lastEvent.time;
     const progress = elapsed / interval;
-    if (lastEvent.type === 'H') {
-      return progress * 180;
-    } else {
-      return 180 + progress * 180;
-    }
+    if (lastEvent.type === 'H') return progress * 180;
+    return 180 + progress * 180;
   }
 
   function tideStatusText(lastEvent, nextEvent, progress) {
@@ -724,18 +742,18 @@ color: #e0bd6e;
       document.getElementById('nextLowIn').textContent =
         `${fmtDuration(nextLow.time - now)} · ${nextLow.height.toFixed(1)} ft`;
     }
-
     return { status: lastEvent.type === 'H' ? 'Falling' : 'Rising', lastEvent, nextEvent };
   }
 
-  // ---------- Weather ----------
+  // ---------- Open-Meteo: weather + waves (water temp from NOAA instead) ----------
   async function loadWeather() {
     try {
       const wxUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&daily=sunrise,sunset&forecast_days=1`;
-      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&current=wave_height,wave_period,sea_surface_temperature&length_unit=imperial&timezone=America%2FNew_York`;
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&current=wave_height,wave_period&length_unit=imperial&timezone=America%2FNew_York`;
       const [wxRes, mRes] = await Promise.all([fetch(wxUrl), fetch(marineUrl)]);
+      if (!wxRes.ok) throw new Error(`weather HTTP ${wxRes.status}`);
       const wx = await wxRes.json();
-      const marine = await mRes.json();
+      const marine = mRes.ok ? await mRes.json() : { current: {} };
 
       const wSpeed = wx.current.wind_speed_10m;
       const wDir = wx.current.wind_direction_10m;
@@ -744,29 +762,26 @@ color: #e0bd6e;
       document.getElementById('windIcon').style.transform = `rotate(${wDir + 180}deg)`;
       document.getElementById('windDir').textContent = `${deg2cardinal(wDir)} · G${Math.round(wGust)}`;
 
-      const wave = marine.current.wave_height;
-      const period = marine.current.wave_period;
+      const wave = marine.current?.wave_height;
+      const period = marine.current?.wave_period;
       document.getElementById('waveHeight').textContent = wave != null ? wave.toFixed(1) : '—';
       document.getElementById('wavePeriod').textContent = period != null ? `${Math.round(period)}s` : '—';
 
       document.getElementById('airTemp').textContent = Math.round(wx.current.temperature_2m);
       document.getElementById('airFeels').textContent = `Feels ${Math.round(wx.current.apparent_temperature)}°`;
 
-      const water = marine.current.sea_surface_temperature;
-      document.getElementById('waterTemp').textContent = water != null ? Math.round(water) : '—';
-      document.getElementById('waterDesc').textContent = water != null ? waterDesc(water) : '—';
-
       if (wx.daily) {
         document.getElementById('sunrise').textContent = fmtTime(new Date(wx.daily.sunrise[0]));
         document.getElementById('sunset').textContent = fmtTime(new Date(wx.daily.sunset[0]));
       }
-
-      return { wSpeed, wave, water };
-    } catch (e) { return null; }
+      return { wSpeed, wave };
+    } catch (e) {
+      showDiag('Weather API failed: ' + e.message);
+      return null;
+    }
   }
 
-  // ---------- Bite Report ----------
-  function biteReport(c, tide) {
+  function biteReport(c, tide, waterTempF) {
     const month = new Date().getMonth();
     const hour = new Date().getHours();
     let score = 50;
@@ -801,11 +816,22 @@ color: #e0bd6e;
     return { score, rating, species: targets[month] };
   }
 
-  // ---------- Refresh ----------
   async function refresh() {
-    const [events, weather] = await Promise.all([loadTides(), loadWeather()]);
+    const [events, weather, waterReading] = await Promise.all([
+      loadTides(),
+      loadWeather(),
+      loadWaterTemp()
+    ]);
+
     const tide = updateTideClock(events);
-    const r = biteReport(weather, tide);
+
+    // Water temp from Woods Hole sensor
+    if (waterReading && !isNaN(waterReading.temp)) {
+      document.getElementById('waterTemp').textContent = Math.round(waterReading.temp);
+      document.getElementById('waterDesc').textContent = `${waterDesc(waterReading.temp)} · Woods Hole`;
+    }
+
+    const r = biteReport(weather, tide, waterReading?.temp);
     document.getElementById('biteSpecies').textContent = r.species;
     document.getElementById('biteRating').textContent = r.rating;
     document.getElementById('biteMeter').style.width = r.score + '%';
