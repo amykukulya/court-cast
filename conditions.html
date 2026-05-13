@@ -4,38 +4,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Court & Cast — Live Conditions</title>
+<title>Court & Cast — Live Conditions & Tide Clock</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,800;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.cc-bar {
-font-family: ‘Inter’, -apple-system, BlinkMacSystemFont, sans-serif;
-background: #0a1a2e;
-color: #fff;
-padding: 18px 20px;
-border-radius: 10px;
-max-width: 1100px;
-margin: 0 auto;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+body {
+background: #f4f1ea;
+padding: 30px 16px;
+font-family: ‘Inter’, sans-serif;
 }
 
-.cc-title {
-font-size: 11px;
-font-weight: 600;
+.cc-wrap {
+max-width: 1100px;
+margin: 0 auto;
+background: linear-gradient(165deg, #0a1a2e 0%, #142845 50%, #1d3a5f 100%);
+border-radius: 14px;
+padding: 28px;
+box-shadow: 0 20px 60px rgba(10, 26, 46, 0.4);
+color: #e8eef5;
+position: relative;
+overflow: hidden;
+}
+
+.cc-wrap::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background-image:
+radial-gradient(circle at 20% 30%, rgba(74, 158, 184, 0.08) 0%, transparent 50%),
+radial-gradient(circle at 80% 70%, rgba(201, 169, 97, 0.06) 0%, transparent 50%);
+pointer-events: none;
+}
+
+.cc-wrap > * { position: relative; z-index: 1; }
+
+/* HEADER */
+.cc-head {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+border-bottom: 1px solid rgba(201, 169, 97, 0.25);
+padding-bottom: 16px;
+margin-bottom: 24px;
+flex-wrap: wrap;
+gap: 12px;
+}
+
+.cc-brand {
+font-family: ‘Fraunces’, serif;
+font-size: 24px;
+font-weight: 800;
+letter-spacing: -0.02em;
+}
+
+.cc-brand .amp {
+color: #c9a961;
+font-style: italic;
+font-weight: 400;
+}
+
+.cc-location {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
 letter-spacing: 0.18em;
 text-transform: uppercase;
 color: #c9a961;
-text-align: center;
-margin-bottom: 14px;
+margin-top: 4px;
 }
 
-.cc-title .dot {
+.cc-live {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #8a9aae;
+}
+
+.cc-live .dot {
 display: inline-block;
-width: 6px;
-height: 6px;
+width: 6px; height: 6px;
 border-radius: 50%;
 background: #4ade80;
 margin-right: 6px;
@@ -48,18 +98,115 @@ animation: pulse 2s ease-in-out infinite;
 50% { opacity: 0.4; }
 }
 
-.cc-row {
+/* MAIN LAYOUT — clock left, readouts right */
+.cc-main {
 display: grid;
-grid-template-columns: repeat(8, 1fr);
+grid-template-columns: 320px 1fr;
+gap: 28px;
+margin-bottom: 24px;
+align-items: center;
+}
+
+@media (max-width: 760px) {
+.cc-main {
+grid-template-columns: 1fr;
+gap: 20px;
+}
+}
+
+/* TIDE CLOCK */
+.tc-clock {
+width: 320px;
+height: 320px;
+margin: 0 auto;
+position: relative;
+}
+
+@media (max-width: 420px) {
+.tc-clock { width: 280px; height: 280px; }
+}
+
+.tc-svg { width: 100%; height: 100%; display: block; }
+
+/* TIDE READOUTS */
+.cc-tide-readouts {
+display: flex;
+flex-direction: column;
+gap: 14px;
+}
+
+.cc-status-now {
+font-family: ‘Fraunces’, serif;
+font-style: italic;
+font-size: 18px;
+color: #c9a961;
+text-align: center;
+margin-bottom: 4px;
+}
+
+.cc-readout-cards {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+}
+
+.cc-readout-card {
+background: rgba(255, 255, 255, 0.04);
+border: 1px solid rgba(201, 169, 97, 0.2);
+border-radius: 10px;
+padding: 14px;
+}
+
+.cc-readout-card.high { border-left: 3px solid #c9a961; }
+.cc-readout-card.low { border-left: 3px solid #4a9eb8; }
+
+.cc-readout-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #8a9aae;
+margin-bottom: 6px;
+}
+
+.cc-readout-time {
+font-family: ‘Fraunces’, serif;
+font-size: 22px;
+font-weight: 600;
+line-height: 1;
+}
+
+.cc-readout-when {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+color: #c9a961;
+margin-top: 6px;
+}
+
+/* CONDITIONS STRIP */
+.cc-conditions-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: #c9a961;
+margin-bottom: 12px;
+text-align: center;
+}
+
+.cc-conditions {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
 gap: 8px;
+padding-top: 20px;
+border-top: 1px solid rgba(201, 169, 97, 0.2);
 }
 
 @media (max-width: 900px) {
-.cc-row { grid-template-columns: repeat(4, 1fr); }
+.cc-conditions { grid-template-columns: repeat(4, 1fr); }
 }
-
 @media (max-width: 480px) {
-.cc-row { grid-template-columns: repeat(2, 1fr); }
+.cc-conditions { grid-template-columns: repeat(2, 1fr); }
 }
 
 .cc-item {
@@ -71,8 +218,7 @@ padding: 8px 4px;
 }
 
 .cc-icon {
-width: 32px;
-height: 32px;
+width: 28px; height: 28px;
 margin-bottom: 6px;
 color: #c9a961;
 stroke: currentColor;
@@ -82,7 +228,8 @@ stroke-linecap: round;
 stroke-linejoin: round;
 }
 
-.cc-label {
+.cc-item-label {
+font-family: ‘JetBrains Mono’, monospace;
 font-size: 9px;
 font-weight: 600;
 letter-spacing: 0.1em;
@@ -91,27 +238,28 @@ color: #8a9aae;
 margin-bottom: 3px;
 }
 
-.cc-value {
-font-size: 16px;
-font-weight: 700;
+.cc-item-value {
+font-family: ‘Fraunces’, serif;
+font-size: 18px;
+font-weight: 600;
 color: #fff;
 line-height: 1.1;
 }
 
-.cc-sub {
+.cc-item-sub {
+font-family: ‘JetBrains Mono’, monospace;
 font-size: 10px;
 color: #8a9aae;
 margin-top: 2px;
 }
 
-/* Wind arrow rotates */
 .cc-wind-icon { transition: transform 0.6s ease; }
 
-/* Fish bite footer */
+/* BITE REPORT */
 .cc-bite {
-margin-top: 14px;
-padding-top: 14px;
-border-top: 1px solid rgba(255, 255, 255, 0.1);
+margin-top: 20px;
+padding-top: 16px;
+border-top: 1px solid rgba(201, 169, 97, 0.2);
 display: flex;
 justify-content: space-between;
 align-items: center;
@@ -122,12 +270,11 @@ flex-wrap: wrap;
 .cc-bite-left {
 display: flex;
 align-items: center;
-gap: 10px;
+gap: 12px;
 }
 
 .cc-bite-icon {
-width: 24px;
-height: 24px;
+width: 26px; height: 26px;
 color: #c9a961;
 stroke: currentColor;
 fill: none;
@@ -136,38 +283,38 @@ stroke-linecap: round;
 stroke-linejoin: round;
 }
 
-.cc-bite-text {
-font-size: 13px;
-}
-
 .cc-bite-text strong {
+font-family: ‘JetBrains Mono’, monospace;
 color: #c9a961;
 font-weight: 700;
 text-transform: uppercase;
-letter-spacing: 0.05em;
-font-size: 11px;
+letter-spacing: 0.1em;
+font-size: 10px;
 }
 
 .cc-bite-species {
+font-family: ‘Fraunces’, serif;
 color: #fff;
 font-weight: 500;
-margin-left: 6px;
+margin-left: 8px;
+font-size: 15px;
 }
 
 .cc-rating {
 display: flex;
 align-items: center;
-gap: 8px;
-font-size: 10px;
+gap: 10px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 11px;
 font-weight: 600;
-letter-spacing: 0.1em;
+letter-spacing: 0.15em;
 text-transform: uppercase;
 color: #c9a961;
 }
 
 .cc-meter {
-width: 50px;
-height: 5px;
+width: 60px;
+height: 6px;
 background: rgba(255, 255, 255, 0.1);
 border-radius: 3px;
 overflow: hidden;
@@ -178,84 +325,185 @@ height: 100%;
 background: linear-gradient(90deg, #c9a961, #d97842);
 transition: width 1s ease-out;
 }
+
+/* FOOTER */
+.cc-foot {
+margin-top: 20px;
+padding-top: 14px;
+border-top: 1px solid rgba(255, 255, 255, 0.06);
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 8px;
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: #8a9aae;
+}
+
+.cc-foot .tagline {
+font-family: ‘Fraunces’, serif;
+font-style: italic;
+font-size: 13px;
+text-transform: none;
+letter-spacing: 0;
+color: #e0bd6e;
+}
 </style>
 
 </head>
-<body style="background: #f4f1ea; padding: 30px 16px;">
+<body>
 
-<div class="cc-bar">
-  <div class="cc-title">
-    <span class="dot"></span>Live Conditions · Falmouth, MA
+<div class="cc-wrap">
+  <!-- HEADER -->
+  <div class="cc-head">
+    <div>
+      <div class="cc-brand">Court <span class="amp">&</span> Cast</div>
+      <div class="cc-location">Falmouth, MA · Woods Hole</div>
+    </div>
+    <div class="cc-live"><span class="dot"></span><span id="lastUpdate">Loading…</span></div>
   </div>
 
-  <div class="cc-row">
-    <!-- TIME -->
+  <!-- MAIN: CLOCK + READOUTS -->
+
+  <div class="cc-main">
+    <!-- TIDE CLOCK -->
+    <div class="tc-clock">
+      <svg class="tc-svg" viewBox="0 0 200 200">
+        <defs>
+          <radialGradient id="faceGrad" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#1d3a5f"/>
+            <stop offset="70%" stop-color="#142845"/>
+            <stop offset="100%" stop-color="#0a1a2e"/>
+          </radialGradient>
+        </defs>
+
+```
+    <circle cx="100" cy="100" r="98" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.4"/>
+    <circle cx="100" cy="100" r="94" fill="url(#faceGrad)" stroke="#c9a961" stroke-width="0.5" opacity="0.8"/>
+
+    <!-- Labels: HIGH top, LOW bottom, FLOOD right, EBB left -->
+    <text x="100" y="20" text-anchor="middle" fill="#c9a961"
+          font-family="JetBrains Mono, monospace" font-size="7" font-weight="600"
+          letter-spacing="1.5">HIGH</text>
+    <path d="M 95 24 L 100 30 L 105 24" fill="none" stroke="#c9a961" stroke-width="1.2" stroke-linecap="round"/>
+
+    <text x="100" y="186" text-anchor="middle" fill="#4a9eb8"
+          font-family="JetBrains Mono, monospace" font-size="7" font-weight="600"
+          letter-spacing="1.5">LOW</text>
+    <path d="M 95 176 L 100 170 L 105 176" fill="none" stroke="#4a9eb8" stroke-width="1.2" stroke-linecap="round"/>
+
+    <text x="180" y="103" text-anchor="middle" fill="#8a9aae"
+          font-family="JetBrains Mono, monospace" font-size="6"
+          letter-spacing="1.2" font-style="italic">FLOOD</text>
+
+    <text x="20" y="103" text-anchor="middle" fill="#8a9aae"
+          font-family="JetBrains Mono, monospace" font-size="6"
+          letter-spacing="1.2" font-style="italic">EBB</text>
+
+    <!-- Tick marks and hour labels (built by JS) -->
+    <g id="tickMarks"></g>
+    <g id="hourLabels"></g>
+
+    <!-- Wave decoration -->
+    <g opacity="0.3">
+      <path d="M 60 110 Q 70 105 80 110 T 100 110 T 120 110 T 140 110"
+            fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
+      <path d="M 60 116 Q 70 111 80 116 T 100 116 T 120 116 T 140 116"
+            fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
+    </g>
+
+    <!-- Hub -->
+    <circle cx="100" cy="100" r="8" fill="#0a1a2e" stroke="#c9a961" stroke-width="1"/>
+
+    <!-- Rotating tide hand -->
+    <g id="tideHand" style="transform-origin: 100px 100px; transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);">
+      <line x1="100" y1="100" x2="100" y2="32" stroke="rgba(0,0,0,0.4)" stroke-width="3" stroke-linecap="round" transform="translate(1, 1)"/>
+      <line x1="100" y1="100" x2="100" y2="32" stroke="#c9a961" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 100 32 L 96 40 L 100 36 L 104 40 Z" fill="#e0bd6e"/>
+      <line x1="100" y1="100" x2="100" y2="118" stroke="#c9a961" stroke-width="3" stroke-linecap="round"/>
+    </g>
+
+    <!-- Center cap -->
+    <circle cx="100" cy="100" r="4" fill="#c9a961"/>
+    <circle cx="100" cy="100" r="1.5" fill="#0a1a2e"/>
+  </svg>
+</div>
+
+<!-- READOUTS -->
+<div class="cc-tide-readouts">
+  <div class="cc-status-now" id="statusNow">Reading the water…</div>
+  <div class="cc-readout-cards">
+    <div class="cc-readout-card high">
+      <div class="cc-readout-label">Next High</div>
+      <div class="cc-readout-time" id="nextHighTime">—</div>
+      <div class="cc-readout-when" id="nextHighIn">—</div>
+    </div>
+    <div class="cc-readout-card low">
+      <div class="cc-readout-label">Next Low</div>
+      <div class="cc-readout-time" id="nextLowTime">—</div>
+      <div class="cc-readout-when" id="nextLowIn">—</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- CONDITIONS STRIP -->
+
+  <div class="cc-conditions">
     <div class="cc-item">
       <svg class="cc-icon" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="9"/>
         <path d="M12 7v5l3 2"/>
       </svg>
-      <div class="cc-label">Time</div>
-      <div class="cc-value" id="time">—</div>
-      <div class="cc-sub" id="date">—</div>
+      <div class="cc-item-label">Time</div>
+      <div class="cc-item-value" id="time">—</div>
+      <div class="cc-item-sub" id="date">—</div>
     </div>
 
 ```
-<!-- TIDE -->
-<div class="cc-item">
-  <svg class="cc-icon" viewBox="0 0 24 24">
-    <path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
-    <path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
-    <path d="M12 4v6M9 7l3-3 3 3"/>
-  </svg>
-  <div class="cc-label">Tide</div>
-  <div class="cc-value" id="tideStatus">—</div>
-  <div class="cc-sub" id="tideNext">—</div>
-</div>
-
-<!-- WIND -->
 <div class="cc-item">
   <svg class="cc-icon cc-wind-icon" id="windIcon" viewBox="0 0 24 24">
     <path d="M12 2l4 6h-3v12h-2V8H8l4-6z"/>
   </svg>
-  <div class="cc-label">Wind</div>
-  <div class="cc-value"><span id="windSpeed">—</span> kt</div>
-  <div class="cc-sub" id="windDir">—</div>
+  <div class="cc-item-label">Wind</div>
+  <div class="cc-item-value"><span id="windSpeed">—</span> kt</div>
+  <div class="cc-item-sub" id="windDir">—</div>
 </div>
 
-<!-- WAVES -->
 <div class="cc-item">
   <svg class="cc-icon" viewBox="0 0 24 24">
     <path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
     <path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
   </svg>
-  <div class="cc-label">Waves</div>
-  <div class="cc-value"><span id="waveHeight">—</span> ft</div>
-  <div class="cc-sub" id="wavePeriod">—</div>
+  <div class="cc-item-label">Waves</div>
+  <div class="cc-item-value"><span id="waveHeight">—</span> ft</div>
+  <div class="cc-item-sub" id="wavePeriod">—</div>
 </div>
 
-<!-- AIR TEMP -->
 <div class="cc-item">
   <svg class="cc-icon" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="3.5"/>
     <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
   </svg>
-  <div class="cc-label">Air</div>
-  <div class="cc-value"><span id="airTemp">—</span>°F</div>
-  <div class="cc-sub" id="airFeels">—</div>
+  <div class="cc-item-label">Air</div>
+  <div class="cc-item-value"><span id="airTemp">—</span>°F</div>
+  <div class="cc-item-sub" id="airFeels">—</div>
 </div>
 
-<!-- WATER TEMP -->
 <div class="cc-item">
   <svg class="cc-icon" viewBox="0 0 24 24">
     <path d="M12 3c-3 4-5 7-5 10a5 5 0 0010 0c0-3-2-6-5-10z"/>
   </svg>
-  <div class="cc-label">Water</div>
-  <div class="cc-value"><span id="waterTemp">—</span>°F</div>
-  <div class="cc-sub" id="waterDesc">—</div>
+  <div class="cc-item-label">Water</div>
+  <div class="cc-item-value"><span id="waterTemp">—</span>°F</div>
+  <div class="cc-item-sub" id="waterDesc">—</div>
 </div>
 
-<!-- SUNRISE -->
 <div class="cc-item">
   <svg class="cc-icon" viewBox="0 0 24 24">
     <path d="M3 17h18"/>
@@ -263,12 +511,11 @@ transition: width 1s ease-out;
     <path d="M12 2v4M5 6l2 2M19 6l-2 2"/>
     <path d="M9 20l3-3 3 3"/>
   </svg>
-  <div class="cc-label">Sunrise</div>
-  <div class="cc-value" id="sunrise">—</div>
-  <div class="cc-sub">Dawn bite</div>
+  <div class="cc-item-label">Sunrise</div>
+  <div class="cc-item-value" id="sunrise">—</div>
+  <div class="cc-item-sub">Dawn bite</div>
 </div>
 
-<!-- SUNSET -->
 <div class="cc-item">
   <svg class="cc-icon" viewBox="0 0 24 24">
     <path d="M3 17h18"/>
@@ -276,9 +523,9 @@ transition: width 1s ease-out;
     <path d="M12 8V2M5 6l2 2M19 6l-2 2"/>
     <path d="M9 17l3 3 3-3"/>
   </svg>
-  <div class="cc-label">Sunset</div>
-  <div class="cc-value" id="sunset">—</div>
-  <div class="cc-sub">Dusk bite</div>
+  <div class="cc-item-label">Sunset</div>
+  <div class="cc-item-value" id="sunset">—</div>
+  <div class="cc-item-sub">Dusk bite</div>
 </div>
 ```
 
@@ -304,12 +551,97 @@ transition: width 1s ease-out;
       <div class="cc-meter"><div class="cc-meter-fill" id="biteMeter" style="width: 0%"></div></div>
     </div>
   </div>
+
+  <!-- FOOTER -->
+
+  <div class="cc-foot">
+    <div>NOAA · Open-Meteo Marine</div>
+    <div class="tagline">Play hard. Fish harder.</div>
+  </div>
 </div>
 
 <script>
 (function() {
   'use strict';
   const LAT = 41.5237, LON = -70.6717, TIDE_STATION = '8447930';
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  // ---------- Build clock tick marks ----------
+  function buildClockFace() {
+    const ticks = document.getElementById('tickMarks');
+    const labels = document.getElementById('hourLabels');
+    for (let i = 0; i < 12; i++) {
+      const angle = i * 30;
+      const rad = (angle - 90) * Math.PI / 180;
+      const x1 = 100 + Math.cos(rad) * 88;
+      const y1 = 100 + Math.sin(rad) * 88;
+      const isMajor = i % 3 === 0;
+      const inner = isMajor ? 80 : 84;
+      const x2 = 100 + Math.cos(rad) * inner;
+      const y2 = 100 + Math.sin(rad) * inner;
+
+      const tick = document.createElementNS(svgNS, 'line');
+      tick.setAttribute('x1', x1); tick.setAttribute('y1', y1);
+      tick.setAttribute('x2', x2); tick.setAttribute('y2', y2);
+      tick.setAttribute('stroke', isMajor ? '#c9a961' : '#8a9aae');
+      tick.setAttribute('stroke-width', isMajor ? '1.2' : '0.6');
+      tick.setAttribute('stroke-linecap', 'round');
+      tick.setAttribute('opacity', isMajor ? '0.9' : '0.5');
+      ticks.appendChild(tick);
+
+      if (i > 0 && i < 6) {
+        const lx = 100 + Math.cos(rad) * 72;
+        const ly = 100 + Math.sin(rad) * 72;
+        const label = document.createElementNS(svgNS, 'text');
+        label.setAttribute('x', lx); label.setAttribute('y', ly + 2);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('fill', '#c9a961');
+        label.setAttribute('font-family', 'JetBrains Mono, monospace');
+        label.setAttribute('font-size', '7'); label.setAttribute('font-weight', '500');
+        label.setAttribute('opacity', '0.7');
+        label.textContent = i;
+        labels.appendChild(label);
+      } else if (i > 6 && i < 12) {
+        const lx = 100 + Math.cos(rad) * 72;
+        const ly = 100 + Math.sin(rad) * 72;
+        const label = document.createElementNS(svgNS, 'text');
+        label.setAttribute('x', lx); label.setAttribute('y', ly + 2);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('fill', '#4a9eb8');
+        label.setAttribute('font-family', 'JetBrains Mono, monospace');
+        label.setAttribute('font-size', '7'); label.setAttribute('font-weight', '500');
+        label.setAttribute('opacity', '0.7');
+        label.textContent = 12 - i;
+        labels.appendChild(label);
+      }
+    }
+  }
+  buildClockFace();
+
+  // ---------- Helpers ----------
+  function fmtTime(d) {
+    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
+  }
+  function fmtDuration(ms) {
+    if (ms < 0) ms = 0;
+    const totalMin = Math.round(ms / 60000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h === 0) return `in ${m} min`;
+    if (m === 0) return `in ${h}h`;
+    return `in ${h}h ${m}m`;
+  }
+  function deg2cardinal(deg) {
+    const dirs = ['N','NE','E','SE','S','SW','W','NW'];
+    return dirs[Math.round(deg / 45) % 8];
+  }
+  function waterDesc(t) {
+    if (t < 50) return 'Cold';
+    if (t < 60) return 'Cool';
+    if (t < 68) return 'Warming';
+    if (t < 74) return 'Prime';
+    return 'Warm';
+  }
 
   function tickClock() {
     const now = new Date();
@@ -323,40 +655,80 @@ transition: width 1s ease-out;
   tickClock();
   setInterval(tickClock, 30000);
 
-  function deg2cardinal(deg) {
-    const dirs = ['N','NE','E','SE','S','SW','W','NW'];
-    return dirs[Math.round(deg / 45) % 8];
-  }
-  function fmtTime(d) {
-    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
-  }
-
+  // ---------- NOAA Tides ----------
   async function loadTides() {
+    const now = new Date();
+    const begin = new Date(now.getTime() - 12 * 3600 * 1000);
+    const end = new Date(now.getTime() + 30 * 3600 * 1000);
+    const fmt = d => d.toISOString().slice(0,10).replace(/-/g,'') + ' ' + d.toISOString().slice(11,16).replace(':','');
+    const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date=${fmt(begin)}&end_date=${fmt(end)}&datum=MLLW&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
     try {
-      const now = new Date();
-      const begin = new Date(now.getTime() - 6 * 3600 * 1000);
-      const end = new Date(now.getTime() + 30 * 3600 * 1000);
-      const fmt = d => d.toISOString().slice(0,10).replace(/-/g,'') + ' ' + d.toISOString().slice(11,16).replace(':','');
-      const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date=${fmt(begin)}&end_date=${fmt(end)}&datum=MLLW&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
       const res = await fetch(url);
       const data = await res.json();
-      const future = (data.predictions || []).filter(p => new Date(p.t.replace(' ', 'T')) > now);
-      const next = future[0];
-      let status = 'Slack';
-      if (next) {
-        status = next.type === 'H' ? 'Rising' : 'Falling';
-        const t = new Date(next.t.replace(' ', 'T'));
-        const kind = next.type === 'H' ? 'High' : 'Low';
-        document.getElementById('tideNext').textContent = `${kind} ${fmtTime(t)}`;
-      }
-      document.getElementById('tideStatus').textContent = status;
-      return { status, next };
-    } catch (e) {
-      document.getElementById('tideStatus').textContent = '—';
-      return null;
+      return (data.predictions || []).map(p => ({
+        time: new Date(p.t.replace(' ', 'T')),
+        type: p.type,
+        height: parseFloat(p.v)
+      }));
+    } catch (e) { return null; }
+  }
+
+  function calculateHandAngle(now, lastEvent, nextEvent) {
+    if (!lastEvent || !nextEvent) return 0;
+    const elapsed = now - lastEvent.time;
+    const interval = nextEvent.time - lastEvent.time;
+    const progress = elapsed / interval;
+    if (lastEvent.type === 'H') {
+      return progress * 180;
+    } else {
+      return 180 + progress * 180;
     }
   }
 
+  function tideStatusText(lastEvent, nextEvent, progress) {
+    if (!lastEvent || !nextEvent) return 'Loading tide…';
+    const isEbbing = lastEvent.type === 'H';
+    if (progress < 0.1) return isEbbing ? 'Just past high — slack' : 'Just past low — slack';
+    if (progress > 0.9) return isEbbing ? 'Approaching low slack' : 'Approaching high slack';
+    if (progress < 0.4) return isEbbing ? 'Ebbing — early' : 'Flooding — early';
+    if (progress < 0.6) return isEbbing ? 'Ebbing — mid-tide' : 'Flooding — mid-tide';
+    return isEbbing ? 'Ebbing — late' : 'Flooding — late';
+  }
+
+  function updateTideClock(events) {
+    if (!events || events.length < 2) {
+      document.getElementById('statusNow').textContent = 'Tide data unavailable';
+      return null;
+    }
+    const now = new Date();
+    const past = events.filter(e => e.time <= now);
+    const future = events.filter(e => e.time > now);
+    const lastEvent = past[past.length - 1];
+    const nextEvent = future[0];
+    if (!lastEvent || !nextEvent) return null;
+
+    const angle = calculateHandAngle(now, lastEvent, nextEvent);
+    document.getElementById('tideHand').style.transform = `rotate(${angle}deg)`;
+    const progress = (now - lastEvent.time) / (nextEvent.time - lastEvent.time);
+    document.getElementById('statusNow').textContent = tideStatusText(lastEvent, nextEvent, progress);
+
+    const nextHigh = future.find(e => e.type === 'H');
+    const nextLow = future.find(e => e.type === 'L');
+    if (nextHigh) {
+      document.getElementById('nextHighTime').textContent = fmtTime(nextHigh.time);
+      document.getElementById('nextHighIn').textContent =
+        `${fmtDuration(nextHigh.time - now)} · ${nextHigh.height.toFixed(1)} ft`;
+    }
+    if (nextLow) {
+      document.getElementById('nextLowTime').textContent = fmtTime(nextLow.time);
+      document.getElementById('nextLowIn').textContent =
+        `${fmtDuration(nextLow.time - now)} · ${nextLow.height.toFixed(1)} ft`;
+    }
+
+    return { status: lastEvent.type === 'H' ? 'Falling' : 'Rising', lastEvent, nextEvent };
+  }
+
+  // ---------- Weather ----------
   async function loadWeather() {
     try {
       const wxUrl = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&daily=sunrise,sunset&forecast_days=1`;
@@ -375,7 +747,7 @@ transition: width 1s ease-out;
       const wave = marine.current.wave_height;
       const period = marine.current.wave_period;
       document.getElementById('waveHeight').textContent = wave != null ? wave.toFixed(1) : '—';
-      document.getElementById('wavePeriod').textContent = period != null ? `${Math.round(period)}s period` : '—';
+      document.getElementById('wavePeriod').textContent = period != null ? `${Math.round(period)}s` : '—';
 
       document.getElementById('airTemp').textContent = Math.round(wx.current.temperature_2m);
       document.getElementById('airFeels').textContent = `Feels ${Math.round(wx.current.apparent_temperature)}°`;
@@ -393,19 +765,11 @@ transition: width 1s ease-out;
     } catch (e) { return null; }
   }
 
-  function waterDesc(t) {
-    if (t < 50) return 'Cold';
-    if (t < 60) return 'Cool';
-    if (t < 68) return 'Warming';
-    if (t < 74) return 'Prime';
-    return 'Warm';
-  }
-
+  // ---------- Bite Report ----------
   function biteReport(c, tide) {
     const month = new Date().getMonth();
     const hour = new Date().getHours();
     let score = 50;
-
     if (tide?.status === 'Rising' || tide?.status === 'Falling') score += 20;
     if (c?.wSpeed != null) {
       if (c.wSpeed < 5) score -= 5;
@@ -420,7 +784,6 @@ transition: width 1s ease-out;
     if ((hour >= 5 && hour <= 8) || (hour >= 17 && hour <= 20)) score += 10;
     score = Math.max(15, Math.min(95, score));
 
-    // Top target species for Cape Cod by month
     const targets = {
       0: 'Cod', 1: 'Cod', 2: 'Winter Flounder',
       3: 'Squid · Tautog', 4: 'Striped Bass · Squid',
@@ -438,12 +801,17 @@ transition: width 1s ease-out;
     return { score, rating, species: targets[month] };
   }
 
+  // ---------- Refresh ----------
   async function refresh() {
-    const [tide, weather] = await Promise.all([loadTides(), loadWeather()]);
+    const [events, weather] = await Promise.all([loadTides(), loadWeather()]);
+    const tide = updateTideClock(events);
     const r = biteReport(weather, tide);
     document.getElementById('biteSpecies').textContent = r.species;
     document.getElementById('biteRating').textContent = r.rating;
     document.getElementById('biteMeter').style.width = r.score + '%';
+
+    const updated = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
+    document.getElementById('lastUpdate').textContent = `Updated ${updated}`;
   }
   refresh();
   setInterval(refresh, 10 * 60 * 1000);
