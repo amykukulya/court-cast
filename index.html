@@ -831,19 +831,22 @@
 </div>
 
 <script>
+<script>
 (function(){
   'use strict';
   var LAT=41.5237,LON=-70.6717,STATION='8447930';
   function deg2cardinal(d){var dirs=['N','NE','E','SE','S','SW','W','NW'];return dirs[Math.round(d/45)%8];}
+
   async function loadTide(){
     try{
-      var now=new Date();
-      var begin=new Date(now.getTime()-6*3600*1000);
-      var end=new Date(now.getTime()+24*3600*1000);
-      var fmt=function(d){return d.toISOString().slice(0,10).replace(/-/g,'')+' '+d.toISOString().slice(11,16).replace(':','');};
-      var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date='+fmt(begin)+'&end_date='+fmt(end)+'&datum=MLLW&station='+STATION+'&time_zone=lst_ldt&units=english&interval=hilo&format=json';
+      // Use date=today + range=48 instead of begin_date/end_date — avoids URL-encoding issues
+      var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&date=today&range=48&datum=MLLW&station='+STATION+'&time_zone=lst_ldt&units=english&interval=hilo&format=json';
       var res=await fetch(url);
+      if(!res.ok)throw new Error('HTTP '+res.status);
       var data=await res.json();
+      console.log('Tide data received:',data);
+      if(data.error){throw new Error(data.error.message);}
+      var now=new Date();
       var future=(data.predictions||[]).filter(function(p){return new Date(p.t.replace(' ','T'))>now;});
       var next=future[0];
       if(next){
@@ -853,22 +856,29 @@
         document.getElementById('ccTide').textContent=kind+' '+timeStr;
         return {status:next.type==='H'?'Rising':'Falling'};
       }
-    }catch(e){document.getElementById('ccTide').textContent='offline';}
+      document.getElementById('ccTide').textContent='no data';
+    }catch(e){
+      console.error('Tide load failed:',e);
+      document.getElementById('ccTide').textContent='offline';
+    }
     return null;
   }
+
   async function loadWater(){
     try{
       var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=CourtAndCast&date=latest&station='+STATION+'&time_zone=lst_ldt&units=english&format=json';
       var res=await fetch(url);
+      if(!res.ok)throw new Error('HTTP '+res.status);
       var data=await res.json();
       if(data.data&&data.data.length){
         var temp=parseFloat(data.data[data.data.length-1].v);
         document.getElementById('ccWater').textContent=Math.round(temp);
         return temp;
       }
-    }catch(e){}
+    }catch(e){console.error('Water temp failed:',e);}
     return null;
   }
+
   async function loadWeather(){
     try{
       var wxUrl='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York';
@@ -886,8 +896,9 @@
       document.getElementById('ccWave').textContent=wave!=null?wave.toFixed(1):'—';
       document.getElementById('ccAir').textContent=Math.round(wx.current.temperature_2m);
       return {wSpeed:wSpeed,wave:wave};
-    }catch(e){return null;}
+    }catch(e){console.error('Weather failed:',e);return null;}
   }
+
   function biteToday(c,tide){
     var month=new Date().getMonth(),hour=new Date().getHours(),score=50;
     if(tide&&(tide.status==='Rising'||tide.status==='Falling'))score+=20;
@@ -902,6 +913,7 @@
     else if(score>=35)label='Fair';
     return label+': '+targets[month];
   }
+
   async function refresh(){
     var results=await Promise.all([loadTide(),loadWeather(),loadWater()]);
     document.getElementById('ccBite').textContent=biteToday(results[1],results[0]);
