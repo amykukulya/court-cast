@@ -779,7 +779,6 @@
     font-size: 12px;
   }
   .cc-wind-icon { transition: transform 0.6s ease; }
-  /* Push the page content down so the strip doesn't cover anything */
   body { padding-top: 44px; }
   @media (max-width: 768px) {
     .cc-strip { gap: 14px; padding: 8px 12px; font-size: 12px; }
@@ -831,7 +830,6 @@
 </div>
 
 <script>
-<script>
 (function(){
   'use strict';
   var LAT=41.5237,LON=-70.6717,STATION='8447930';
@@ -839,12 +837,10 @@
 
   async function loadTide(){
     try{
-      // Use date=today + range=48 instead of begin_date/end_date — avoids URL-encoding issues
       var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&date=today&range=48&datum=MLLW&station='+STATION+'&time_zone=lst_ldt&units=english&interval=hilo&format=json';
       var res=await fetch(url);
       if(!res.ok)throw new Error('HTTP '+res.status);
       var data=await res.json();
-      console.log('Tide data received:',data);
       if(data.error){throw new Error(data.error.message);}
       var now=new Date();
       var future=(data.predictions||[]).filter(function(p){return new Date(p.t.replace(' ','T'))>now;});
@@ -856,7 +852,6 @@
         document.getElementById('ccTide').textContent=kind+' '+timeStr;
         return {status:next.type==='H'?'Rising':'Falling'};
       }
-      document.getElementById('ccTide').textContent='no data';
     }catch(e){
       console.error('Tide load failed:',e);
       document.getElementById('ccTide').textContent='offline';
