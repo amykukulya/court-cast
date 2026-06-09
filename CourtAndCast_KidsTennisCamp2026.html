@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Court & Cast Kids Tennis Camp — Summer 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #d8cfc4;
+    display: flex; justify-content: center; align-items: flex-start;
+    min-height: 100vh; padding: 20px 12px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .flyer {
+    width: 680px; background: #F5EFE3;
+    position: relative; overflow: hidden;
+    border-radius: 4px; box-shadow: 0 8px 40px rgba(0,0,0,0.22);
+  }
+
+  /* STARBURST */
+  .starburst { position: absolute; top: 14px; right: 14px; width: 76px; height: 76px; z-index: 20; }
+
+  /* HEADER */
+  .header { background: #1B3A5C; padding: 24px 44px 0 44px; }
+  .logo-line { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .logo-text { font-weight: 900; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #C8913A; }
+  .logo-dot { color: #F5EFE3; font-size: 16px; }
+  .headline { font-family: 'Fredericka the Great', serif; font-size: 50px; line-height: 1.0; color: #F5EFE3; margin-bottom: 4px; }
+  .headline em { color: #C8913A; font-style: normal; }
+  .subhead { font-weight: 700; font-size: 13px; color: #a8c4d8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+
+  .wave { display: block; width: 100%; margin-bottom: -2px; }
+
+  /* GROUP CARDS */
+  .groups { padding: 16px 36px 14px 36px; background: #F5EFE3; }
+  .section-label { font-weight: 900; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #C8913A; margin-bottom: 10px; }
+  .group-cards { display: flex; gap: 10px; }
+  .group-card { flex: 1; border-radius: 8px; padding: 12px 11px; border: 2px solid #1B3A5C; background: #fff; }
+  .group-card.gold-border { border-color: #C8913A; }
+  .group-card .ball { font-size: 22px; margin-bottom: 3px; display: block; }
+  .group-card .age { font-weight: 900; font-size: 11px; color: #1B3A5C; text-transform: uppercase; letter-spacing: 1px; }
+  .group-card .name { font-family: 'Fredericka the Great', serif; font-size: 18px; color: #1B3A5C; line-height: 1.1; margin: 2px 0 3px; }
+  .group-card .detail { font-size: 11.5px; color: #555; line-height: 1.45; }
+  .group-card .time-tag {
+    display: block; margin-top: 6px;
+    background: #1B3A5C; color: #F5EFE3;
+    font-size: 11px; font-weight: 700; border-radius: 5px;
+    padding: 3px 8px; text-align: center;
+  }
+  .group-card.gold-border .time-tag { background: #C8913A; }
+
+  /* PRICING */
+  .pricing-strip { padding: 6px 36px 14px 36px; background: #F5EFE3; }
+  .pricing-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .pricing-table thead tr { background: #1B3A5C; }
+  .pricing-table thead th { padding: 7px 10px; font-weight: 900; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; text-align: left; }
+  .pricing-table thead th:not(:first-child) { text-align: center; }
+  .pricing-table tbody tr:nth-child(odd) { background: #fff; }
+  .pricing-table tbody tr:nth-child(even) { background: #EDE5D5; }
+  .pricing-table td { padding: 6px 10px; color: #1B3A5C; font-weight: 600; }
+  .pricing-table td:not(:first-child) { text-align: center; }
+  .pricing-table td strong { font-weight: 900; }
+  .pricing-table td.gold { color: #C8913A; font-weight: 900; }
+  .multi-note {
+    margin-top: 7px; background: #C8913A; border-radius: 6px;
+    padding: 7px 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .multi-note span { font-size: 12px; font-weight: 700; color: #fff; }
+  .multi-note strong { font-size: 13px; }
+
+  /* SESSION DATES */
+  .dates-band { background: #1B3A5C; padding: 14px 36px; }
+  .dates-label { font-size: 9px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #C8913A; margin-bottom: 10px; }
+  .dates-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .date-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); border-radius: 7px; padding: 8px 8px; text-align: center; }
+  .date-pill .dp-week { font-size: 9px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #C8913A; margin-bottom: 2px; }
+  .date-pill .dp-dates { font-size: 12px; font-weight: 700; color: #F5EFE3; line-height: 1.4; }
+  .date-pill .dp-days { font-size: 10px; color: #a8c4d8; margin-top: 2px; font-weight: 600; }
+  .date-pill.short { border-color: #C8913A; }
+  .date-pill.short .dp-dates { color: #C8913A; }
+  .dates-footnote { font-size: 11px; color: #a8c4d8; margin-top: 9px; font-weight: 600; line-height: 1.6; }
+
+  /* INFO BAND */
+  .info-band { background: #EDE5D5; padding: 13px 36px; display: flex; gap: 0; border-top: 3px solid #C8913A; }
+  .info-col { flex: 1; padding-right: 22px; border-right: 1px solid #d4c9b8; }
+  .info-col:last-child { border-right: none; padding-right: 0; padding-left: 22px; }
+  .info-col .label { font-size: 9px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #C8913A; margin-bottom: 6px; }
+  .info-col .line { font-size: 12.5px; color: #1B3A5C; line-height: 1.75; font-weight: 600; }
+  .info-col .line .rain { color: #C8913A; font-weight: 900; }
+
+  /* COACH */
+  .coach-stripe { background: #1B3A5C; padding: 12px 36px; display: flex; align-items: center; gap: 12px; }
+  .coach-icon { font-size: 28px; flex-shrink: 0; }
+  .coach-text { font-size: 12.5px; color: #EDE5D5; line-height: 1.5; }
+  .coach-text strong { font-weight: 900; font-size: 13.5px; color: #fff; }
+
+  /* FOOTER */
+  .footer { background: #C8913A; padding: 12px 36px; }
+  .contact-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .contact-item { font-size: 12.5px; font-weight: 700; color: #1B3A5C; }
+  .tagline-foot { text-align: center; margin-top: 8px; font-family: 'Fredericka the Great', serif; font-size: 14px; color: #fff; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="flyer">
+
+  <svg class="starburst" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="40,4 46,28 68,18 56,40 76,52 52,52 52,76 40,60 28,76 28,52 4,52 24,40 12,18 34,28" fill="#C8913A"/>
+    <text x="40" y="34" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="900" font-size="8.5" fill="#fff" letter-spacing="0.5">RAIN OR</text>
+    <text x="40" y="45" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="900" font-size="8.5" fill="#fff" letter-spacing="0.5">SHINE</text>
+    <text x="40" y="57" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="8" fill="#1B3A5C">Summer '26</text>
+  </svg>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-line">
+      <span class="logo-text">Court &amp; Cast</span>
+      <span class="logo-dot">·</span>
+      <span class="logo-text" style="color:#a8c4d8; font-weight:600; font-size:12px; letter-spacing:2px;">Falmouth, MA</span>
+    </div>
+    <div class="headline">Kids<br><em>Tennis</em><br>Camp</div>
+    <div class="subhead">☀️🌧️ Morning sessions · Ages 5–14 · All levels welcome · Mon–Thu</div>
+  </div>
+
+  <svg class="wave" viewBox="0 0 680 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L680,0 L680,12 Q510,40 340,18 Q170,-4 0,22 Z" fill="#1B3A5C"/>
+    <path d="M0,22 Q170,4 340,24 Q510,46 680,18 L680,36 L0,36 Z" fill="#F5EFE3"/>
+  </svg>
+
+  <!-- GROUPS -->
+  <div class="groups">
+    <div class="section-label">🎾 Three groups — every age has a spot</div>
+    <div class="group-cards">
+      <div class="group-card">
+        <span class="ball">🔴</span>
+        <div class="age">Ages 5–7</div>
+        <div class="name">Mini Red</div>
+        <div class="detail">Red foam ball · Half court · Games-based intro</div>
+        <span class="time-tag">8:30 – 9:15 AM · 45 min</span>
+      </div>
+      <div class="group-card gold-border">
+        <span class="ball">🟠</span>
+        <div class="age">Ages 8–10</div>
+        <div class="name">Mini Orange</div>
+        <div class="detail">Orange ball · 3/4 court · Rallies + scoring</div>
+        <span class="time-tag">9:30 – 10:30 AM · 60 min</span>
+      </div>
+      <div class="group-card">
+        <span class="ball">🎾</span>
+        <div class="age">Ages 11–14</div>
+        <div class="name">Green &amp; Yellow</div>
+        <div class="detail">Full court · Match play + tactics</div>
+        <span class="time-tag">10:45 – 11:45 AM · 60 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="pricing-strip">
+    <div class="section-label">💰 Pricing — book by the week</div>
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>4-Day Week</th>
+          <th>3-Day Week<br><span style="font-weight:600; opacity:0.8; font-size:9px;">Week 2 only</span></th>
+          <th>Per Session</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>🔴 Mini Red (5–7)</td>
+          <td><strong>$100</strong></td>
+          <td style="color:#888;">—</td>
+          <td class="gold">$25</td>
+        </tr>
+        <tr>
+          <td>🟠 Mini Orange (8–10)</td>
+          <td><strong>$130</strong></td>
+          <td><strong>$100</strong></td>
+          <td class="gold">$25–$33</td>
+        </tr>
+        <tr>
+          <td>🎾 Green/Yellow (11–14)</td>
+          <td><strong>$175</strong></td>
+          <td><strong>$135</strong></td>
+          <td class="gold">$34–$44</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="multi-note">
+      <span>🎉</span>
+      <span>Book <strong>2 or more weeks</strong> and save <strong>10%</strong> — mix and match any sessions all summer</span>
+    </div>
+  </div>
+
+  <!-- SESSION DATES -->
+  <div class="dates-band">
+    <div class="dates-label">📆 Weekly sessions — summer 2026</div>
+    <div class="dates-grid">
+      <div class="date-pill">
+        <div class="dp-week">Week 1</div>
+        <div class="dp-dates">June 29<br>– July 2</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill short">
+        <div class="dp-week">Week 2 ★</div>
+        <div class="dp-dates">July 6, 7, 9</div>
+        <div class="dp-days">Mon, Tue, Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 3</div>
+        <div class="dp-dates">July 13<br>– July 16</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 4</div>
+        <div class="dp-dates">July 20<br>– July 23</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 5</div>
+        <div class="dp-dates">July 27<br>– July 30</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 6</div>
+        <div class="dp-dates">Aug 10<br>– Aug 13</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 7</div>
+        <div class="dp-dates">Aug 17<br>– Aug 20</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+      <div class="date-pill">
+        <div class="dp-week">Week 8</div>
+        <div class="dp-dates">Aug 24<br>– Aug 27</div>
+        <div class="dp-days">Mon – Thu</div>
+      </div>
+    </div>
+    <div class="dates-footnote">
+      ★ Week 2 is 3 days (Mon, Tue, Thu) · Mini Red not available Weeks 1 &amp; 2 · No sessions week of Aug 4
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-band">
+    <div class="info-col">
+      <div class="label">📍 Location</div>
+      <div class="line">Falmouth High School<br>Tennis Courts<br>874 Gifford Street<br>Falmouth, MA</div>
+    </div>
+    <div class="info-col">
+      <div class="label">☀️ Good to Know</div>
+      <div class="line">
+        <span class="rain">Rain or shine — no cancellations</span><br>
+        Max 4–6 kids per group<br>
+        All levels welcome<br>
+        Billed upfront via Square
+      </div>
+    </div>
+    <div class="info-col">
+      <div class="label">📝 Register</div>
+      <div class="line">
+        courtandcast.com<br>
+        courtandcast@gmail.com<br>
+        @courtandcast<br>
+        Spots fill fast — book early
+      </div>
+    </div>
+  </div>
+
+  <!-- COACH -->
+  <div class="coach-stripe">
+    <div class="coach-icon">⛵</div>
+    <div class="coach-text">
+      <strong>Coach Amy</strong> — PTR Certified Tennis Coach · USCG Licensed Captain · Cape Cod local.<br>
+      Small groups, big energy, real results. Your kid will leave wanting more.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="contact-row">
+      <div class="contact-item">🌐 courtandcast.com</div>
+      <div class="contact-item">✉️ courtandcast@gmail.com</div>
+      <div class="contact-item">📸 @courtandcast</div>
+    </div>
+    <div class="tagline-foot">Play Hard. Fish Harder.</div>
+  </div>
+
+</div>
+</body>
+</html>
