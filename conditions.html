@@ -655,7 +655,14 @@ color: #e0bd6e;
     const now = new Date();
     const begin = new Date(now.getTime() - 12 * 3600 * 1000);
     const end = new Date(now.getTime() + 30 * 3600 * 1000);
-    const fmt = d => d.toISOString().slice(0,10).replace(/-/g,'') + ' ' + d.toISOString().slice(11,16).replace(':','');
+   const fmt = d => {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  }).formatToParts(d).reduce((a, p) => (a[p.type] = p.value, a), {});
+  return `${parts.year}${parts.month}${parts.day} ${parts.hour}${parts.minute}`;
+};
     const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date=${fmt(begin)}&end_date=${fmt(end)}&datum=MLLW&station=${TIDE_STATION}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
     try {
       const res = await fetch(url);
