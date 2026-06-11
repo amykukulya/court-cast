@@ -1,0 +1,1586 @@
+<!-- ===== COURT & CAST LIVE CONDITIONS + FISHING GUIDE ===== -->
+<!--
+  HOW TO ADD YOUR OWN FISH PHOTOS
+  --------------------------------
+  1. Create a folder named "fish-images" next to this file on courtandcast.com
+     (e.g. courtandcast.com/conditions/fish-images/).
+  2. Drop in photos using these exact filenames:
+       striped-bass.jpg
+       bluefish.jpg
+       fluke.jpg
+       tautog.jpg
+       black-sea-bass.jpg
+       albie-bonito.jpg
+       scup.jpg
+  3. Done. The cards below already point to fish-images/<name>.jpg.
+     Until you add a file, a stock Wikimedia photo shows in its place.
+  4. Recommended: landscape, 800px+ wide, well-lit photos.
+-->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root {
+    --navy: #1B3A5C;
+    --ink: #0a1a2e;
+    --gold: #C8913A;
+    --gold2: #e0bd6e;
+    --cream: #F5EFE3;
+    --oat: #EDE5D5;
+    --teal: #4a9eb8;
+  }
+
+  .cc-page {
+    font-family: var(--sans, 'Source Sans 3', -apple-system, sans-serif);
+    background: var(--cream);
+    color: var(--navy);
+  }
+  .cc-page * { box-sizing: border-box; }
+
+  /* ---------- LIVE STRIP ---------- */
+  .cc-strip {
+    background: linear-gradient(90deg, var(--ink) 0%, var(--navy) 100%);
+    color: #e8eef5;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    border-bottom: 2px solid var(--gold);
+    position: fixed;
+    top: 74px;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    width: 100%;
+  }
+  .cc-strip-brand {
+    font-weight: 600;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding-right: 14px;
+    border-right: 1px solid rgba(200,168,75,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cc-strip-brand img {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .cc-strip-live {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    margin-right: 6px;
+    vertical-align: middle;
+    animation: cc-pulse 2s ease-in-out infinite;
+  }
+  @keyframes cc-pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+  .cc-strip-item { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .cc-strip-icon {
+    width: 16px; height: 16px;
+    color: var(--gold);
+    stroke: currentColor; fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  .cc-strip-label {
+    color: #8a9aae; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .cc-strip-value { color: #fff; font-weight: 500; }
+  .cc-strip-bite {
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.4);
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: var(--gold2);
+    font-weight: 500;
+    font-size: 12px;
+  }
+  .cc-wind-icon { transition: transform 0.6s ease; }
+  body { padding-top: 44px; }
+  @media (max-width: 768px) {
+    .cc-strip { gap: 14px; padding: 8px 12px; font-size: 12px; }
+    .cc-strip-brand span:last-child { display: none; }
+  }
+
+  /* ---------- SHARED SECTION STYLES ---------- */
+  .cc-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 20px;
+  }
+  .cc-section-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .cc-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .cc-section-title {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .cc-section-sub {
+    font-family: 'Cormorant Garamond', 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: #6b7d8f;
+  }
+
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes cc-rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .cc-animate {
+    opacity: 0;
+    animation: cc-rise 0.7s ease-out forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cc-animate { opacity: 1; animation: none; }
+    .cc-wind-icon { transition: none !important; animation: none !important; }
+  }
+
+  /* ---------- MAP SECTION ---------- */
+  .cc-map-wrap {
+    background: var(--ink);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 16px 40px rgba(10,26,46,0.25);
+  }
+  .cc-map {
+    height: 520px;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(200,168,75,0.3);
+  }
+  @media (max-width: 600px) {
+    .cc-map { height: 400px; }
+  }
+  .cc-map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #cdd8e4;
+    letter-spacing: 0.05em;
+  }
+  .cc-map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cc-legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 2px solid #fff;
+  }
+  .cc-map-note {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #8a9aae;
+    font-style: italic;
+  }
+
+  /* Leaflet popup theming */
+  .leaflet-popup-content-wrapper {
+    background: var(--navy);
+    color: #e8eef5;
+    border-radius: 8px;
+    border: 1px solid var(--gold);
+  }
+  .leaflet-popup-tip { background: var(--navy); }
+  .cc-popup-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--gold2);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .cc-popup-body { font-size: 12px; line-height: 1.5; }
+  .cc-popup-depth {
+    display: inline-block;
+    margin-top: 6px;
+    background: rgba(74,158,184,0.2);
+    border: 1px solid var(--teal);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #9fd8e8;
+  }
+
+  /* ---------- FISH SPECIES CARDS ---------- */
+  .cc-fish-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .cc-fish-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(27,58,92,0.08);
+    border: 1px solid rgba(27,58,92,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .cc-fish-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(27,58,92,0.16);
+  }
+  .cc-fish-img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+    background: var(--oat);
+  }
+  .cc-fish-body { padding: 18px 20px 22px; }
+  .cc-fish-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+  .cc-fish-latin {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #8a9aae;
+    margin-bottom: 12px;
+  }
+  .cc-fish-regs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .cc-fish-reg {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .cc-fish-reg-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a9aae;
+    margin-bottom: 3px;
+  }
+  .cc-fish-reg-value {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .cc-fish-season {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .cc-fish-tackle {
+    border-top: 1px dashed rgba(27,58,92,0.15);
+    padding-top: 12px;
+  }
+  .cc-fish-tackle-row {
+    display: flex;
+    gap: 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .cc-fish-tackle-label {
+    font-weight: 700;
+    color: var(--teal);
+    flex-shrink: 0;
+    min-width: 52px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 1px;
+  }
+  .cc-fish-disclaimer {
+    text-align: center;
+    font-size: 11px;
+    color: #8a9aae;
+    font-style: italic;
+    margin-top: 28px;
+    line-height: 1.6;
+  }
+
+  /* ---------- PARTNER FOOTER ---------- */
+  .cc-partner-bar {
+    background: var(--navy);
+    padding: 28px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  .cc-partner-bar img {
+    height: 64px;
+    width: 64px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cc-partner-text {
+    color: #e8eef5;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .cc-partner-text strong {
+    color: var(--gold2);
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 2px;
+  }
+</style>
+
+<div class="cc-page">
+
+<!-- ===== LIVE CONDITIONS STRIP ===== -->
+<div class="cc-strip" id="ccStrip">
+  <div class="cc-strip-brand">
+    <span class="cc-strip-live"></span>
+    <span>Live · Falmouth Heights</span>
+  </div>
+  <div class="cc-strip-item">
+    <svg class="cc-strip-icon" viewBox="0 0 24 24">
+      <path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
+      <path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
+    </svg>
+    <span class="cc-strip-label">Tide</span>
+    <span class="cc-strip-value" id="ccTide">—</span>
+  </div>
+  <div class="cc-strip-item">
+    <svg class="cc-strip-icon cc-wind-icon" id="ccWindIcon" viewBox="0 0 24 24">
+      <path d="M12 2l4 6h-3v12h-2V8H8l4-6z"/>
+    </svg>
+    <span class="cc-strip-label">Wind</span>
+    <span class="cc-strip-value"><span id="ccWind">—</span> kt <span id="ccWindDir" style="color:#8a9aae;font-weight:400;">—</span></span>
+  </div>
+  <div class="cc-strip-item">
+    <svg class="cc-strip-icon" viewBox="0 0 24 24">
+      <path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
+      <path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
+    </svg>
+    <span class="cc-strip-label">Waves</span>
+    <span class="cc-strip-value"><span id="ccWave">—</span> ft</span>
+  </div>
+  <div class="cc-strip-item">
+    <svg class="cc-strip-icon" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3.5"/>
+      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
+    </svg>
+    <span class="cc-strip-label">Air</span>
+    <span class="cc-strip-value"><span id="ccAir">—</span>°F</span>
+  </div>
+  <div class="cc-strip-item">
+    <svg class="cc-strip-icon" viewBox="0 0 24 24">
+      <path d="M12 3c-3 4-5 7-5 10a5 5 0 0010 0c0-3-2-6-5-10z"/>
+    </svg>
+    <span class="cc-strip-label">Water</span>
+    <span class="cc-strip-value"><span id="ccWater">—</span>°F</span>
+  </div>
+  <div class="cc-strip-bite" id="ccBite">Hot Bite: —</div>
+</div>
+
+<!-- ===== EMBEDDED TIDE CLOCK / CONDITIONS WIDGET ===== -->
+<!--
+  This is your existing conditions.html widget (live tide clock, full
+  conditions panel), embedded directly above the chart map per your request.
+  It runs independently of the strip above using its own script block
+  (ids are namespaced with "tc-" / "cc2-" below to avoid collisions with the
+  strip's ids).
+-->
+<section class="cc-section cc-animate" style="animation-delay: 0.02s; padding-top: 24px;">
+  <div class="cc-tc-wrap">
+    <div class="cc-tc-head">
+      <div class="cc-tc-brand">Court <span class="cc-tc-amp">&amp;</span> Cast</div>
+      <div class="cc-tc-location">Falmouth Heights, MA · Vineyard Sound</div>
+      <div class="cc-tc-live"><span class="cc-tc-dot"></span><span id="tcLastUpdate">Loading…</span></div>
+    </div>
+
+    <div class="cc-tc-diag" id="tcDiagBanner">
+      <strong>Data load issue:</strong> <span id="tcDiagMessage"></span>
+    </div>
+
+    <div class="cc-tc-main">
+      <div class="cc-tc-clock">
+        <svg class="cc-tc-svg" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="tcFaceGrad" cx="50%" cy="50%">
+              <stop offset="0%" stop-color="#1d3a5f"/>
+              <stop offset="70%" stop-color="#142845"/>
+              <stop offset="100%" stop-color="#0a1a2e"/>
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="98" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.4"/>
+          <circle cx="100" cy="100" r="94" fill="url(#tcFaceGrad)" stroke="#c9a961" stroke-width="0.5" opacity="0.8"/>
+          <text x="100" y="20" text-anchor="middle" fill="#c9a961" font-family="JetBrains Mono, monospace" font-size="7" font-weight="600" letter-spacing="1.5">HIGH</text>
+          <path d="M 95 24 L 100 30 L 105 24" fill="none" stroke="#c9a961" stroke-width="1.2" stroke-linecap="round"/>
+          <text x="100" y="186" text-anchor="middle" fill="#4a9eb8" font-family="JetBrains Mono, monospace" font-size="7" font-weight="600" letter-spacing="1.5">LOW</text>
+          <path d="M 95 176 L 100 170 L 105 176" fill="none" stroke="#4a9eb8" stroke-width="1.2" stroke-linecap="round"/>
+          <text x="180" y="103" text-anchor="middle" fill="#8a9aae" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="1.2" font-style="italic">FLOOD</text>
+          <text x="20" y="103" text-anchor="middle" fill="#8a9aae" font-family="JetBrains Mono, monospace" font-size="6" letter-spacing="1.2" font-style="italic">EBB</text>
+          <g id="tcTickMarks"></g>
+          <g id="tcHourLabels"></g>
+          <g opacity="0.3">
+            <path d="M 60 110 Q 70 105 80 110 T 100 110 T 120 110 T 140 110" fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
+            <path d="M 60 116 Q 70 111 80 116 T 100 116 T 120 116 T 140 116" fill="none" stroke="#4a9eb8" stroke-width="0.8"/>
+          </g>
+          <circle cx="100" cy="100" r="8" fill="#0a1a2e" stroke="#c9a961" stroke-width="1"/>
+          <g id="tcTideHand" style="transform-origin: 100px 100px; transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);">
+            <line x1="100" y1="100" x2="100" y2="32" stroke="rgba(0,0,0,0.4)" stroke-width="3" stroke-linecap="round" transform="translate(1, 1)"/>
+            <line x1="100" y1="100" x2="100" y2="32" stroke="#c9a961" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 100 32 L 96 40 L 100 36 L 104 40 Z" fill="#e0bd6e"/>
+            <line x1="100" y1="100" x2="100" y2="118" stroke="#c9a961" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <circle cx="100" cy="100" r="4" fill="#c9a961"/>
+          <circle cx="100" cy="100" r="1.5" fill="#0a1a2e"/>
+        </svg>
+      </div>
+
+      <div class="cc-tc-readouts">
+        <div class="cc-tc-status-now" id="tcStatusNow">Reading the water…</div>
+        <div class="cc-tc-readout-cards">
+          <div class="cc-tc-readout-card high">
+            <div class="cc-tc-readout-label">Next High</div>
+            <div class="cc-tc-readout-time" id="tcNextHighTime">—</div>
+            <div class="cc-tc-readout-when" id="tcNextHighIn">—</div>
+          </div>
+          <div class="cc-tc-readout-card low">
+            <div class="cc-tc-readout-label">Next Low</div>
+            <div class="cc-tc-readout-time" id="tcNextLowTime">—</div>
+            <div class="cc-tc-readout-when" id="tcNextLowIn">—</div>
+          </div>
+        </div>
+        <div class="cc-tc-note">Tide times adjusted for Falmouth Heights (approx. ±20 min)</div>
+      </div>
+    </div>
+
+    <div class="cc-tc-conditions">
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div class="cc-tc-item-label">Time</div>
+        <div class="cc-tc-item-value" id="tcTime">—</div>
+        <div class="cc-tc-item-sub" id="tcDate">—</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon cc-tc-wind-icon" id="tcWindIcon" viewBox="0 0 24 24"><path d="M12 2l4 6h-3v12h-2V8H8l4-6z"/></svg>
+        <div class="cc-tc-item-label">Wind</div>
+        <div class="cc-tc-item-value"><span id="tcWindSpeed">—</span> kt</div>
+        <div class="cc-tc-item-sub" id="tcWindDir">—</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>
+        <div class="cc-tc-item-label">Waves</div>
+        <div class="cc-tc-item-value"><span id="tcWaveHeight">—</span> ft</div>
+        <div class="cc-tc-item-sub" id="tcWavePeriod">—</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>
+        <div class="cc-tc-item-label">Air</div>
+        <div class="cc-tc-item-value"><span id="tcAirTemp">—</span>°F</div>
+        <div class="cc-tc-item-sub" id="tcAirFeels">—</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><path d="M12 3c-3 4-5 7-5 10a5 5 0 0010 0c0-3-2-6-5-10z"/></svg>
+        <div class="cc-tc-item-label">Water</div>
+        <div class="cc-tc-item-value"><span id="tcWaterTemp">—</span>°F</div>
+        <div class="cc-tc-item-sub" id="tcWaterDesc">Woods Hole</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><path d="M3 17h18"/><path d="M7 13a5 5 0 0110 0"/><path d="M12 2v4M5 6l2 2M19 6l-2 2"/><path d="M9 20l3-3 3 3"/></svg>
+        <div class="cc-tc-item-label">Sunrise</div>
+        <div class="cc-tc-item-value" id="tcSunrise">—</div>
+        <div class="cc-tc-item-sub">Dawn bite</div>
+      </div>
+      <div class="cc-tc-item">
+        <svg class="cc-tc-icon" viewBox="0 0 24 24"><path d="M3 17h18"/><path d="M7 13a5 5 0 0110 0"/><path d="M12 8V2M5 6l2 2M19 6l-2 2"/><path d="M9 17l3 3 3-3"/></svg>
+        <div class="cc-tc-item-label">Sunset</div>
+        <div class="cc-tc-item-value" id="tcSunset">—</div>
+        <div class="cc-tc-item-sub">Dusk bite</div>
+      </div>
+    </div>
+
+    <div class="cc-tc-bite">
+      <div class="cc-tc-bite-left">
+        <svg class="cc-tc-bite-icon" viewBox="0 0 24 24">
+          <path d="M3 12c3-4 7-6 12-6 3 0 5 1 6 2-1 1-3 2-6 2"/>
+          <path d="M3 12c3 4 7 6 12 6 3 0 5-1 6-2-1-1-3-2-6-2"/>
+          <circle cx="17" cy="10" r="0.8" fill="currentColor"/>
+          <path d="M3 12l-2-2M3 12l-2 2"/>
+        </svg>
+        <div class="cc-tc-bite-text">
+          <strong>Hot Bite:</strong>
+          <span class="cc-tc-bite-species" id="tcBiteSpecies">Loading…</span>
+        </div>
+      </div>
+      <div class="cc-tc-rating">
+        <span id="tcBiteRating">—</span>
+        <div class="cc-tc-meter"><div class="cc-tc-meter-fill" id="tcBiteMeter" style="width: 0%"></div></div>
+      </div>
+    </div>
+
+    <div class="cc-tc-foot">
+      <div>NOAA Woods Hole (adj. for Falmouth Heights) · Open-Meteo</div>
+      <div class="cc-tc-tagline">Play hard. Fish harder.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CHART & BUOY MAP SECTION ===== -->
+<section class="cc-section">
+  <div class="cc-section-head cc-animate" style="animation-delay: 0.05s">
+    <div class="cc-eyebrow">Nautical Chart</div>
+    <h2 class="cc-section-title">Vineyard &amp; Nantucket Sound</h2>
+    <p class="cc-section-sub">Live NOAA chart data — depths, shoals, buoys &amp; harbor entrances, Falmouth to Hyannis</p>
+  </div>
+  <div class="cc-map-wrap cc-animate" style="animation-delay: 0.15s">
+    <div class="cc-map" id="ccChartMap"></div>
+    <div class="cc-map-legend">
+      <span><span class="cc-legend-dot" style="background:#C8913A;"></span> Harbor entrance</span>
+      <span><span class="cc-legend-dot" style="background:#1B3A5C;"></span> Court &amp; Cast home port</span>
+      <span><span class="cc-legend-dot" style="background:#4ade80;"></span> NOAA tide/buoy station</span>
+      <span><span class="cc-legend-dot" style="background:#ff6b6b;"></span> Shoal / shallow area</span>
+    </div>
+    <div class="cc-map-note">Chart tiles &amp; live aids-to-navigation from NOAA. Zoom in for buoy numbers, lights, depth soundings &amp; charted shoals. For navigation, always carry official charts.</div>
+  </div>
+</section>
+
+<!-- ===== FISH SPECIES GUIDE ===== -->
+<section class="cc-section">
+  <div class="cc-section-head cc-animate" style="animation-delay: 0.05s">
+    <div class="cc-eyebrow">On The Bite</div>
+    <h2 class="cc-section-title">Species, Limits &amp; Tackle</h2>
+    <p class="cc-section-sub">What's running in Vineyard &amp; Nantucket Sound — and how to catch it</p>
+  </div>
+
+  <div class="cc-fish-grid">
+
+    <!-- Striped Bass -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.05s">
+      <img class="cc-fish-img" src="fish-images/striped-bass.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Morone_saxatilis.jpg/640px-Morone_saxatilis.jpg';" alt="Striped Bass" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Striped Bass</div>
+        <div class="cc-fish-latin">Morone saxatilis</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Slot</div>
+            <div class="cc-fish-reg-value">28"–&lt;31"</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">1 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">Year-round</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">Circle hooks required w/ bait · MA DMF</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Live eels, menhaden (pogies), sea worms, chunked mackerel</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Needlefish &amp; darter plugs, soft-plastic paddletails on jigheads, Deadly Dicks, Gibbs poppers</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bluefish -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.1s">
+      <img class="cc-fish-img" src="fish-images/bluefish.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Pomatomus_saltatrix.jpg/640px-Pomatomus_saltatrix.jpg';" alt="Bluefish" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Bluefish</div>
+        <div class="cc-fish-latin">Pomatomus saltatrix</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Min Size</div>
+            <div class="cc-fish-reg-value">None</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">5 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">Year-round</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">7/day on for-hire vessels · use a wire leader</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Chunked menhaden &amp; mackerel, whole squid</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Poppers, spoons (Hopkins, Kastmaster), bucktails, swimming plugs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fluke / Summer Flounder -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.15s">
+      <img class="cc-fish-img" src="fish-images/fluke.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Summer_flounder.jpg/640px-Summer_flounder.jpg';" alt="Fluke / Summer Flounder" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Fluke (Summer Flounder)</div>
+        <div class="cc-fish-latin">Paralichthys dentatus</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Min Size</div>
+            <div class="cc-fish-reg-value">17.5"</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">5 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">May 24 – Sep 23</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">16.5" min from shore · vessel size shown</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Live or strip squid, live mummichogs/spearing, smelly jelly on bucktail</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Bucktail jigs tipped with Gulp! swimming mullet, fluke balls, jig-and-teaser rigs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tautog -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.2s">
+      <img class="cc-fish-img" src="fish-images/tautog.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Tautoga_onitis.jpg/640px-Tautoga_onitis.jpg';" alt="Tautog" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Tautog (Blackfish)</div>
+        <div class="cc-fish-latin">Tautoga onitis</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Slot</div>
+            <div class="cc-fish-reg-value">16"–21"*</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">1–5 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">Apr 1 – Dec 31</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">*1 fish/day &gt;21" · limit varies by month, check MA DMF</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Green crabs (halved), Asian shore crabs, hermit crabs</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Jig heads tipped with crab over wrecks &amp; rock piles — hold bottom tight</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Black Sea Bass -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.25s">
+      <img class="cc-fish-img" src="fish-images/black-sea-bass.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Centropristis_striata.jpg/640px-Centropristis_striata.jpg';" alt="Black Sea Bass" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Black Sea Bass</div>
+        <div class="cc-fish-latin">Centropristis striata</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Min Size</div>
+            <div class="cc-fish-reg-value">16"</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">2–4 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">May 16 – Oct 14</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">4/day May 16–Aug 31, 2/day Sep 1–Oct 14</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Squid strips, clam, green crab over structure</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Small jigs (Diamond, butterfly-style) with Gulp! bait, high-low rigs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Albies / Bonito -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.3s">
+      <img class="cc-fish-img" src="fish-images/albie-bonito.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Euthynnus_alletteratus.jpg/640px-Euthynnus_alletteratus.jpg';" alt="False Albacore" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">False Albacore &amp; Bonito</div>
+        <div class="cc-fish-latin">Euthynnus alletteratus / Sarda sarda</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Min Size</div>
+            <div class="cc-fish-reg-value">16"</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">5 combined</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">Late Aug – Oct</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">16" curved fork length · MA limit, in effect for 2026</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Rarely take bait — sight-cast to peanut bunker/silverside blitzes</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>Small metal jigs (Deadly Dick, Epoxy Jig), Albie Snax soft plastics, Gibbs Slim Jims</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scup -->
+    <div class="cc-fish-card cc-animate" style="animation-delay: 0.35s">
+      <img class="cc-fish-img" src="fish-images/scup.jpg" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Stenotomus_chrysops.jpg/640px-Stenotomus_chrysops.jpg';" alt="Scup (Porgy)" loading="lazy">
+      <div class="cc-fish-body">
+        <div class="cc-fish-name">Scup (Porgy)</div>
+        <div class="cc-fish-latin">Stenotomus chrysops</div>
+        <div class="cc-fish-regs">
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Min Size</div>
+            <div class="cc-fish-reg-value">9.5"–11"</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Limit</div>
+            <div class="cc-fish-reg-value">30 / day</div>
+          </div>
+          <div class="cc-fish-reg">
+            <div class="cc-fish-reg-label">Season</div>
+            <div class="cc-fish-reg-value">Year-round</div>
+          </div>
+        </div>
+        <div class="cc-fish-season">9.5" from shore, 11" from boat · 30-fish window Jul 1–Oct 14</div>
+        <div class="cc-fish-tackle">
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Bait</span><span>Sea worms, squid strips, clam on small hooks — chum to bring schools up</span></div>
+          <div class="cc-fish-tackle-row"><span class="cc-fish-tackle-label">Lures</span><span>High-low rigs with size 4-6 hooks over structure, jetties &amp; rocky bottom</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="cc-fish-disclaimer">
+    Regulations shown reflect Massachusetts DMF recreational rules as of the 2026 season and are provided for general reference only.
+    Seasons, sizes, and limits change — always confirm current rules at <strong>mass.gov/info-details/recreational-saltwater-fishing-regulations</strong> before keeping any fish.
+    A valid Massachusetts saltwater fishing permit (or for-hire coverage) is required.
+  </p>
+</section>
+
+<!-- ===== PARTNER BAR ===== -->
+<div class="cc-partner-bar cc-animate">
+  <img src="capelandia-logo.png" alt="Capelandia logo">
+  <div class="cc-partner-text">
+    <strong>Capelandia</strong>
+    Life at Sea Level — Court &amp; Cast's sister outfitter for Cape Cod adventures on land &amp; sea.
+  </div>
+</div>
+
+</div>
+
+<style>
+  /* ---------- EMBEDDED TIDE CLOCK STYLES (namespaced cc-tc-) ---------- */
+  .cc-tc-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: linear-gradient(165deg, #0a1a2e 0%, #142845 50%, #1d3a5f 100%);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(10, 26, 46, 0.4);
+    color: #e8eef5;
+    position: relative;
+    overflow: hidden;
+  }
+  .cc-tc-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(74, 158, 184, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(201, 169, 97, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .cc-tc-wrap > * { position: relative; z-index: 1; }
+  .cc-tc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid rgba(201, 169, 97, 0.25);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cc-tc-brand {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .cc-tc-amp { color: #c9a961; font-style: italic; font-weight: 400; }
+  .cc-tc-location {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #c9a961;
+    margin-top: 4px;
+  }
+  .cc-tc-live {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8a9aae;
+  }
+  .cc-tc-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    margin-right: 6px;
+    vertical-align: middle;
+    animation: cc-pulse 2s ease-in-out infinite;
+  }
+  .cc-tc-diag {
+    background: rgba(217, 120, 66, 0.15);
+    border: 1px solid rgba(217, 120, 66, 0.4);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #ffb88a;
+    display: none;
+  }
+  .cc-tc-diag.show { display: block; }
+  .cc-tc-diag strong { color: #fff; }
+  .cc-tc-main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 28px;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  @media (max-width: 760px) {
+    .cc-tc-main { grid-template-columns: 1fr; gap: 20px; }
+  }
+  .cc-tc-clock { width: 320px; height: 320px; margin: 0 auto; position: relative; }
+  @media (max-width: 420px) {
+    .cc-tc-clock { width: 280px; height: 280px; }
+  }
+  .cc-tc-svg { width: 100%; height: 100%; display: block; }
+  .cc-tc-readouts { display: flex; flex-direction: column; gap: 14px; }
+  .cc-tc-status-now {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: #c9a961;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .cc-tc-readout-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cc-tc-readout-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 169, 97, 0.2);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .cc-tc-readout-card.high { border-left: 3px solid #c9a961; }
+  .cc-tc-readout-card.low { border-left: 3px solid #4a9eb8; }
+  .cc-tc-readout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8a9aae;
+    margin-bottom: 6px;
+  }
+  .cc-tc-readout-time {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .cc-tc-readout-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #c9a961;
+    margin-top: 6px;
+  }
+  .cc-tc-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: #8a9aae;
+    text-align: center;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  .cc-tc-conditions {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(201, 169, 97, 0.2);
+  }
+  @media (max-width: 900px) {
+    .cc-tc-conditions { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .cc-tc-conditions { grid-template-columns: repeat(2, 1fr); }
+  }
+  .cc-tc-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 4px;
+  }
+  .cc-tc-icon {
+    width: 28px; height: 28px;
+    margin-bottom: 6px;
+    color: #c9a961;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cc-tc-item-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8a9aae;
+    margin-bottom: 3px;
+  }
+  .cc-tc-item-value {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .cc-tc-item-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #8a9aae;
+    margin-top: 2px;
+  }
+  .cc-tc-wind-icon { transition: transform 0.6s ease; }
+  .cc-tc-bite {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201, 169, 97, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cc-tc-bite-left { display: flex; align-items: center; gap: 12px; }
+  .cc-tc-bite-icon {
+    width: 26px; height: 26px;
+    color: #c9a961;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cc-tc-bite-text strong {
+    font-family: 'JetBrains Mono', monospace;
+    color: #c9a961;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 10px;
+  }
+  .cc-tc-bite-species {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 8px;
+    font-size: 15px;
+  }
+  .cc-tc-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c9a961;
+  }
+  .cc-tc-meter {
+    width: 60px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cc-tc-meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c9a961, #d97842);
+    transition: width 1s ease-out;
+  }
+  .cc-tc-foot {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a9aae;
+  }
+  .cc-tc-tagline {
+    font-family: 'Playfair Display', 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #e0bd6e;
+  }
+</style>
+
+<script>
+(function(){
+  'use strict';
+  var LAT=41.5237,LON=-70.6717,STATION='8447930';
+
+  // Falmouth Heights tide offset from Woods Hole (8447930)
+  var HIGH_OFFSET_MIN = 2*60+33;
+  var LOW_OFFSET_MIN  = 2*60+11;
+
+  function deg2cardinal(d){var dirs=['N','NE','E','SE','S','SW','W','NW'];return dirs[Math.round(d/45)%8];}
+
+  function fmtNoaaDate(d){
+    var parts=new Intl.DateTimeFormat('en-US',{
+      timeZone:'America/New_York',
+      year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',hour12:false
+    }).formatToParts(d).reduce(function(acc,p){acc[p.type]=p.value;return acc;},{});
+    return parts.year+parts.month+parts.day+' '+parts.hour+':'+parts.minute;
+  }
+
+  // ===================================================================
+  // SECTION A: LIVE STRIP (top fixed bar) — ids prefixed "cc"
+  // ===================================================================
+  async function stripLoadTide(){
+    try{
+      var now=new Date();
+      var begin=new Date(now.getTime()-6*3600*1000);
+      var end=new Date(now.getTime()+30*3600*1000);
+      var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date='+fmtNoaaDate(begin)+'&end_date='+fmtNoaaDate(end)+'&datum=MLLW&station='+STATION+'&time_zone=lst_ldt&units=english&interval=hilo&format=json';
+      var res=await fetch(url);
+      var data=await res.json();
+
+      var events=(data.predictions||[]).map(function(p){
+        var offsetMin = p.type==='H' ? HIGH_OFFSET_MIN : LOW_OFFSET_MIN;
+        var t=new Date(p.t.replace(' ','T'));
+        return {time:new Date(t.getTime()+offsetMin*60000), type:p.type};
+      });
+
+      var future=events.filter(function(e){return e.time>now;}).sort(function(a,b){return a.time-b.time;});
+      var next=future[0];
+      if(next){
+        var kind=next.type==='H'?'High':'Low';
+        var timeStr=next.time.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+        document.getElementById('ccTide').textContent=kind+' '+timeStr;
+        return {status:next.type==='H'?'Rising':'Falling'};
+      }
+    }catch(e){document.getElementById('ccTide').textContent='offline';}
+    return null;
+  }
+  async function stripLoadWater(){
+    try{
+      var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=CourtAndCast&date=latest&station='+STATION+'&time_zone=lst_ldt&units=english&format=json';
+      var res=await fetch(url);
+      var data=await res.json();
+      if(data.data&&data.data.length){
+        var temp=parseFloat(data.data[data.data.length-1].v);
+        document.getElementById('ccWater').textContent=Math.round(temp);
+        return temp;
+      }
+    }catch(e){}
+    return null;
+  }
+  async function stripLoadWeather(){
+    try{
+      var wxUrl='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York';
+      var marineUrl='https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height&length_unit=imperial&timezone=America%2FNew_York';
+      var wxRes=await fetch(wxUrl);
+      var mRes=await fetch(marineUrl);
+      var wx=await wxRes.json();
+      var marine=mRes.ok?await mRes.json():{current:{}};
+      var wSpeed=wx.current.wind_speed_10m;
+      var wDir=wx.current.wind_direction_10m;
+      document.getElementById('ccWind').textContent=Math.round(wSpeed);
+      document.getElementById('ccWindDir').textContent=deg2cardinal(wDir);
+      document.getElementById('ccWindIcon').style.transform='rotate('+(wDir+180)+'deg)';
+      var wave=marine.current&&marine.current.wave_height;
+      document.getElementById('ccWave').textContent=wave!=null?wave.toFixed(1):'—';
+      document.getElementById('ccAir').textContent=Math.round(wx.current.temperature_2m);
+      return {wSpeed:wSpeed,wave:wave};
+    }catch(e){return null;}
+  }
+  function biteToday(c,tide){
+    var month=new Date().getMonth(),hour=new Date().getHours(),score=50;
+    if(tide&&(tide.status==='Rising'||tide.status==='Falling'))score+=20;
+    if(c&&c.wSpeed!=null){if(c.wSpeed>=5&&c.wSpeed<=15)score+=10;else if(c.wSpeed>20)score-=20;}
+    if(c&&c.wave!=null&&c.wave>=4)score-=15;
+    if((hour>=5&&hour<=8)||(hour>=17&&hour<=20))score+=10;
+    var targets={0:'Tautog',1:'Tautog',2:'Scup',3:'Scup/Tautog',4:'Striped Bass',5:'Stripers/Blues',6:'Stripers/Blues/Fluke',7:'Stripers/Blues/Albies',8:'Albies/Bonito',9:'Tautog/Stripers',10:'Tautog/Sea Bass',11:'Tautog'};
+    var label='Slow';
+    if(score>=80)label='🔥 On Fire';
+    else if(score>=65)label='🔥 Hot';
+    else if(score>=50)label='Good';
+    else if(score>=35)label='Fair';
+    return label+': '+targets[month];
+  }
+  async function stripRefresh(){
+    var results=await Promise.all([stripLoadTide(),stripLoadWeather(),stripLoadWater()]);
+    document.getElementById('ccBite').textContent=biteToday(results[1],results[0]);
+  }
+  stripRefresh();
+  setInterval(stripRefresh,10*60*1000);
+
+  // ===================================================================
+  // SECTION B: EMBEDDED TIDE CLOCK WIDGET — ids prefixed "tc"
+  // ===================================================================
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var tcDiagErrors = [];
+
+  function tcShowDiag(msg) {
+    tcDiagErrors.push(msg);
+    var banner = document.getElementById('tcDiagBanner');
+    document.getElementById('tcDiagMessage').textContent = tcDiagErrors.join(' · ');
+    banner.classList.add('show');
+  }
+
+  if (window.location.protocol === 'file:') {
+    tcShowDiag('Running as local file — browsers block API calls from file:// URLs. Host on Squarespace, GitHub Pages, or a local web server to load live data.');
+  }
+
+  function tcBuildClockFace() {
+    var ticks = document.getElementById('tcTickMarks');
+    var labels = document.getElementById('tcHourLabels');
+    for (var i = 0; i < 12; i++) {
+      var angle = i * 30;
+      var rad = (angle - 90) * Math.PI / 180;
+      var x1 = 100 + Math.cos(rad) * 88;
+      var y1 = 100 + Math.sin(rad) * 88;
+      var isMajor = i % 3 === 0;
+      var inner = isMajor ? 80 : 84;
+      var x2 = 100 + Math.cos(rad) * inner;
+      var y2 = 100 + Math.sin(rad) * inner;
+
+      var tick = document.createElementNS(svgNS, 'line');
+      tick.setAttribute('x1', x1); tick.setAttribute('y1', y1);
+      tick.setAttribute('x2', x2); tick.setAttribute('y2', y2);
+      tick.setAttribute('stroke', isMajor ? '#c9a961' : '#8a9aae');
+      tick.setAttribute('stroke-width', isMajor ? '1.2' : '0.6');
+      tick.setAttribute('stroke-linecap', 'round');
+      tick.setAttribute('opacity', isMajor ? '0.9' : '0.5');
+      ticks.appendChild(tick);
+
+      if (i > 0 && i < 6) {
+        var lx = 100 + Math.cos(rad) * 72;
+        var ly = 100 + Math.sin(rad) * 72;
+        var label = document.createElementNS(svgNS, 'text');
+        label.setAttribute('x', lx); label.setAttribute('y', ly + 2);
+        label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('fill', '#c9a961');
+        label.setAttribute('font-family', 'JetBrains Mono, monospace');
+        label.setAttribute('font-size', '7'); label.setAttribute('font-weight', '500');
+        label.setAttribute('opacity', '0.7');
+        label.textContent = i;
+        labels.appendChild(label);
+      } else if (i > 6 && i < 12) {
+        var lx2 = 100 + Math.cos(rad) * 72;
+        var ly2 = 100 + Math.sin(rad) * 72;
+        var label2 = document.createElementNS(svgNS, 'text');
+        label2.setAttribute('x', lx2); label2.setAttribute('y', ly2 + 2);
+        label2.setAttribute('text-anchor', 'middle');
+        label2.setAttribute('fill', '#4a9eb8');
+        label2.setAttribute('font-family', 'JetBrains Mono, monospace');
+        label2.setAttribute('font-size', '7'); label2.setAttribute('font-weight', '500');
+        label2.setAttribute('opacity', '0.7');
+        label2.textContent = 12 - i;
+        labels.appendChild(label2);
+      }
+    }
+  }
+  tcBuildClockFace();
+
+  function tcFmtTime(d) {
+    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
+  }
+  function tcFmtDuration(ms) {
+    if (ms < 0) ms = 0;
+    var totalMin = Math.round(ms / 60000);
+    var h = Math.floor(totalMin / 60);
+    var m = totalMin % 60;
+    if (h === 0) return 'in ' + m + ' min';
+    if (m === 0) return 'in ' + h + 'h';
+    return 'in ' + h + 'h ' + m + 'm';
+  }
+  function tcWaterDesc(t) {
+    if (t < 50) return 'Cold';
+    if (t < 60) return 'Cool';
+    if (t < 68) return 'Warming';
+    if (t < 74) return 'Prime';
+    return 'Warm';
+  }
+
+  function tcTickClock() {
+    var now = new Date();
+    document.getElementById('tcTime').textContent = now.toLocaleTimeString('en-US', {
+      hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York'
+    });
+    document.getElementById('tcDate').textContent = now.toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', timeZone: 'America/New_York'
+    });
+  }
+  tcTickClock();
+  setInterval(tcTickClock, 30000);
+
+  async function tcLoadTides() {
+    var now = new Date();
+    var begin = new Date(now.getTime() - 12 * 3600 * 1000);
+    var end = new Date(now.getTime() + 30 * 3600 * 1000);
+    var url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&begin_date=' + fmtNoaaDate(begin) + '&end_date=' + fmtNoaaDate(end) + '&datum=MLLW&station=' + STATION + '&time_zone=lst_ldt&units=english&interval=hilo&format=json';
+    try {
+      var res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      if (!data.predictions || !data.predictions.length) {
+        tcShowDiag('NOAA returned no tide predictions');
+        return null;
+      }
+      return data.predictions.map(function(p){
+        var offsetMin = p.type === 'H' ? HIGH_OFFSET_MIN : LOW_OFFSET_MIN;
+        var t = new Date(p.t.replace(' ', 'T'));
+        return {
+          time: new Date(t.getTime() + offsetMin * 60000),
+          type: p.type,
+          height: parseFloat(p.v)
+        };
+      });
+    } catch (e) {
+      tcShowDiag('Tide API failed: ' + e.message);
+      return null;
+    }
+  }
+
+  async function tcLoadWaterTemp() {
+    var url = 'https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=CourtAndCast&date=latest&station=' + STATION + '&time_zone=lst_ldt&units=english&format=json';
+    try {
+      var res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      if (data.data && data.data.length) {
+        var reading = data.data[data.data.length - 1];
+        return { temp: parseFloat(reading.v), time: reading.t };
+      }
+      return null;
+    } catch (e) {
+      tcShowDiag('Water temp sensor unavailable: ' + e.message);
+      return null;
+    }
+  }
+
+  function tcCalcAngle(now, lastEvent, nextEvent) {
+    if (!lastEvent || !nextEvent) return 0;
+    var elapsed = now - lastEvent.time;
+    var interval = nextEvent.time - lastEvent.time;
+    var progress = elapsed / interval;
+    if (lastEvent.type === 'H') return progress * 180;
+    return 180 + progress * 180;
+  }
+
+  function tcStatusText(lastEvent, nextEvent, progress) {
+    if (!lastEvent || !nextEvent) return 'Loading tide…';
+    var isEbbing = lastEvent.type === 'H';
+    if (progress < 0.1) return isEbbing ? 'Just past high — slack' : 'Just past low — slack';
+    if (progress > 0.9) return isEbbing ? 'Approaching low slack' : 'Approaching high slack';
+    if (progress < 0.4) return isEbbing ? 'Ebbing — early' : 'Flooding — early';
+    if (progress < 0.6) return isEbbing ? 'Ebbing — mid-tide' : 'Flooding — mid-tide';
+    return isEbbing ? 'Ebbing — late' : 'Flooding — late';
+  }
+
+  function tcUpdateClock(events) {
+    if (!events || events.length < 2) {
+      document.getElementById('tcStatusNow').textContent = 'Tide data unavailable';
+      return null;
+    }
+    events = events.slice().sort(function(a,b){ return a.time - b.time; });
+
+    var now = new Date();
+    var past = events.filter(function(e){ return e.time <= now; });
+    var future = events.filter(function(e){ return e.time > now; });
+    var lastEvent = past[past.length - 1];
+    var nextEvent = future[0];
+    if (!lastEvent || !nextEvent) return null;
+
+    var angle = tcCalcAngle(now, lastEvent, nextEvent);
+    document.getElementById('tcTideHand').style.transform = 'rotate(' + angle + 'deg)';
+    var progress = (now - lastEvent.time) / (nextEvent.time - lastEvent.time);
+    document.getElementById('tcStatusNow').textContent = tcStatusText(lastEvent, nextEvent, progress);
+
+    var nextHigh = future.find(function(e){ return e.type === 'H'; });
+    var nextLow = future.find(function(e){ return e.type === 'L'; });
+    if (nextHigh) {
+      document.getElementById('tcNextHighTime').textContent = tcFmtTime(nextHigh.time);
+      document.getElementById('tcNextHighIn').textContent =
+        tcFmtDuration(nextHigh.time - now) + ' · ' + nextHigh.height.toFixed(1) + ' ft';
+    }
+    if (nextLow) {
+      document.getElementById('tcNextLowTime').textContent = tcFmtTime(nextLow.time);
+      document.getElementById('tcNextLowIn').textContent =
+        tcFmtDuration(nextLow.time - now) + ' · ' + nextLow.height.toFixed(1) + ' ft';
+    }
+    return { status: lastEvent.type === 'H' ? 'Falling' : 'Rising', lastEvent: lastEvent, nextEvent: nextEvent };
+  }
+
+  async function tcLoadWeather() {
+    try {
+      var wxUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT + '&longitude=' + LON + '&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&daily=sunrise,sunset&forecast_days=1';
+      var marineUrl = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + LAT + '&longitude=' + LON + '&current=wave_height,wave_period&length_unit=imperial&timezone=America%2FNew_York';
+      var wxRes = await fetch(wxUrl);
+      var mRes = await fetch(marineUrl);
+      if (!wxRes.ok) throw new Error('weather HTTP ' + wxRes.status);
+      var wx = await wxRes.json();
+      var marine = mRes.ok ? await mRes.json() : { current: {} };
+
+      var wSpeed = wx.current.wind_speed_10m;
+      var wDir = wx.current.wind_direction_10m;
+      var wGust = wx.current.wind_gusts_10m;
+      document.getElementById('tcWindSpeed').textContent = Math.round(wSpeed);
+      document.getElementById('tcWindIcon').style.transform = 'rotate(' + (wDir + 180) + 'deg)';
+      document.getElementById('tcWindDir').textContent = deg2cardinal(wDir) + ' · G' + Math.round(wGust);
+
+      var wave = marine.current ? marine.current.wave_height : null;
+      var period = marine.current ? marine.current.wave_period : null;
+      document.getElementById('tcWaveHeight').textContent = wave != null ? wave.toFixed(1) : '—';
+      document.getElementById('tcWavePeriod').textContent = period != null ? Math.round(period) + 's' : '—';
+
+      document.getElementById('tcAirTemp').textContent = Math.round(wx.current.temperature_2m);
+      document.getElementById('tcAirFeels').textContent = 'Feels ' + Math.round(wx.current.apparent_temperature) + '°';
+
+      if (wx.daily) {
+        document.getElementById('tcSunrise').textContent = tcFmtTime(new Date(wx.daily.sunrise[0]));
+        document.getElementById('tcSunset').textContent = tcFmtTime(new Date(wx.daily.sunset[0]));
+      }
+      return { wSpeed: wSpeed, wave: wave };
+    } catch (e) {
+      tcShowDiag('Weather API failed: ' + e.message);
+      return null;
+    }
+  }
+
+  function tcBiteReport(c, tide) {
+    var month = new Date().getMonth();
+    var hour = new Date().getHours();
+    var score = 50;
+    if (tide && (tide.status === 'Rising' || tide.status === 'Falling')) score += 20;
+    if (c && c.wSpeed != null) {
+      if (c.wSpeed < 5) score -= 5;
+      else if (c.wSpeed <= 15) score += 10;
+      else if (c.wSpeed <= 20) score -= 5;
+      else score -= 20;
+    }
+    if (c && c.wave != null) {
+      if (c.wave < 3) score += 5;
+      else if (c.wave >= 4) score -= 15;
+    }
+    if ((hour >= 5 && hour <= 8) || (hour >= 17 && hour <= 20)) score += 10;
+    score = Math.max(15, Math.min(95, score));
+
+    var targets = {
+      0: 'Tautog', 1: 'Tautog', 2: 'Scup',
+      3: 'Scup · Tautog', 4: 'Striped Bass · Scup',
+      5: 'Striped Bass · Bluefish', 6: 'Striped Bass · Bluefish · Fluke',
+      7: 'Striped Bass · Bluefish · Albies', 8: 'Albies · Bonito · Stripers',
+      9: 'Tautog · Stripers · Albies', 10: 'Tautog · Sea Bass', 11: 'Tautog'
+    };
+
+    var rating = 'Slow';
+    if (score >= 80) rating = 'On Fire';
+    else if (score >= 65) rating = 'Hot';
+    else if (score >= 50) rating = 'Good';
+    else if (score >= 35) rating = 'Fair';
+
+    return { score: score, rating: rating, species: targets[month] };
+  }
+
+  async function tcRefresh() {
+    var results = await Promise.all([
+      tcLoadTides(),
+      tcLoadWeather(),
+      tcLoadWaterTemp()
+    ]);
+    var events = results[0], weather = results[1], waterReading = results[2];
+
+    var tide = tcUpdateClock(events);
+
+    if (waterReading && !isNaN(waterReading.temp)) {
+      document.getElementById('tcWaterTemp').textContent = Math.round(waterReading.temp);
+      document.getElementById('tcWaterDesc').textContent = tcWaterDesc(waterReading.temp) + ' · Woods Hole';
+    }
+
+    var r = tcBiteReport(weather, tide);
+    document.getElementById('tcBiteSpecies').textContent = r.species;
+    document.getElementById('tcBiteRating').textContent = r.rating;
+    document.getElementById('tcBiteMeter').style.width = r.score + '%';
+
+    var updated = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/New_York' });
+    document.getElementById('tcLastUpdate').textContent = 'Updated ' + updated;
+  }
+  tcRefresh();
+  setInterval(tcRefresh, 10 * 60 * 1000);
+
+  // ===================================================================
+  // SECTION C: CHART MAP
+  // ===================================================================
+  function initMap(){
+    if (typeof L === 'undefined') { setTimeout(initMap, 200); return; }
+
+    var map = L.map('ccChartMap', {
+      center: [41.555, -70.35],
+      zoom: 11,
+      scrollWheelZoom: false
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    // NOAA RNC overlay - depths, buoys, ATONs, shoals
+    L.tileLayer.wms('https://gis.charttools.noaa.gov/arcgis/services/MCS/NOAACharts/MapServer/WMSServer', {
+      layers: '0',
+      format: 'image/png',
+      transparent: true,
+      opacity: 0.75,
+      attribution: 'NOAA Chart Data'
+    }).addTo(map);
+
+    // Court & Cast home port marker (Falmouth Heights)
+    L.circleMarker([41.5237, -70.6717], {
+      radius: 9, color: '#fff', weight: 2, fillColor: '#1B3A5C', fillOpacity: 1
+    }).addTo(map).bindPopup(
+      '<div class="cc-popup-title">Court &amp; Cast Home Port</div>' +
+      '<div class="cc-popup-body">Falmouth Heights / Woods Hole area<br>Vineyard Sound</div>'
+    );
+
+    // NOAA tide/buoy station - Woods Hole
+    L.circleMarker([41.5237, -70.6717], {
+      radius: 5, color: '#fff', weight: 2, fillColor: '#4ade80', fillOpacity: 1
+    }).addTo(map).bindPopup(
+      '<div class="cc-popup-title">NOAA Station 8447930</div>' +
+      '<div class="cc-popup-body">Woods Hole — tide &amp; water temp reference station</div>'
+    );
+
+    // Harbor entrance markers, Falmouth -> Hyannis
+    var harbors = [
+      { name: 'Falmouth Harbor', lat: 41.5395, lon: -70.6112, note: 'Entrance marked by lighted buoys; 6 mph speed limit inside. Min. 8ft MLW depth, well-protected.' },
+      { name: 'Green Pond', lat: 41.5462, lon: -70.5990, note: 'Jettied entrance off the North Channel, East Falmouth. Shoal-prone — approx. 6ft anchorage depths just inside. 6ft fixed bridge limits access to upper pond.' },
+      { name: 'Falmouth Heights / Vineyard Sound shore', lat: 41.5340, lon: -70.6075, note: 'Open shoreline — Court & Cast\\'s home waters.' },
+      { name: 'Waquoit Bay', lat: 41.5577, lon: -70.5135, note: 'Shallow, winding entrance — local knowledge recommended. Extensive shoals at the mouth.' },
+      { name: 'Centerville River / Craigville', lat: 41.6275, lon: -70.3580, note: 'Narrow river entrance, strong current on tide changes.' },
+      { name: 'Hyannis Harbor', lat: 41.6425, lon: -70.2820, note: 'Major harbor — well-marked entrance channel, ferry traffic.' }
+    ];
+
+    harbors.forEach(function(h){
+      L.circleMarker([h.lat, h.lon], {
+        radius: 8, color: '#fff', weight: 2, fillColor: '#C8913A', fillOpacity: 1
+      }).addTo(map).bindPopup(
+        '<div class="cc-popup-title">' + h.name + '</div>' +
+        '<div class="cc-popup-body">' + h.note + '</div>'
+      );
+    });
+
+    // Notable shoal areas (approximate locations, for awareness only —
+    // always reference an official chart for real navigation)
+    var shoals = [
+      { name: 'Hedge Fence Shoal', lat: 41.4633, lon: -70.5550, note: 'Charted shoal between Vineyard &amp; Nantucket Sound — breaks in heavy weather. Give a wide berth.' },
+      { name: 'L\\'Hommedieu Shoal', lat: 41.4700, lon: -70.6000, note: 'Shallow patch west of Hedge Fence — popular striper structure, caution at low tide.' },
+      { name: 'Horseshoe Shoal', lat: 41.5550, lon: -70.3300, note: 'Large shallow area in central Nantucket Sound — depths can run under 10ft.' },
+      { name: 'Bishop & Clerks', lat: 41.6200, lon: -70.2950, note: 'Rocky shoal off Hyannis — lighted monument marks the area.' }
+    ];
+
+    shoals.forEach(function(s){
+      L.circleMarker([s.lat, s.lon], {
+        radius: 7, color: '#fff', weight: 2, fillColor: '#ff6b6b', fillOpacity: 0.85
+      }).addTo(map).bindPopup(
+        '<div class="cc-popup-title">' + s.name + '</div>' +
+        '<div class="cc-popup-body">' + s.note + '<div class="cc-popup-depth">⚠ Shoal area — verify on chart</div></div>'
+      );
+    });
+
+    map.on('click', function(){ map.scrollWheelZoom.enable(); });
+  }
+  initMap();
+
+  // ===================================================================
+  // SECTION D: SCROLL-IN ANIMATION
+  // ===================================================================
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.cc-animate').forEach(function(el){
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+  }
+})();
+</script>
+<!-- ===== END COURT & CAST LIVE CONDITIONS + FISHING GUIDE ===== -->
