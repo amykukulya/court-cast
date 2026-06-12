@@ -625,6 +625,7 @@
     <li><a href="/#golf">Golf</a></li>
     <li><a href="/#membership">Memberships</a></li>
     <li><a href="/gift">🎁 Gift Cape Cod</a></li>
+    <li><a href="/about">About</a></li>
     <li><a href="#register" class="nav-cta">Register Now</a></li>
   </ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
@@ -639,6 +640,7 @@
   <li><a href="/#golf">Golf</a></li>
   <li><a href="/#membership">Memberships</a></li>
   <li><a href="/gift">🎁 Gift Cape Cod</a></li>
+  <li><a href="/about">About</a></li>
   <li><a href="#register" class="nav-cta-mobile" id="mobileRegister">Register Now</a></li>
 </ul>
 
@@ -1063,7 +1065,7 @@
             <div class="form-success-icon">🎾</div>
             <h3>You're on the list!</h3>
             <p>Amy will be in touch within 24 hours with your Square invoice. Once payment is received your spot is confirmed.</p>
-            <p style="margin-top:.8rem;font-size:.82rem;color:var(--muted);">Questions? Email <a href="mailto:courtandcast@gmail.com">courtandcast@gmail.com</a> or DM <a href="https://instagram.com/courtandcast" target="_blank">@courtandcast</a></p>
+            <p style="margin-top:.8rem;font-size:.82rem;color:var(--muted);">Questions? Email <a href="mailto:courtandcast@gmail.com">courtandcast@gmail.com</a> or DM <a href="https://instagram.com/courtandcast" target="_blank" rel="noopener noreferrer">@courtandcast</a></p>
           </div>
 
         </div>
@@ -1086,85 +1088,83 @@
       <a href="/tennis">Tennis</a>
       <a href="/#golf">Golf</a>
       <a href="/#membership">Memberships</a>
+      <a href="/about">About</a>
       <a href="#register">Contact</a>
     </div>
-    <p class="footer-copy">&copy; 2026 Court &amp; Cast &middot; A DBA of Capelandia LLC &middot; Cape Cod, Massachusetts &middot; courtandcast.com</p>
+    <p class="footer-copy">&copy; 2026 Court &amp; Cast · Falmouth, MA · All rights reserved</p>
   </div>
 </footer>
 
 <script>
+  // Nav scroll shadow
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 50); });
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
 
-  // Hamburger menu
+  // Hamburger
   const hamburger = document.getElementById('hamburger');
   const navMobile = document.getElementById('navMobile');
-  if (hamburger && navMobile) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navMobile.classList.toggle('open');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navMobile.classList.toggle('open');
+  });
+  navMobile.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navMobile.classList.remove('open');
     });
-    navMobile.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navMobile.classList.remove('open');
-      });
-    });
-  }
+  });
 
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-  document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+  // Mobile register scroll fix
+  document.getElementById('mobileRegister').addEventListener('click', e => {
+    e.preventDefault();
+    hamburger.classList.remove('open');
+    navMobile.classList.remove('open');
+    setTimeout(() => document.getElementById('register').scrollIntoView({behavior:'smooth'}), 300);
+  });
 
-  // Form submission via Formspree
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+
+  // Form submission
   const form = document.getElementById('registrationForm');
-  const btn = document.getElementById('submitBtn');
-  const success = document.getElementById('formSuccess');
-
+  const submitBtn = document.getElementById('submitBtn');
+  const formSuccess = document.getElementById('formSuccess');
   if (form) {
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-
-      // Validate at least one week checked
-      const weeks = form.querySelectorAll('input[name="weeks"]:checked');
-      if (weeks.length === 0) {
-        alert('Please select at least one week.');
-        return;
-      }
-
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
       try {
-        const data = new FormData(form);
         const res = await fetch(form.action, {
           method: 'POST',
-          body: data,
+          body: new FormData(form),
           headers: { 'Accept': 'application/json' }
         });
-
         if (res.ok) {
           form.style.display = 'none';
-          success.style.display = 'block';
-          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          formSuccess.style.display = 'block';
         } else {
-          btn.textContent = 'Something went wrong — try again';
-          btn.disabled = false;
-          btn.style.background = '#c0392b';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Reserve My Spot →';
+          alert('Something went wrong. Please email courtandcast@gmail.com directly.');
         }
-      } catch(err) {
-        btn.textContent = 'Network error — please email us directly';
-        btn.disabled = false;
-        btn.style.background = '#c0392b';
+      } catch {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Reserve My Spot →';
+        alert('Something went wrong. Please email courtandcast@gmail.com directly.');
       }
     });
   }
 
-  // Show success if redirected back with ?registered=true
-  if (window.location.search.includes('registered=true') && success) {
+  // Check registered param
+  if (new URLSearchParams(window.location.search).get('registered') === 'true') {
     if (form) form.style.display = 'none';
-    success.style.display = 'block';
+    if (formSuccess) formSuccess.style.display = 'block';
   }
 </script>
 </body>
