@@ -1,1 +1,502 @@
-about_b64
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Amy | Court &amp; Cast</title>
+  <meta name="description" content="Meet Amy Kukulya — marine robotics engineer, patented inventor, ocean explorer, licensed captain, tennis pro, and founder of Court &amp; Cast." />
+  <meta property="og:title" content="About Amy Kukulya | Court &amp; Cast" />
+  <meta property="og:description" content="Marine robotics engineer, REMUS SharkCam co-inventor, Explorers Club Fellow, and founder of Court &amp; Cast." />
+  <meta property="og:image" content="amy-headshot.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── DESIGN TOKENS ───────────────────────────────── */
+    :root {
+      --navy:        #12233e;
+      --navy-mid:    #1a3558;
+      --teal:        #1a6872;
+      --teal-light:  #2a8a97;
+      --teal-pale:   #d4eaed;
+      --gold:        #c89b3c;
+      --gold-light:  #e8c06a;
+      --gold-pale:   #f5edd8;
+      --off-white:   #f8f6f1;
+      --warm-white:  #fdfcf9;
+      --text:        #1c1c1e;
+      --text-muted:  #5a5b60;
+      --text-faint:  #8f8f94;
+      --border:      rgba(28,28,30,.10);
+      --divider:     rgba(28,28,30,.08);
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Jost', system-ui, sans-serif;
+
+      --text-xs:   clamp(.75rem,  .7rem  + .25vw, .875rem);
+      --text-sm:   clamp(.875rem, .82rem + .3vw,  1rem);
+      --text-base: clamp(1rem,    .95rem + .25vw, 1.1rem);
+      --text-lg:   clamp(1.15rem, 1rem   + .7vw,  1.5rem);
+      --text-xl:   clamp(1.5rem,  1.15rem + 1.3vw, 2.25rem);
+      --text-2xl:  clamp(2rem,    1.1rem  + 2.5vw, 3.5rem);
+      --text-3xl:  clamp(2.6rem,  .8rem   + 4.5vw, 5.2rem);
+
+      --sp-2: .5rem;  --sp-3: .75rem;  --sp-4: 1rem;
+      --sp-5: 1.25rem; --sp-6: 1.5rem; --sp-8: 2rem;
+      --sp-10: 2.5rem; --sp-12: 3rem;  --sp-16: 4rem;
+      --sp-20: 5rem;   --sp-24: 6rem;
+
+      --radius-sm: .375rem;  --radius-md: .625rem;
+      --radius-lg: 1.1rem;   --radius-xl: 1.75rem;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 3px rgba(18,35,62,.07);
+      --shadow-md: 0 6px 24px rgba(18,35,62,.10);
+      --shadow-lg: 0 18px 50px rgba(18,35,62,.13);
+
+      --max-w: 1160px;
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+
+    /* ── RESET ───────────────────────────────────────── */
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; scroll-padding-top:var(--sp-16); -webkit-text-size-adjust:none; }
+    body { font-family:var(--font-body); font-size:var(--text-base); line-height:1.7;
+           color:var(--text); background:var(--warm-white); -webkit-font-smoothing:antialiased; }
+    img  { display:block; max-width:100%; height:auto; }
+    a    { color:inherit; text-decoration:none; transition:color 180ms var(--ease); }
+    button { cursor:pointer; font:inherit; }
+    :focus-visible { outline:2px solid var(--teal); outline-offset:3px; border-radius:var(--radius-sm); }
+    .skip-link { position:absolute; left:-9999px; } .skip-link:focus { left:var(--sp-4); top:var(--sp-4); background:var(--warm-white); padding:var(--sp-3) var(--sp-4); z-index:200; border-radius:var(--radius-sm); }
+
+    /* ── UTILITY ─────────────────────────────────────── */
+    .wrap     { width:min(calc(100% - 2.5rem), var(--max-w)); margin-inline:auto; }
+    .eyebrow  { font-family:var(--font-body); font-size:var(--text-xs); font-weight:600;
+                text-transform:uppercase; letter-spacing:.14em; color:var(--teal); }
+    .divider-rule { height:1px; background:var(--divider); border:none; }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    .site-nav {
+      position:sticky; top:0; z-index:100;
+      background:rgba(253,252,249,.92); backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:var(--sp-4); padding:var(--sp-4) 0;
+    }
+    .nav-logo {
+      display:flex; align-items:center; gap:var(--sp-3);
+    }
+    .nav-logo svg { width:36px; height:36px; }
+    .nav-wordmark {
+      font-family:var(--font-display); font-size:1.35rem; font-weight:600;
+      color:var(--navy); letter-spacing:.02em; line-height:1;
+    }
+    .nav-links { display:flex; gap:var(--sp-2); align-items:center; }
+    .nav-links a {
+      font-size:var(--text-sm); font-weight:500; color:var(--text-muted);
+      padding:.55rem .85rem; border-radius:var(--radius-full);
+      transition:background 180ms var(--ease), color 180ms var(--ease);
+    }
+    .nav-links a:hover { background:var(--teal-pale); color:var(--teal); }
+    .nav-cta {
+      background:var(--navy); color:#fff; padding:.6rem 1.2rem;
+      border-radius:var(--radius-full); font-size:var(--text-sm); font-weight:600;
+      border:none; transition:background 180ms var(--ease);
+    }
+    .nav-cta:hover { background:var(--navy-mid); }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      padding:clamp(3.5rem,8vw,6.5rem) 0 clamp(3rem,6vw,5rem);
+    }
+    .hero-grid {
+      display:grid; grid-template-columns:1fr 420px; gap:clamp(2.5rem,5vw,5rem); align-items:start;
+    }
+    .hero-eyebrow { margin-bottom:var(--sp-5); }
+    h1 {
+      font-family:var(--font-display); font-weight:600; font-size:var(--text-3xl);
+      color:var(--navy); line-height:1.0; letter-spacing:-.02em; max-width:11ch;
+    }
+    .hero-sub {
+      margin-top:var(--sp-5); color:var(--text-muted); max-width:56ch; font-size:var(--text-base);
+    }
+    .hero-badges {
+      display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-top:var(--sp-6);
+    }
+    .badge {
+      display:inline-flex; align-items:center; gap:.4rem;
+      padding:.45rem .9rem; border-radius:var(--radius-full);
+      font-size:var(--text-xs); font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    }
+    .badge-teal   { background:var(--teal-pale);   color:var(--teal);  }
+    .badge-navy   { background:#e4e9f0;             color:var(--navy);  }
+    .badge-gold   { background:var(--gold-pale);    color:#6e4c0a;      }
+    .hero-actions { display:flex; gap:var(--sp-3); flex-wrap:wrap; margin-top:var(--sp-8); }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-height:50px; padding:.85rem 1.5rem; border-radius:var(--radius-full);
+      font-size:var(--text-sm); font-weight:600; border:1.5px solid transparent;
+      transition:all 180ms var(--ease);
+    }
+    .btn-primary { background:var(--teal); color:#fff; }
+    .btn-primary:hover { background:var(--teal-light); }
+    .btn-outline { background:transparent; color:var(--navy); border-color:var(--border); }
+    .btn-outline:hover { background:var(--teal-pale); border-color:var(--teal-pale); }
+
+    /* Portrait */
+    .portrait-col { position:relative; }
+    .portrait-frame {
+      background:var(--off-white); border:1px solid var(--border);
+      border-radius:var(--radius-xl); padding:var(--sp-4);
+      box-shadow:var(--shadow-lg);
+    }
+    .portrait-frame img {
+      width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center top;
+      border-radius:calc(var(--radius-xl) - var(--sp-4));
+    }
+    .portrait-tag {
+      position:absolute; bottom:var(--sp-8); left:calc(-1.5rem);
+      background:var(--warm-white); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:var(--sp-4) var(--sp-5);
+      box-shadow:var(--shadow-md); max-width:230px;
+    }
+    .portrait-tag strong { display:block; font-size:var(--text-sm); color:var(--navy); margin-bottom:.3rem; }
+    .portrait-tag span   { font-size:var(--text-xs); color:var(--text-muted); }
+    .gold-line {
+      width:40px; height:3px; background:var(--gold); border-radius:2px; margin-bottom:var(--sp-5);
+    }
+
+    /* ── STORY CARDS ─────────────────────────────────── */
+    .section { padding:clamp(3rem,6vw,5.5rem) 0; }
+    .section-head { margin-bottom:clamp(2rem,4vw,3.5rem); }
+    .section-head h2 {
+      font-family:var(--font-display); font-size:var(--text-2xl);
+      color:var(--navy); font-weight:600; letter-spacing:-.02em;
+      margin-top:var(--sp-3);
+    }
+    .section-head p { margin-top:var(--sp-4); color:var(--text-muted); max-width:60ch; }
+
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); }
+    .card {
+      background:var(--off-white); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:var(--sp-6);
+      display:flex; flex-direction:column;
+      transition:box-shadow 220ms var(--ease), transform 220ms var(--ease);
+    }
+    .card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+    .card-kicker { font-size:var(--text-xs); font-weight:700; text-transform:uppercase;
+                   letter-spacing:.14em; color:var(--gold); margin-bottom:var(--sp-4); }
+    .card h3 { font-family:var(--font-display); font-size:var(--text-xl); color:var(--navy);
+               font-weight:600; letter-spacing:-.01em; line-height:1.1; margin-bottom:var(--sp-3); }
+    .card p  { color:var(--text-muted); margin:0; }
+
+    /* ── PULL QUOTE ──────────────────────────────────── */
+    .quote-section { background:var(--navy); color:#fff; }
+    .quote-inner {
+      padding:clamp(3rem,6vw,5rem) 0;
+      display:grid; grid-template-columns:1fr 2fr; gap:var(--sp-12); align-items:center;
+    }
+    .quote-label { font-family:var(--font-body); font-size:var(--text-xs); font-weight:600;
+                   text-transform:uppercase; letter-spacing:.14em; color:var(--gold); }
+    .quote-attr  { margin-top:var(--sp-5); font-size:var(--text-sm); color:rgba(255,255,255,.55); }
+    blockquote {
+      font-family:var(--font-display); font-style:italic; font-size:clamp(1.7rem,2.5vw,2.75rem);
+      line-height:1.15; letter-spacing:-.01em; color:#fff; max-width:28ch;
+    }
+    blockquote::before { content:'"'; }
+    blockquote::after  { content:'"'; }
+
+    /* ── CONTACT ──────────────────────────────────────── */
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-6); }
+    .contact-pane {
+      background:var(--off-white); border:1px solid var(--border);
+      border-radius:var(--radius-xl); padding:clamp(1.5rem,4vw,2.5rem);
+      box-shadow:var(--shadow-sm);
+    }
+    .contact-pane h3 {
+      font-family:var(--font-display); font-size:var(--text-xl);
+      color:var(--navy); font-weight:600; letter-spacing:-.01em; margin-bottom:var(--sp-5);
+    }
+    .contact-list { list-style:none; display:grid; gap:var(--sp-4); }
+    .contact-list li { padding-bottom:var(--sp-4); border-bottom:1px solid var(--divider); }
+    .contact-list li:last-child { border-bottom:none; padding-bottom:0; }
+    .c-label { display:block; font-size:var(--text-xs); font-weight:600; text-transform:uppercase;
+               letter-spacing:.12em; color:var(--text-faint); margin-bottom:.4rem; }
+    .c-value  { font-size:var(--text-base); color:var(--text); }
+    .c-value a:hover { color:var(--teal); }
+
+    form   { display:grid; gap:var(--sp-4); }
+    label  { display:grid; gap:.5rem; font-size:var(--text-sm); font-weight:600; color:var(--text); }
+    input, textarea {
+      width:100%; border:1.5px solid var(--border); background:var(--warm-white);
+      color:var(--text); border-radius:var(--radius-md); padding:.85rem 1rem;
+      min-height:48px; font-family:var(--font-body); font-size:var(--text-base);
+      transition:border-color 180ms var(--ease);
+    }
+    input:focus, textarea:focus { outline:none; border-color:var(--teal); }
+    textarea { min-height:140px; resize:vertical; }
+    .form-note { font-size:var(--text-xs); color:var(--text-faint); margin-top:var(--sp-2); }
+    .form-success {
+      display:none; background:var(--teal-pale); color:var(--teal);
+      padding:var(--sp-4); border-radius:var(--radius-md); text-align:center;
+      font-weight:600; font-size:var(--text-sm);
+    }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    .site-footer {
+      background:var(--navy); color:rgba(255,255,255,.55);
+      font-size:var(--text-xs); padding:var(--sp-8) 0;
+    }
+    .footer-inner {
+      display:flex; justify-content:space-between; align-items:center;
+      gap:var(--sp-4); flex-wrap:wrap;
+    }
+    .footer-brand {
+      font-family:var(--font-display); font-size:1.1rem; font-weight:600;
+      color:rgba(255,255,255,.85); letter-spacing:.02em;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-grid, .quote-inner, .contact-grid { grid-template-columns:1fr; }
+      .cards { grid-template-columns:1fr; }
+      .portrait-tag { position:static; margin-top:var(--sp-4); max-width:none; }
+      h1 { max-width:14ch; }
+    }
+    @media (max-width: 600px) {
+      .nav-wordmark { font-size:1.1rem; }
+      .hero-actions { flex-direction:column; }
+      .btn { width:100%; }
+      blockquote { font-size:1.6rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/" aria-label="Court and Cast home">
+        <!-- SVG logo mark: tennis racket arc + fishing rod cast -->
+        <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <circle cx="18" cy="18" r="17" stroke="#12233e" stroke-width="1.5"/>
+          <path d="M10 24 Q18 6 26 14" stroke="#1a6872" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 28 Q20 10 28 18" stroke="#c89b3c" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="26" cy="14" r="2" fill="#1a6872"/>
+        </svg>
+        <span class="nav-wordmark">Court &amp; Cast</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#story">Story</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="mailto:courtandcast@gmail.com">Get in touch</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="about">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow hero-eyebrow">Founder of Court &amp; Cast</p>
+          <div class="gold-line" aria-hidden="true"></div>
+          <h1>Ocean explorer. Tennis pro. Adventurer.</h1>
+          <p class="hero-sub">
+            Amy Kukulya is a marine robotics engineer, patented inventor, and ocean explorer
+            who studies sharks and turtles with robots for a living — and still makes it back
+            in time for a good tennis match.
+          </p>
+          <div class="hero-badges" aria-label="Credentials">
+            <span class="badge badge-teal">REMUS SharkCam Co-Inventor</span>
+            <span class="badge badge-navy">Explorers Club Fellow</span>
+            <span class="badge badge-gold">Licensed Captain</span>
+            <span class="badge badge-teal">Tennis Pro</span>
+            <span class="badge badge-navy">7 Continents</span>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Work with Amy</a>
+            <a class="btn btn-outline"  href="mailto:courtandcast@gmail.com">courtandcast@gmail.com</a>
+          </div>
+        </div>
+
+        <!-- PORTRAIT -->
+        <div class="portrait-col">
+          <figure class="portrait-frame">
+            <img
+              src="amy-headshot.jpg"
+              alt="Amy Kukulya, founder of Court and Cast, smiling outdoors"
+              width="840" height="1050"
+              loading="eager"
+            />
+          </figure>
+          <div class="portrait-tag">
+            <strong>Based in Falmouth, MA</strong>
+            <span>Where the ocean and the court are never far from each other.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider-rule" />
+
+    <!-- STORY -->
+    <section class="section" id="story">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">Her Story</p>
+          <h2>From the deep sea to the baseline.</h2>
+          <p>
+            As co-inventor of the REMUS SharkCam, Amy helped build the autonomous underwater vehicle
+            that films predators in the deep — work that moved from lab reports to Discovery Channel's
+            Shark Week and National Geographic's SharkFest.
+          </p>
+        </header>
+
+        <div class="cards">
+          <article class="card">
+            <div class="card-kicker">Ocean Robotics</div>
+            <h3>Robots that go where we can't.</h3>
+            <p>
+              Amy designs and deploys autonomous vehicles to study sharks and sea turtles in their
+              natural environment — extending human reach far beneath the surface and into some of
+              the world's most remote waters.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-kicker">Polar Expedition</div>
+            <h3>Ice, launches &amp; seven continents.</h3>
+            <p>
+              From Antarctica's pack ice to the drifting floes of the Arctic and Greenland's calving
+              glaciers, Amy has worked on, under, and inside the ice — logging missions across all
+              seven continents.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-kicker">Sport &amp; Adventure</div>
+            <h3>Game-on mindset, on land and sea.</h3>
+            <p>
+              A licensed captain, certified tennis pro, and Explorers Club Fellow, Amy brings the
+              same competitive, all-in spirit to every dive, deployment, and rally she steps into.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PULL QUOTE -->
+    <section class="quote-section" aria-label="Amy's mission in her own words">
+      <div class="wrap">
+        <div class="quote-inner">
+          <div>
+            <p class="quote-label">Why Court &amp; Cast?</p>
+            <p class="quote-attr">— Amy Kukulya, Founder</p>
+          </div>
+          <blockquote>
+            The goal is simple: teach people how to live their best life — whether that means
+            chasing a better serve, chasing sharks with robots, or just getting outside and
+            saying yes to a little more adventure.
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">Contact</p>
+          <h2>Let's connect.</h2>
+          <p>
+            Media, speaking, partnerships, coaching, or just want to say hello — Amy would love
+            to hear from you.
+          </p>
+        </header>
+
+        <div class="contact-grid">
+          <!-- Details pane -->
+          <div class="contact-pane">
+            <h3>Reach out directly</h3>
+            <ul class="contact-list">
+              <li>
+                <span class="c-label">Email</span>
+                <span class="c-value">
+                  <a href="mailto:courtandcast@gmail.com">courtandcast@gmail.com</a>
+                </span>
+              </li>
+              <li>
+                <span class="c-label">Location</span>
+                <span class="c-value">Falmouth, Massachusetts</span>
+              </li>
+              <li>
+                <span class="c-label">Best for</span>
+                <span class="c-value">
+                  Speaking engagements, media &amp; press, brand partnerships,
+                  tennis coaching, and ocean adventure storytelling
+                </span>
+              </li>
+              <li>
+                <span class="c-label">Also on</span>
+                <span class="c-value">Instagram, YouTube &amp; courtandcast.com</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Form pane -->
+          <div class="contact-pane">
+            <h3>Send a note</h3>
+            <form id="contact-form" novalidate>
+              <label for="cf-name">Your name
+                <input type="text" id="cf-name" name="name" placeholder="Jane Smith" autocomplete="name" required />
+              </label>
+              <label for="cf-email">Email address
+                <input type="email" id="cf-email" name="email" placeholder="you@example.com" autocomplete="email" required />
+              </label>
+              <label for="cf-subject">Subject
+                <input type="text" id="cf-subject" name="subject" placeholder="Speaking, media, collab…" />
+              </label>
+              <label for="cf-message">Message
+                <textarea id="cf-message" name="message" placeholder="Tell Amy a bit about your idea, event, or project." required></textarea>
+              </label>
+              <button class="btn btn-primary" type="submit">Send message</button>
+              <p class="form-note">
+                Connect this form to Formspree, Netlify Forms, or your preferred handler before publishing.
+              </p>
+            </form>
+            <div class="form-success" id="form-success" role="status" aria-live="polite">
+              ✓ Message sent! Amy will be in touch soon.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <span class="footer-brand">Court &amp; Cast</span>
+      <span>Adventure, sport &amp; ocean story — Falmouth, MA</span>
+      <a href="mailto:courtandcast@gmail.com" style="color:rgba(255,255,255,.55);">courtandcast@gmail.com</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      this.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
