@@ -411,7 +411,7 @@
           <p class="eyebrow">Contact</p>
           <h2>Let's connect.</h2>
           <p>
-            Media, speaking, partnerships, coaching, or just want to say hello — Amy would love
+            Media, speaking, on the water, partnerships, coaching, or just want to say hello — Amy would love
             to hear from you.
           </p>
         </header>
@@ -435,12 +435,12 @@
                 <span class="c-label">Best for</span>
                 <span class="c-value">
                   Speaking engagements, media &amp; press, brand partnerships,
-                  tennis coaching, and ocean adventure storytelling
+                  tennis coaching, ocean adventure, captaining &amp; storytelling
                 </span>
               </li>
               <li>
                 <span class="c-label">Also on</span>
-                <span class="c-value">Instagram, YouTube &amp; courtandcast.com</span>
+                <span class="c-value">Instagram, &amp; courtandcast.com</span>
               </li>
             </ul>
           </div>
@@ -448,7 +448,11 @@
           <!-- Form pane -->
           <div class="contact-pane">
             <h3>Send a note</h3>
-            <form id="contact-form" novalidate>
+            <!-- BEFORE -->
+<form id="contact-form" novalidate>
+
+<!-- AFTER -->
+<form id="contact-form" action="https://formspree.io/f/mojzparz" method="POST">
               <label for="cf-name">Your name
                 <input type="text" id="cf-name" name="name" placeholder="Jane Smith" autocomplete="name" required />
               </label>
@@ -456,14 +460,13 @@
                 <input type="email" id="cf-email" name="email" placeholder="you@example.com" autocomplete="email" required />
               </label>
               <label for="cf-subject">Subject
-                <input type="text" id="cf-subject" name="subject" placeholder="Speaking, media, collab…" />
+                <input type="text" id="cf-subject" name="subject" placeholder="Speaking, tennis, collab…" />
               </label>
               <label for="cf-message">Message
                 <textarea id="cf-message" name="message" placeholder="Tell Amy a bit about your idea, event, or project." required></textarea>
               </label>
               <button class="btn btn-primary" type="submit">Send message</button>
               <p class="form-note">
-                Connect this form to Formspree, Netlify Forms, or your preferred handler before publishing.
               </p>
             </form>
             <div class="form-success" id="form-success" role="status" aria-live="polite">
