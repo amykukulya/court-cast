@@ -1,0 +1,57 @@
+<!-- ===== COURT & CAST — LIVE CONDITIONS BUTTON ===== -->
+<!-- Paste this snippet anywhere on your index page (e.g. nav bar, hero section, or footer). -->
+<style>
+  .cc-conditions-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, #0a1a2e 0%, #1B3A5C 100%);
+    color: #F5EFE3;
+    text-decoration: none;
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid #C8913A;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .cc-conditions-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(27,58,92,0.25);
+    background: linear-gradient(90deg, #1B3A5C 0%, #234a73 100%);
+  }
+  .cc-conditions-btn .cc-conditions-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: cc-conditions-pulse 2s ease-in-out infinite;
+  }
+  @keyframes cc-conditions-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .cc-conditions-btn svg {
+    width: 18px; height: 18px;
+    color: #C8913A;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+</style>
+
+<a href="/conditions" class="cc-conditions-btn">
+  <span class="cc-conditions-dot"></span>
+  <svg viewBox="0 0 24 24">
+    <path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
+    <path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
+  </svg>
+  Live Conditions &amp; Tides
+</a>
+<!-- ===== END BUTTON ===== -->
