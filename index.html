@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-image">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
   <meta charset="UTF-8">
@@ -110,7 +110,7 @@
     }
     .nav-cta:hover { background: var(--gold2) !important; }
 
-    /* ─── HAMBURGER TOGGLE ─── */
+    /* ─── HAMBURGER ─── */
     .nav-toggle {
       display:none;
       flex-direction:column;
@@ -144,7 +144,6 @@
       position:relative; overflow:hidden;
     }
 
-    /* layered atmosphere */
     .hero-bg {
       position:absolute; inset:0;
       background:
@@ -153,7 +152,6 @@
         linear-gradient(175deg, #0b1a2a 0%, #0D1F33 60%, #122840 100%);
     }
 
-    /* thin diagonal rule */
     .hero-bg::after {
       content:'';
       position:absolute;
@@ -167,7 +165,6 @@
       );
     }
 
-    /* bottom fade to white */
     .hero-fade {
       position:absolute; bottom:0; left:0; right:0;
       height:220px;
@@ -215,7 +212,6 @@
       animation: rise .9s .32s cubic-bezier(.22,1,.36,1) both;
     }
 
-    /* pill row */
     .hero-pills {
       display:flex; flex-wrap:wrap; gap:.75rem;
       justify-content:center; margin-bottom:2.8rem;
@@ -362,7 +358,7 @@
       to   { transform:translateX(-50%); }
     }
 
-    /* ─── ON THE WATER (CAPTAIN) ─── */
+    /* ─── ON THE WATER ─── */
     .water {
       padding:9rem 0;
       background:var(--ink);
@@ -710,7 +706,7 @@
       .tier.star { transform:none; }
       nav { padding:0 1.5rem; }
 
-      /* Hide desktop nav links, show hamburger */
+      /* Mobile nav */
       .nav-links {
         display:none;
         flex-direction:column;
@@ -749,18 +745,16 @@
   </style>
 </head>
 <body>
-  
+
 <!-- NAV -->
 <nav class="nav" id="nav">
   <a href="#home" class="nav-brand">
-    <!--<img src="logo.jpg" alt="Court & Cast logo">
-    -->
     <img src="logo.jpg" width="40" height="40" alt="Court &amp; Cast" style="border-radius:4px;border:1px solid rgba(200,168,75,.3)">
     <span class="nav-brand-name">Court <span>&</span> Cast</span>
   </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#water">On the Water</a></li>
-    <li><a href="tennis">Tennis</a></li>
+    <li><a href="#tennis">Tennis</a></li>
     <li><a href="#golf">Golf</a></li>
     <li><a href="#membership">Memberships</a></li>
     <li><a href="/gift">🎁 Gift Cape Cod</a></li>
@@ -768,12 +762,11 @@
     <li><a href="#contact" class="nav-cta">Book a Consultation</a></li>
   </ul>
   <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
 </nav>
-<!-- ===== COURT & CAST LIVE CONDITIONS STRIP ===== -->
+
+<!-- LIVE CONDITIONS STRIP -->
 <style>
   .cc-strip {
     font-family: var(--sans), -apple-system, sans-serif;
@@ -823,10 +816,7 @@
     stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
     flex-shrink: 0;
   }
-  .cc-strip-label {
-    color: #8a9aae; font-size: 11px;
-    text-transform: uppercase; letter-spacing: 0.08em;
-  }
+  .cc-strip-label { color: #8a9aae; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
   .cc-strip-value { color: #fff; font-weight: 500; }
   .cc-strip-bite {
     background: rgba(200,168,75,0.15);
@@ -848,40 +838,27 @@
 <div class="cc-strip" id="ccStrip">
   <div class="cc-strip-brand"><span class="cc-strip-live"></span>Live · Falmouth</div>
   <div class="cc-strip-item">
-    <svg class="cc-strip-icon" viewBox="0 0 24 24">
-      <path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
-      <path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/>
-    </svg>
+    <svg class="cc-strip-icon" viewBox="0 0 24 24"><path d="M2 14c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/><path d="M2 19c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2"/></svg>
     <span class="cc-strip-label">Tide</span>
     <span class="cc-strip-value" id="ccTide">—</span>
   </div>
   <div class="cc-strip-item">
-    <svg class="cc-strip-icon cc-wind-icon" id="ccWindIcon" viewBox="0 0 24 24">
-      <path d="M12 2l4 6h-3v12h-2V8H8l4-6z"/>
-    </svg>
+    <svg class="cc-strip-icon cc-wind-icon" id="ccWindIcon" viewBox="0 0 24 24"><path d="M12 2l4 6h-3v12h-2V8H8l4-6z"/></svg>
     <span class="cc-strip-label">Wind</span>
     <span class="cc-strip-value"><span id="ccWind">—</span> kt <span id="ccWindDir" style="color:#8a9aae;font-weight:400;">—</span></span>
   </div>
   <div class="cc-strip-item">
-    <svg class="cc-strip-icon" viewBox="0 0 24 24">
-      <path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
-      <path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>
-    </svg>
+    <svg class="cc-strip-icon" viewBox="0 0 24 24"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/></svg>
     <span class="cc-strip-label">Waves</span>
     <span class="cc-strip-value"><span id="ccWave">—</span> ft</span>
   </div>
   <div class="cc-strip-item">
-    <svg class="cc-strip-icon" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="3.5"/>
-      <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>
-    </svg>
+    <svg class="cc-strip-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>
     <span class="cc-strip-label">Air</span>
     <span class="cc-strip-value"><span id="ccAir">—</span>°F</span>
   </div>
   <div class="cc-strip-item">
-    <svg class="cc-strip-icon" viewBox="0 0 24 24">
-      <path d="M12 3c-3 4-5 7-5 10a5 5 0 0010 0c0-3-2-6-5-10z"/>
-    </svg>
+    <svg class="cc-strip-icon" viewBox="0 0 24 24"><path d="M12 3c-3 4-5 7-5 10a5 5 0 0010 0c0-3-2-6-5-10z"/></svg>
     <span class="cc-strip-label">Water</span>
     <span class="cc-strip-value"><span id="ccWater">—</span>°F</span>
   </div>
@@ -893,7 +870,6 @@
   'use strict';
   var LAT=41.5237,LON=-70.6717,STATION='8447930';
   function deg2cardinal(d){var dirs=['N','NE','E','SE','S','SW','W','NW'];return dirs[Math.round(d/45)%8];}
-
   async function loadTide(){
     try{
       var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=CourtAndCast&date=today&range=48&datum=MLLW&station='+STATION+'&time_zone=lst_ldt&units=english&interval=hilo&format=json';
@@ -911,13 +887,9 @@
         document.getElementById('ccTide').textContent=kind+' '+timeStr;
         return {status:next.type==='H'?'Rising':'Falling'};
       }
-    }catch(e){
-      console.error('Tide load failed:',e);
-      document.getElementById('ccTide').textContent='offline';
-    }
+    }catch(e){console.error('Tide load failed:',e);document.getElementById('ccTide').textContent='offline';}
     return null;
   }
-
   async function loadWater(){
     try{
       var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=CourtAndCast&date=latest&station='+STATION+'&time_zone=lst_ldt&units=english&format=json';
@@ -926,4 +898,461 @@
       var data=await res.json();
       if(data.data&&data.data.length){
         var temp=parseFloat(data.data[data.data.length-1].v);
-        document.getElementB
+        document.getElementById('ccWater').textContent=Math.round(temp);
+        return temp;
+      }
+    }catch(e){console.error('Water temp failed:',e);}
+    return null;
+  }
+  async function loadWeather(){
+    try{
+      var wxUrl='https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,wind_speed_10m,wind_direction_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York';
+      var marineUrl='https://marine-api.open-meteo.com/v1/marine?latitude='+LAT+'&longitude='+LON+'&current=wave_height&length_unit=imperial&timezone=America%2FNew_York';
+      var wxRes=await fetch(wxUrl);
+      var mRes=await fetch(marineUrl);
+      var wx=await wxRes.json();
+      var marine=mRes.ok?await mRes.json():{current:{}};
+      var wSpeed=wx.current.wind_speed_10m;
+      var wDir=wx.current.wind_direction_10m;
+      document.getElementById('ccWind').textContent=Math.round(wSpeed);
+      document.getElementById('ccWindDir').textContent=deg2cardinal(wDir);
+      document.getElementById('ccWindIcon').style.transform='rotate('+(wDir+180)+'deg)';
+      var wave=marine.current&&marine.current.wave_height;
+      document.getElementById('ccWave').textContent=wave!=null?wave.toFixed(1):'—';
+      document.getElementById('ccAir').textContent=Math.round(wx.current.temperature_2m);
+      return {wSpeed:wSpeed,wave:wave};
+    }catch(e){console.error('Weather failed:',e);return null;}
+  }
+  function biteToday(c,tide){
+    var month=new Date().getMonth(),hour=new Date().getHours(),score=50;
+    if(tide&&(tide.status==='Rising'||tide.status==='Falling'))score+=20;
+    if(c&&c.wSpeed!=null){if(c.wSpeed>=5&&c.wSpeed<=15)score+=10;else if(c.wSpeed>20)score-=20;}
+    if(c&&c.wave!=null&&c.wave>=4)score-=15;
+    if((hour>=5&&hour<=8)||(hour>=17&&hour<=20))score+=10;
+    var targets={0:'Cod',1:'Cod',2:'Winter Flounder',3:'Squid/Tautog',4:'Striped Bass',5:'Stripers/Blues',6:'Stripers/Blues/Fluke',7:'Stripers/Blues/Albies',8:'Albies/Bonito',9:'Tautog/Stripers',10:'Tautog/Sea Bass',11:'Cod'};
+    var label='Slow';
+    if(score>=80)label='🔥 On Fire';
+    else if(score>=65)label='🔥 Hot';
+    else if(score>=50)label='Good';
+    else if(score>=35)label='Fair';
+    return label+': '+targets[month];
+  }
+  async function refresh(){
+    var results=await Promise.all([loadTide(),loadWeather(),loadWater()]);
+    document.getElementById('ccBite').textContent=biteToday(results[1],results[0]);
+  }
+  refresh();
+  setInterval(refresh,10*60*1000);
+})();
+</script>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <img src="logo.jpg" alt="Court & Cast" class="hero-logo">
+    <span class="hero-eyebrow">Cape Cod&rsquo;s Premier Lifestyle Experience</span>
+    <h1 class="hero-headline">
+      The Cape Cod life<br><em>lived fully.</em>
+    </h1>
+    <p class="hero-sub">
+      Tennis. Fishing. Shellfishing. On The Water. Golf.<br>
+      One licensed captain. One experienced coach. Adventure on your terms.
+    </p>
+    <div class="hero-pills">
+      <span class="pill"><span class="pill-dot"></span>USCG Master 50-Ton Captain</span>
+      <span class="pill"><span class="pill-dot"></span>Experienced Tennis Coach</span>
+      <span class="pill"><span class="pill-dot"></span>Cape Cod, Massachusetts</span>
+    </div>
+    <div class="hero-cta-wrap">
+      <a href="#contact" class="hero-cta">Book a Free Consultation</a>
+      <a href="/gift" class="hero-gift-link">🎁 Gift Cape Cod</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOUR PILLARS -->
+<section class="pillars" id="services">
+  <div class="container">
+    <div class="pillars-head sr">
+      <span class="eyebrow">Four Ways to Live Better</span>
+      <h2 class="display" style="font-size:clamp(2.4rem,5vw,3.8rem)">
+        What sets Court <em>&amp; Cast</em> apart.
+      </h2>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar sr">
+        <div class="pillar-num">01</div>
+        <span class="pillar-icon">🎣</span>
+        <div class="pillar-name">Fishing Charters</div>
+        <div class="pillar-desc">Half-day and full-day fishing trips led by a USCG-licensed captain. Striped bass, bluefish, flounder &amp; more. Tackle, bait, and fish cleaning always included.</div>
+        <div class="pillar-price">Contact us for rates</div>
+        <div class="pillar-bar"></div>
+      </div>
+      <div class="pillar sr d1">
+        <div class="pillar-num">02</div>
+        <span class="pillar-icon">🦪</span>
+        <div class="pillar-name">Shellfishing &amp; Foraging</div>
+        <div class="pillar-desc">Quahogging, clamming, foraging on Cape Cod&rsquo;s barrier islands and tidal marshes. Gear provided.</div>
+        <div class="pillar-price">Contact us for rates</div>
+        <div class="pillar-bar"></div>
+      </div>
+      <div class="pillar sr d2">
+        <div class="pillar-num">03</div>
+        <span class="pillar-icon">🎾</span>
+        <div class="pillar-name">Tennis Coaching</div>
+        <div class="pillar-desc">Private lessons and social hit sessions from an experienced coach. All levels, all abilities. Sessions adapted to your body, your pace, and your goals.</div>
+        <div class="pillar-price">Contact us for rates</div>
+        <div class="pillar-bar"></div>
+      </div>
+      <div class="pillar sr d3">
+        <div class="pillar-num">04</div>
+        <span class="pillar-icon">⛳</span>
+        <div class="pillar-name">Golf Outings</div>
+        <div class="pillar-desc">Perfect golf days on Cape Cod&rsquo;s finest courses. 9 holes, 18 holes, or the driving range. Your guide handles everything &mdash; you just play.</div>
+        <div class="pillar-price">Contact us for rates</div>
+        <div class="pillar-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Striped Bass &amp; Bluefish Charters</span>
+    <span class="marquee-item">Private Tennis Lessons</span>
+    <span class="marquee-item">Quahogging &amp; Clamming</span>
+    <span class="marquee-item">18 Holes on Cape Cod</span>
+    <span class="marquee-item">Learn to Fish</span>
+    <span class="marquee-item">Shellfishing Expeditions</span>
+    <span class="marquee-item">Learn to Shellfish</span>
+    <span class="marquee-item">Cove Excursions</span>
+    <span class="marquee-item">USCG Master 50-Ton Captain</span>
+    <span class="marquee-item">Striped Bass &amp; Bluefish Charters</span>
+    <span class="marquee-item">Private Tennis Lessons</span>
+    <span class="marquee-item">Quahogging &amp; Clamming</span>
+    <span class="marquee-item">18 Holes on Cape Cod</span>
+    <span class="marquee-item">Learn to Fish &amp; Shellfish</span>
+    <span class="marquee-item">Shellfishing Expeditions</span>
+    <span class="marquee-item">Learn to Fish &amp; Lobster</span>
+    <span class="marquee-item">Washburn Island Excursions</span>
+    <span class="marquee-item">USCG Master 50-Ton Captain</span>
+  </div>
+</div>
+
+<!-- ON THE WATER -->
+<section class="water" id="water">
+  <div class="container">
+    <div class="water-inner">
+      <div class="sr">
+        <span class="eyebrow">On the Water</span>
+        <h2 class="display">Your licensed captain<br><em>is ready.</em></h2>
+        <p class="lead">
+          Cape Cod's waters are extraordinary. With a USCG Master 50-Ton Captain at the helm, every on-water experience is safe, professional, and unforgettable — whether you're chasing stripers at dawn or learning the quahog dance - using your toes to forage.
+        </p>
+        <div class="uscg-badge">
+          <span class="uscg-badge-icon">⚓</span>
+          <div>
+            <span class="uscg-badge-text-title">USCG Master 50-Ton License</span>
+            <span class="uscg-badge-text-sub">Fully licensed &middot; commercially insured &middot; First Aid & CPR certified & safety-briefed</span>
+          </div>
+        </div>
+      </div>
+      <div class="excursions sr d2">
+        <div class="exc"><span class="exc-icon">🎣</span><div><div class="exc-name">Half-Day Fishing Charter</div><div class="exc-detail">3-4 hrs &middot; up to 4 guests &middot; tackle &amp; bait included</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">🎣</span><div><div class="exc-name">Full-Day Fishing Charter</div><div class="exc-detail">4–6 hrs &middot; Rips, Shoals & Elizabeths &middot; lunch included</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">🦪</span><div><div class="exc-name">Shellfishing Excursion</div><div class="exc-detail">2-3 hrs &middot; rakes &amp; bags provided &middot; quahogs &amp; clams</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">🦪</span><div><div class="exc-name">Shellfishing + Shoreside Relaxing</div><div class="exc-detail">Catch &amp; clean &middot; all supplies included</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">🦅</span><div><div class="exc-name">Learn to Fish &amp; Forage</div><div class="exc-detail">3 hrs &middot; land or sea &amp; marshes &middot; gear provided</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">⚓</span><div><div class="exc-name">Washburn Island Adventure</div><div class="exc-detail">2-4 hrs &middot; Snacks + Soft drinks provided &middot; up to 4 guests</div></div><span class="exc-price">Contact us</span></div>
+        <div class="exc"><span class="exc-icon">🏝️</span><div><div class="exc-name">Your Adventure Charters &amp; What's your dream?</div><div class="exc-detail">Sports &amp; Foraging &middot; year-round</div></div><span class="exc-price">Contact us</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TENNIS -->
+<section class="tennis" id="tennis">
+  <div class="container">
+    <div class="tennis-inner">
+      <div class="sr">
+        <span class="eyebrow">On the Court</span>
+        <h2 class="display">Private coaching,<br><em>your pace.</em></h2>
+        <p class="lead">
+          Whether you played for decades and want to get back to it, or you've always wanted to learn — Court &amp; Cast offers private tennis coaching built entirely around you.
+        </p>
+        <blockquote class="tennis-quote">
+          "The best time to pick up a racket again is right now."
+        </blockquote>
+        <p style="font-size:.88rem;color:var(--muted);margin-top:1.2rem;line-height:1.7">
+          Sessions adapt to all fitness levels and joint considerations. Loaner rackets available. Courts arranged throughout Cape Cod. Group sessions for couples or friends available — contact us for rates.
+        </p>
+      </div>
+      <div class="sr d1">
+        <div class="t-cards">
+          <div class="t-card"><div class="t-card-label">Private Lesson</div><div class="t-card-price">Contact us</div><div class="t-card-note">1 hour &middot; all levels</div></div>
+          <div class="t-card"><div class="t-card-label">Extended Session</div><div class="t-card-price">Contact us</div><div class="t-card-note">90 min &middot; drills + strategy</div></div>
+          <div class="t-card"><div class="t-card-label">Social Hit</div><div class="t-card-price">Contact us</div><div class="t-card-note">1 hour &middot; relaxed rally</div></div>
+          <div class="t-card"><div class="t-card-label">6-Session Package</div><div class="t-card-price">Contact us</div><div class="t-card-note">Best value &middot; pre-paid block</div></div>
+        </div>
+        <p class="t-note">Court fees separate and billed at cost. Morning or late-afternoon slots recommended for summer play. Competitive match play escort also available.</p>
+      </div>
+    </div>
+    <a href="https://courtandcast.com/tennis" style="display:inline-block;background-color:#1B3A5C;color:#C8913A;font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:600;letter-spacing:0.06em;text-decoration:none;padding:14px 36px;border-radius:4px;border:2px solid #C8913A;margin-top:2rem;">Tennis Camp Info</a>
+  </div>
+</section>
+
+<!-- GOLF -->
+<section class="golf" id="golf">
+  <div class="container">
+    <div class="golf-inner">
+      <div class="sr">
+        <span class="eyebrow">On the Course</span>
+        <h2 class="display">A proper<br><em>golf day.</em></h2>
+        <p class="lead">
+          Cape Cod's Beautiful Course. No logistics, no hassle. Your guide sets it up, handles everything at the club, keeps score, and gets you what you need. You just enjoy the round.
+        </p>
+        <p style="font-size:.88rem;color:var(--muted);margin-top:1.2rem;line-height:1.7">Greens fees, cart, and club rentals are separate and billed at cost.</p>
+      </div>
+      <div class="sr d1">
+        <table class="golf-table">
+          <thead><tr><th>Outing</th><th style="text-align:right">Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Driving Range Session<br><small style="color:var(--muted);font-size:.78rem">1.5–2 hrs · bucket fees separate</small></td><td style="text-align:right">Contact us</td></tr>
+            <tr><td>9 Holes<br><small style="color:var(--muted);font-size:.78rem">Door-to-door · post-round refreshments</small></td><td style="text-align:right">Contact us</td></tr>
+            <tr><td>18 Holes<br><small style="color:var(--muted);font-size:.78rem">Full round · cart management · scorekeeping</small></td><td style="text-align:right">Contact us</td></tr>
+            <tr><td>18 Holes + Clubhouse Lunch<br><small style="color:var(--muted);font-size:.78rem">A full Cape Cod golf day</small></td><td style="text-align:right">Contact us</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership" id="membership">
+  <div class="container">
+    <div class="membership-head sr">
+      <span class="eyebrow">Season Membership Calendar</span>
+      <h2 class="display">Your summer,<br><em>fully booked.</em></h2>
+      <p class="lead">Seasonal memberships starting from $2,500/month — paid once, active all season. No auto-billing, no surprise renewals. Pricing is discussed during your free consultation.</p>
+    </div>
+    <div style="background:var(--navy);border-radius:6px;padding:1.4rem 2rem;margin-bottom:3rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;" class="sr">
+      <span style="font-size:1.8rem;">🗓️</span>
+      <div>
+        <div style="font-family:var(--serif);font-size:1.15rem;font-weight:600;color:#fff;">Paid once. Active all season.</div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.55);margin-top:.3rem;">We don't auto-bill. You choose your season, pay upfront, and we handle the rest. No subscriptions. No hidden charges. Just Cape Cod on your terms.</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;flex-shrink:0;">
+        <div style="font-family:var(--serif);font-size:1rem;font-weight:600;color:var(--gold);">May – October</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.4);">6-month operating season</div>
+      </div>
+    </div>
+    <div class="tiers">
+      <div class="tier sr">
+        <span class="tier-eyebrow">Explorer</span>
+        <div class="tier-name">Explorer</div>
+        <div class="tier-mo" style="font-size:.8rem;color:var(--teal);font-weight:600;margin-bottom:.5rem;letter-spacing:.06em;text-transform:uppercase;">Entry Level</div>
+        <div class="tier-line"></div>
+        <ul class="tier-list">
+          <li><span class="tier-check">✓</span> 2 curated outings per month</li>
+          <li><span class="tier-check">✓</span> Shellfish &amp; foraging excursions</li>
+          <li><span class="tier-check">✓</span> Estuary, cove &amp; islands</li>
+          <li><span class="tier-check">✓</span> Priority seasonal calendar booking</li>
+          <li><span class="tier-check">✓</span> Complimentary onboarding call</li>
+          <li><span class="tier-check">✓</span> À la carte additions at member rate</li>
+        </ul>
+      </div>
+      <div class="tier star sr d1">
+        <span class="tier-eyebrow">★ Most Popular</span>
+        <div class="tier-name">Captain</div>
+        <div class="tier-mo" style="font-size:.8rem;color:var(--gold);font-weight:600;margin-bottom:.5rem;letter-spacing:.06em;text-transform:uppercase;">Mid Season</div>
+        <div class="tier-line"></div>
+        <ul class="tier-list">
+          <li><span class="tier-check">✓</span> Everything in Explorer</li>
+          <li><span class="tier-check">✓</span> 4 outings per month (water + sport)</li>
+          <li><span class="tier-check">✓</span> Tennis &amp; golf coaching sessions</li>
+          <li><span class="tier-check">✓</span> 1 guest pass per month</li>
+          <li><span class="tier-check">✓</span> Private charter priority access</li>
+          <li><span class="tier-check">✓</span> Naushon, Washburn &amp; island tours</li>
+        </ul>
+      </div>
+      <div class="tier sr d2">
+        <span class="tier-eyebrow">Voyage</span>
+        <div class="tier-name">Voyage</div>
+        <div class="tier-mo" style="font-size:.8rem;color:var(--teal2);font-weight:600;margin-bottom:.5rem;letter-spacing:.06em;text-transform:uppercase;">Full Season</div>
+        <div class="tier-line"></div>
+        <ul class="tier-list">
+          <li><span class="tier-check">✓</span> Everything in Captain</li>
+          <li><span class="tier-check">✓</span> Up to 8 priority outings per month</li>
+          <li><span class="tier-check">✓</span> Concierge Cape Cod activity calendar</li>
+          <li><span class="tier-check">✓</span> 2 guest passes per month</li>
+          <li><span class="tier-check">✓</span> First-access private charter windows</li>
+          <li><span class="tier-check">✓</span> Caplelandia Swag and discounts</li>
+        </ul>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:2rem;font-size:.82rem;color:var(--muted);font-style:italic">Memberships from $1,800/month · Pricing and availability discussed during your free consultation · No auto-billing <a href="/gift" style="color:var(--teal);text-decoration:none;">Looking to give this as a gift?</a></p>
+  </div>
+</section>
+
+<!-- VALUE COMPARISON -->
+<section style="padding:7rem 0;background:var(--navy);" id="value">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:4rem;" class="sr">
+      <span class="eyebrow" style="color:var(--teal2);">The Math Is Simple</span>
+      <h2 class="display" style="color:#fff;font-size:clamp(2.4rem,5vw,3.8rem);">À la carte vs.<br><em style="color:var(--teal2);">membership value.</em></h2>
+      <p class="lead" style="color:rgba(255,255,255,.55);max-width:540px;margin:.8rem auto 0;text-align:center;">Book the same experiences separately and the numbers speak for themselves.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;" class="sr d1">
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:2.5rem 2rem;">
+        <div style="font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1.5rem;">Book Each Experience Separately</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);"><td style="padding:.85rem 0;font-size:.92rem;color:rgba(255,255,255,.8);">⚓ Private boat charter (half day)</td><td style="padding:.85rem 0;text-align:right;font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);">$1,600</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);"><td style="padding:.85rem 0;font-size:.92rem;color:rgba(255,255,255,.8);">🎾 Private tennis lesson (1 hr)</td><td style="padding:.85rem 0;text-align:right;font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);">$150</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);"><td style="padding:.85rem 0;font-size:.92rem;color:rgba(255,255,255,.8);">🐚 Guided shellfishing excursion</td><td style="padding:.85rem 0;text-align:right;font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);">$350</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);"><td style="padding:.85rem 0;font-size:.92rem;color:rgba(255,255,255,.8);">🚤 Learn to Fish &amp; estuary tour (half day)</td><td style="padding:.85rem 0;text-align:right;font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);">$300</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.07);"><td style="padding:.85rem 0;font-size:.92rem;color:rgba(255,255,255,.8);">⛳ Golf coaching session (1 hr)</td><td style="padding:.85rem 0;text-align:right;font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);">$250</td></tr>
+          <tr><td style="padding:1.2rem 0 .5rem;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);">One week à la carte</td><td style="padding:1.2rem 0 .5rem;text-align:right;font-family:var(--serif);font-size:1.35rem;font-weight:600;color:rgba(255,255,255,.55);">$2,650</td></tr>
+          <tr><td style="padding:.4rem 0;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);">One month à la carte</td><td style="padding:.4rem 0;text-align:right;font-family:var(--serif);font-size:1.35rem;font-weight:600;color:rgba(255,255,255,.55);">~$10,600</td></tr>
+        </table>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--teal) 0%,var(--navy) 100%);border:1px solid rgba(200,168,75,.3);border-radius:8px;padding:2.5rem 2rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;background:var(--gold);color:var(--ink);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:0 8px 0 6px;">Better Value</div>
+        <div style="font-size:.68rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1.5rem;">Court &amp; Cast Membership</div>
+        <div style="font-family:var(--serif);font-size:2rem;font-weight:300;color:#fff;line-height:1.2;margin-bottom:.5rem;">All of it.<br>One season.<br>One conversation.</div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.45);margin-bottom:2rem;">Pricing discussed during your free consultation.</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2rem;">
+          <li style="display:flex;gap:.7rem;font-size:.88rem;color:rgba(255,255,255,.75);align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">✓</span> All on-water excursions included</li>
+          <li style="display:flex;gap:.7rem;font-size:.88rem;color:rgba(255,255,255,.75);align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">✓</span> No searching &amp; vetting providers</li>
+          <li style="display:flex;gap:.7rem;font-size:.88rem;color:rgba(255,255,255,.75);align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">✓</span> One person who knows you &amp; the Cape</li>
+          <li style="display:flex;gap:.7rem;font-size:.88rem;color:rgba(255,255,255,.75);align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">✓</span> Tennis, golf, fishing, shellfishing all in</li>
+          <li style="display:flex;gap:.7rem;font-size:.88rem;color:rgba(255,255,255,.75);align-items:flex-start;"><span style="color:var(--gold);font-weight:700;">✓</span> Flexible scheduling, no double-booking stress</li>
+        </ul>
+        <a href="#contact" style="display:inline-block;background:var(--gold);color:var(--ink);padding:.9rem 2rem;border-radius:2px;font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;">Book Free Consultation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<section class="cta-strip">
+  <div class="cta-strip-inner">
+    <span class="eyebrow">Ready to Book?</span>
+    <h2 class="display">Your best Cape Cod<br><em>summer starts here.</em></h2>
+    <p class="lead">No pressure. Just a conversation about what you want from your time on Cape Cod.</p>
+    <a href="#contact" class="cta-big">Book a Free Consultation</a>
+    <p class="cta-note">Free 30-min call · No commitment · Cape Cod–based</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="sr">
+        <span class="eyebrow">Get in Touch</span>
+        <h2 class="display">Let's plan your<br><em>Cape Cod adventure.</em></h2>
+        <p class="lead">Tell us what you're dreaming of. We'll make it happen.</p>
+        <div class="contact-detail">
+          <div class="c-item"><div class="c-icon">📍</div> Falmouth, Massachusetts</div>
+          <div class="c-item"><div class="c-icon">📧</div> hello@courtandcast.com</div>
+          <div class="c-item"><div class="c-icon">⚓</div> USCG Master 50-Ton Licensed</div>
+        </div>
+      </div>
+      <div class="form-card sr d1">
+        <form action="https://formspree.io/f/xpwzgojg" method="POST">
+          <div class="f-row">
+            <div class="f-group"><label for="fname">First Name</label><input type="text" id="fname" name="first_name" placeholder="Amy" required></div>
+            <div class="f-group"><label for="lname">Last Name</label><input type="text" id="lname" name="last_name" placeholder="Smith"></div>
+          </div>
+          <div class="f-row">
+            <div class="f-group"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="you@email.com" required></div>
+            <div class="f-group"><label for="phone">Phone (optional)</label><input type="tel" id="phone" name="phone" placeholder="(508) 555-0100"></div>
+          </div>
+          <div class="f-row">
+            <div class="f-group full" style="grid-column:1/-1">
+              <label for="interest">I'm most interested in</label>
+              <select id="interest" name="interest">
+                <option value="">Select an experience…</option>
+                <option>Fishing Charter</option>
+                <option>Shellfishing Excursion</option>
+                <option>Tennis Coaching</option>
+                <option>Golf Outing</option>
+                <option>Season Membership</option>
+                <option>Gift Certificate</option>
+                <option>Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="f-row">
+            <div class="f-group full" style="grid-column:1/-1">
+              <label for="msg">Tell us more</label>
+              <textarea id="msg" name="message" placeholder="Group size, dates in mind, experience level, any questions…"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="f-submit">Send Message</button>
+          <p class="f-small">We respond within 24 hours · No spam, ever · Your info stays private</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="logo.jpg" width="34" height="34" alt="Court &amp; Cast" style="border-radius:3px;">
+      <span class="footer-brand-name">Court <span>&</span> Cast</span>
+    </div>
+    <span class="footer-tagline">Cape Cod's Premier Lifestyle Experience</span>
+    <nav class="footer-links">
+      <a href="#water">On the Water</a>
+      <a href="#tennis">Tennis</a>
+      <a href="#golf">Golf</a>
+      <a href="#membership">Memberships</a>
+      <a href="/about">About</a>
+      <a href="/gift">Gift</a>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; 2025 Court &amp; Cast · Falmouth, Massachusetts · All rights reserved</p>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger menu toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+    navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open menu');
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
